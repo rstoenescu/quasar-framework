@@ -17,6 +17,23 @@ If you change from desktop to mobile emulator or backwards, hit the refresh butt
 
 ## Android Tips
 
+### Android Emulator
+
+ISSUE:  Unknown skin name what?!
+```
+Waiting for emulator to start...
+emulator: ERROR: unknown skin name 'nexus_5x'
+```
+Delete the preconfigured AVD and make a new one.
+
+ISSUE:  CLEAR_TEXT What?!
+```
+Application Error
+net::ERR_CLEARTEXT_NOT_PERMITTED (http://10.0.0.150:8080/)
+```
+See: https://stackoverflow.com/questions/45940861/android-8-cleartext-http-traffic-not-permitted#50834600
+Quick fix:  use API 27 and below.  Delete the AVD and re-add with Oreo.
+
 ### Android remote debugging
 If you are debugging Android Apps, you can use Google Chrome [Remote Debugging](https://developers.google.com/web/tools/chrome-devtools/debug/remote-debugging/remote-debugging?hl=en) through a USB cable attached to your Android phone/tablet. It can be used for emulator too.
 
