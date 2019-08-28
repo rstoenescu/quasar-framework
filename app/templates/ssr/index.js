@@ -36,6 +36,8 @@ if (ssr.settings.pwa) {
 // serve "www" folder
 app.use('/', serve('.', true))
 
+ssr.extendApp({ app })
+
 // we extend the custom common dev & prod parts here
 extension.extendApp({ app })
 

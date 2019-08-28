@@ -34,7 +34,8 @@ module.exports = class IndexAPI {
       afterBuild: [],
       onPublish: [],
       commands: {},
-      describeApi: {}
+      describeApi: {},
+      extendSsr: []
     }
   }
 
@@ -277,6 +278,16 @@ module.exports = class IndexAPI {
    */
   onPublish (fn) {
     this.__addHook('onPublish', fn)
+  }
+
+  /**
+   * Run hook before Quasar starts the SSR server.
+   *
+   * @param {function} fn
+   *   (api, { app }) => ?Promise
+   */
+  extendSsr(fn) {
+    this.__addHook('extendSsr', fn)
   }
 
   /**

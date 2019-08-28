@@ -238,7 +238,7 @@ module.exports = class DevServer {
 
     // start building & launch server
     const server = new WebpackDevServer(clientCompiler, {
-      after: app => {
+      after: async app => {
         if (cfg.ctx.mode.pwa) {
           app.use('/manifest.json', (req, res) => {
             res.setHeader('Content-Type', 'application/json')
@@ -253,6 +253,19 @@ module.exports = class DevServer {
         app.use('/statics', express.static(appPaths.resolve.src('statics'), {
           maxAge: 0
         }))
+
+        const extensionJson = require('../lib/app-extension/extension-json'),
+          extensions = Object.keys(extensionJson.getList()),
+          Extension = require('../lib/app-extension/Extension')
+        for (let ext of extensions) {
+          const instance = new Extension(ext)
+          const hooks = await instance.run({})
+
+          for (const hook of hooks.extendSsr) {
+            log(`Extension(${hook.api.extId}): Running extendSsr hook...`)
+            await hook.fn(hook.api, { app })
+          }
+        }
 
         SsrExtension.getModule().extendApp({ app })
 

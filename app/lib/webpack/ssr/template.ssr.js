@@ -62,3 +62,19 @@ module.exports.mergeRendererOptions = function (opts) {
 }
 
 module.exports.settings = settings
+
+module.exports.extendApp = async ({ app }) => {
+  const extensionJson = require('@quasar/app/lib/app-extension/extension-json'),
+    extensions = Object.keys(extensionJson.getList()),
+    Extension = require('@quasar/app/lib/app-extension/Extension')
+  for (let ext of extensions) {
+    const instance = new Extension(ext)
+    const hooks = await instance.run({})
+
+    for (const hook of hooks.extendSsr) {
+      await hook.fn(hook.api, {
+        app
+      })
+    }
+  }
+}

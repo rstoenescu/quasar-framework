@@ -401,3 +401,23 @@ api.onPublish((api, opts) => {
   // do something
 })
 ```
+
+## api.extendSsr
+
+<q-badge label="@quasar/app v1.1.0+" />
+
+Run hook when the SSR express instance is created (`$ quasar dev|build -m ssr`).
+
+Can use async/await or directly return a Promise.
+
+```js
+/**
+ * @param {function} fn
+ *   () => ?Promise
+ * @param {object} opts
+ *   * app - the underlying Express instance
+ */
+api.extendSsr((api, opts) => {
+  // do something
+})
+```
