@@ -39,11 +39,11 @@ module.exports = function (cfg) {
 
   file = appPaths.resolve.app(cfg.sourceFiles.rootComponent)
   content = fs.readFileSync(file, 'utf-8')
-  if (content.indexOf('q-app') === -1) {
+  if (content.indexOf(cfg.sourceFiles.rootId || 'q-app') === -1) {
     console.log(`\n ⚠️  Quasar requires a minor change to the root component:
    ${file}
 
-  Please add: id="q-app" (or write #q-app if using Pug)
+  Please add: id="${cfg.sourceFiles.rootId || 'q-app'}" (or write ${cfg.sourceFiles.rootId ? "#"+cfg.sourceFiles.rootId : "#q-app"} if using Pug)
   to the outermost HTML element of the template.
 
 ${green('Example:')}

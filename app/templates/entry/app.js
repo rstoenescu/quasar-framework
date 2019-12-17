@@ -51,7 +51,7 @@ export default async function (<%= ctx.mode.ssr ? 'ssrContext' : '' %>) {
   // Here we inject the router, store to all child components,
   // making them available everywhere as `this.$router` and `this.$store`.
   const app = {
-    <% if (!ctx.mode.ssr) { %>el: '#q-app',<% } %>
+    <% if (!ctx.mode.ssr) { %>el: <% print((sourceFiles.rootId ? "#"+sourceFiles.rootId : false) || '#q-app') %>,<% } %>
     router,
     <%= store ? 'store,' : '' %>
     render: h => h(App)<% if (__needsAppMountHook === true) { %>,
