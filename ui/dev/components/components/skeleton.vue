@@ -24,6 +24,14 @@
       <q-skeleton v-bind="props" type="circle" size="100px" animation="blink" />
     </div>
 
+    <h6>Animation Speed</h6>
+
+    <q-skeleton v-bind="props" type="text" class="text-h6" animation-speed="slowest" />
+    <q-skeleton v-bind="props" type="text" class="text-h6" animation-speed="slow" />
+    <q-skeleton v-bind="props" type="text" class="text-h6" animation-speed="normal" />
+    <q-skeleton v-bind="props" type="text" class="text-h6" animation-speed="fast" />
+    <q-skeleton v-bind="props" type="text" class="text-h6" animation-speed="fastest" />
+
     <h6>Predefined types</h6>
     <div class="q-gutter-md">
       <div v-for="type in skeletonTypes" :key="type">

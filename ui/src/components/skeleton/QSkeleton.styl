@@ -1,3 +1,9 @@
+$speed-slowest = .5s
+$speed-slow = 1s
+$speed-normal = 1.5s
+$speed-fast = 2s
+$speed-fastest = 2.5s
+
 .q-skeleton
   cursor: wait
   background: $separator-color
@@ -56,14 +62,14 @@
     border-radius: 0
 
   &--anim-fade
-    animation: q-skeleton--fade 1.5s linear .5s infinite
+    animation: q-skeleton--fade linear .5s infinite
 
   &--anim-pulse
-    animation: q-skeleton--pulse 1.5s ease-in-out .5s infinite
+    animation: q-skeleton--pulse ease-in-out .5s infinite
   &--anim-pulse-x
-    animation: q-skeleton--pulse-x 1.5s ease-in-out .5s infinite
+    animation: q-skeleton--pulse-x ease-in-out .5s infinite
   &--anim-pulse-y
-    animation: q-skeleton--pulse-y 1.5s ease-in-out .5s infinite
+    animation: q-skeleton--pulse-y ease-in-out .5s infinite
 
   &--anim-wave,
   &--anim-blink,
@@ -78,13 +84,36 @@
       bottom: 0
       left: 0
       z-index: 1
+  
 
   &--anim-blink:after
     background: rgba(255,255,255,.7)
-    animation: q-skeleton--fade 1.5s linear .5s infinite
+    animation: q-skeleton--fade linear .5s infinite
   &--anim-wave:after
     background: linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent)
-    animation: q-skeleton--wave 1.5s linear .5s infinite
+    animation: q-skeleton--wave linear .5s infinite
+  
+  &--anim-speed-slowest
+    animation-duration: $speed-slowest
+  &--anim-speed-slow
+    animation-duration: $speed-slow
+  &--anim-speed-normal
+    animation-duration: $speed-normal
+  &--anim-speed-fast
+    animation-duration: $speed-fast
+  &--anim-speed-fastest
+    animation-duration: $speed-fastest
+  
+  &--anim-speed-slowest:after
+    animation-duration: $speed-slowest
+  &--anim-speed-slow:after
+    animation-duration: $speed-slow
+  &--anim-speed-normal:after
+    animation-duration: $speed-normal
+  &--anim-speed-fast:after
+    animation-duration: $speed-fast
+  &--anim-speed-fastest:after
+    animation-duration: $speed-fastest
 
   &--dark
     background: rgba(255, 255, 255, 0.05)

@@ -29,6 +29,10 @@ Below you can see the predefined types. There are some basic types (text, rect, 
 
 <doc-example title="Animations" file="QSkeleton/Animations" />
 
+### Animation Speed
+
+<doc-example title="Animation Speed" file="QSkeleton/AnimationSpeed" />
+
 ### Sizing
 
 <doc-example title="Sizing" file="QSkeleton/Sizing" />

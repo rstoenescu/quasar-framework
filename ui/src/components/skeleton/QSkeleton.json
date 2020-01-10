@@ -32,6 +32,16 @@
       "category": "style"
     },
 
+    "animation-speed": {
+      "type": "String",
+      "desc": "The animation speed of the skeleton placeholder",
+      "values": [
+        "slowest", "slow", "normal", "fast", "fastest"
+      ],
+      "default": "normal",
+      "category": "behavior"
+    },
+
     "square": {
       "extends": "square"
     },

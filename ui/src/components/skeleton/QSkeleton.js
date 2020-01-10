@@ -14,6 +14,10 @@ export const skeletonAnimations = [
   'wave', 'pulse', 'pulse-x', 'pulse-y', 'fade', 'blink', 'none'
 ]
 
+export const skeletonAnimationSpeeds = [
+  'slowest', 'slow', 'normal', 'fast', 'fastest'
+]
+
 export default Vue.extend({
   name: 'QSkeleton',
 
@@ -30,6 +34,12 @@ export default Vue.extend({
       type: String,
       validator: v => skeletonAnimations.includes(v),
       default: 'wave'
+    },
+
+    animationSpeed: {
+      type: String,
+      validator: v => skeletonAnimationSpeeds.includes(v),
+      default: 'normal'
     },
 
     square: Boolean,
@@ -55,6 +65,7 @@ export default Vue.extend({
     classes () {
       return `q-skeleton--${this.isDark === true ? 'dark' : 'light'} q-skeleton--type-${this.type}` +
         (this.animation !== 'none' ? ` q-skeleton--anim-${this.animation}` : '') +
+        (this.animationSpeed !== 'none' ? ` q-skeleton--anim-speed-${this.animationSpeed}` : '') +
         (this.square === true ? ' q-skeleton--square' : '') +
         (this.bordered === true ? ' q-skeleton--bordered' : '')
     }
