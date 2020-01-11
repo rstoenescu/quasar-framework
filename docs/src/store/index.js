@@ -13,7 +13,8 @@ export default function (/* { ssrContext } */) {
     state: {
       leftDrawerState: false,
       rightDrawerState: false,
-      toc: []
+      toc: [],
+      dark: false
     },
 
     mutations: {
@@ -29,6 +30,10 @@ export default function (/* { ssrContext } */) {
         state.toc = newToc.length > 0
           ? [ { id: 'Introduction', title: 'Introduction' } ].concat(newToc)
           : []
+      },
+
+      updateDarkMode (state, darkMode) {
+        state.dark = darkMode
       }
     }
   })

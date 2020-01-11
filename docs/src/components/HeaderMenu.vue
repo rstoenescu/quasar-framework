@@ -141,12 +141,33 @@ div
         q-item-section(avatar)
           q-icon(name="fab fa-github")
         q-item-section Github Sponsorship
+  q-btn(@click="toggleDarkMode" :icon="darkModeBtnIcon" flat, :dense="$q.screen.lt.md", :ripple="false", :style="computedBtnStyle")
 </template>
 
 <script>
 export default {
   props: {
     align: String
+  },
+  methods: {
+    toggleDarkMode () {
+      if (this.$q.dark.isActive) {
+        this.$q.dark.set(false)
+        this.$q.cookies.remove('dark')
+      }
+      else {
+        this.$q.dark.set(true)
+        this.$q.cookies.set('dark', 'true', { expires: 5 * 365 })
+      }
+    }
+  },
+  computed: {
+    darkModeBtnIcon () {
+      return this.$q.dark.isActive ? 'brightness_4' : 'brightness_7'
+    },
+    computedBtnStyle () {
+      return this.$q.screen.lt.md ? 'align-self: flex-end; padding-right: 12px' : ''
+    }
   }
 }
 </script>

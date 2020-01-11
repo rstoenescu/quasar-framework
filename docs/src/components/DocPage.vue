@@ -13,7 +13,7 @@ q-page.doc-page
   .doc-page-nav.text-primary.q-pb-lg(v-if="related !== void 0")
     .text-h6.q-pb-md Related
     .q-gutter-md.flex
-      router-link.q-link.doc-page-related.rounded-borders.q-pa-md.cursor-pointer.column.justify-center.bg-grey-4(
+      router-link.q-link.doc-page-related.rounded-borders.q-pa-md.cursor-pointer.column.justify-center(
         v-for="link in related"
         :key="link.category + link.path"
         :to="link.path"
@@ -28,7 +28,7 @@ q-page.doc-page
   .doc-page-nav.text-primary.q-pb-xl(v-if="nav !== void 0")
     .text-h6.q-pb-md Ready for more?
     .q-gutter-md.flex
-      router-link.q-link.doc-page-related.doc-page-related-bordered.rounded-borders.q-pa-md.cursor-pointer.column.justify-center.bg-white(
+      router-link.q-link.doc-page-related.doc-page-related-bordered.rounded-borders.q-pa-md.cursor-pointer.column.justify-center(
         v-for="link in nav"
         :key="link.category + link.path"
         :to="link.path"

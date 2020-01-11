@@ -7,6 +7,7 @@ module.exports = function (ctx) {
     // --> boot files are part of "main.js"
     boot: [
       { path: 'gdpr', server: false },
+      { path: 'darkMode', server: true },
       'components'
     ],
 

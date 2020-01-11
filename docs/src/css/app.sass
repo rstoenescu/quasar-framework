@@ -1,5 +1,134 @@
 @import './prism-theme.sass'
 
+body.body--dark
+  color: $grey-4
+
+  .doc-img
+    background: $grey-3
+
+  .algolia-autocomplete .algolia-docsearch-suggestion--content
+    background: #222222
+
+  .algolia-autocomplete .algolia-docsearch-suggestion--highlight
+    color: $grey-9
+    background: $grey-5
+
+  .algolia-autocomplete .algolia-docsearch-suggestion--subcategory-column
+    color: $grey-5
+    background: #222222
+
+  .algolia-autocomplete .algolia-docsearch-suggestion--text
+    color: $grey-5
+
+  .algolia-autocomplete .algolia-docsearch-suggestion--title
+    color: $grey-5
+
+  .algolia-autocomplete .algolia-docsearch-suggestion
+    background: #222222
+
+  .doc-page-related
+    color: $grey-5
+    background: $grey-10
+
+  .doc-page-rfm
+    color: $grey-4
+    background: $grey-8  
+
+  .doc-page > pre
+    background: $grey-9
+
+  .doc-example .q-toolbar
+    background: $grey-9
+    color: $grey-5
+
+  .doc-example__content > a
+    color: $grey-4
+
+  .doc-toc .q-item
+    border-radius: 10px 0 0 10px
+    margin-top: 1px
+    margin-bottom: 1px
+    color: $grey-5
+
+    &.q-item--active
+      background: #132f47
+      color: $grey-6
+
+  .doc-code__inner
+    background-image: linear-gradient(#dfdfdf 50%, #ebebed 50%)
+
+  .doc-api .q-toolbar
+    background: $grey-10 !important
+
+  .doc-api .q-toolbar > div
+    color: $grey-5 !important
+
+  .doc-api-tabs--top
+    background: $grey-9 !important
+    color: $grey-4 !important
+
+  .doc-api-tabs--left
+    background: $grey-9 !important
+    color: $grey-4 !important
+
+  .doc-card-title
+    background: $grey-7 !important
+    color: $grey-4 !important
+
+  .app-menu
+
+    .q-item__section
+      color: $grey-4
+
+    .q-item__section--avatar
+      color: $grey-4
+
+    .q-expansion-item--expanded > div > .q-item > .q-item__section--main
+      color: $primary
+      font-weight: 700
+
+    .q-expansion-item__content .q-item
+      border-radius: 0 10px 10px 0
+      margin-right: 12px
+
+    .q-item.q-router-link--active
+      background: #132f47
+      color: $grey-4
+
+  .api-container > div
+    background: $grey-9 !important
+    color: $grey-4 !important
+
+  .api-row
+    background: $grey-10
+
+  .api-row__value
+    color: $grey-4
+
+  .api-row__example
+    color: $grey-9
+    background: $grey-5
+
+  .api-row__item
+    color: $grey-6
+
+  .q-drawer--right .q-drawer__content
+    background: $grey-10 !important
+
+body.body--light
+  color: $grey-9
+
+  .doc-page-related
+    color: $grey-9
+    transition: color .28s
+    background: $grey-4
+
+  .doc-page-rfm
+    color: $grey-9
+    transition: color .28s
+    background: white
+    border: 1px solid rgba(0,0,0,.1)
+
 body
   background-color: $grey-1
 
@@ -14,7 +143,7 @@ body
   border: 1px solid $grey-5
   border-radius: 5px
   font-family: inherit
-  background-color: #fff
+  background-color: transparent
 
 blockquote .doc-token
   background: scale-color($grey, $lightness: 60%)
@@ -30,7 +159,8 @@ blockquote .doc-token
   border-style: solid
   border-color: $grey
   letter-spacing: .5px
-
+  color: '000'
+  
   .doc-token
     color: #000
 

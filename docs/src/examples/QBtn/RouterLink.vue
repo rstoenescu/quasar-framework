@@ -47,7 +47,7 @@ export default {
 
     buttonProps ({ href, route, isActive, isExactActive }) {
       const props = {
-        color: 'black',
+        color: 'grey-7',
         noCaps: true,
         label: `To "${route.fullPath}"`,
         outline: true,
@@ -58,7 +58,7 @@ export default {
         props.color = isExactActive === true ? 'primary' : 'amber-9'
       }
       else {
-        props.color = 'black'
+        props.color = 'grey-7'
       }
 
       return props
