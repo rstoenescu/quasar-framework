@@ -1,11 +1,12 @@
-const fs = require('fs')
+const { existsSync } = require('fs')
 const { normalize, resolve, join, sep } = require('path')
 
 function getAppDir () {
   let dir = process.cwd()
 
   while (dir.length && dir[dir.length - 1] !== sep) {
-    if (fs.existsSync(join(dir, 'quasar.conf.js'))) {
+    // `esmCompat` uses this helper to obtain the app `package.json` so we cannot use it here
+    if (existsSync(join(dir, 'quasar.conf.js')) || existsSync(join(dir, 'quasar.conf.cjs'))) {
       return dir
     }
 

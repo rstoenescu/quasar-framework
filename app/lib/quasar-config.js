@@ -5,6 +5,7 @@ const chokidar = require('chokidar')
 const debounce = require('lodash.debounce')
 
 const appPaths = require('./app-paths')
+const esmCompat = require('./helpers/esm-compat')
 const logger = require('./helpers/logger')
 const log = logger('app:quasar-conf')
 const warn = logger('app:quasar-conf', 'red')
@@ -106,17 +107,18 @@ class QuasarConfig {
   constructor (ctx, opts = {}) {
     this.ctx = ctx
     this.opts = opts
-    this.filename = appPaths.resolve.app('quasar.conf.js')
+    this.esmSafeFilename = esmCompat('quasar.conf')
+    this.filename = appPaths.resolve.app(this.esmSafeFilename)
     this.pkg = require(appPaths.resolve.app('package.json'))
     this.watch = opts.onBuildChange || opts.onAppChange
 
     if (this.watch) {
-      // Start watching for quasar.config.js changes
+      // Start watching for quasar.config changes
       chokidar
       .watch(this.filename, { watchers: { chokidar: { ignoreInitial: true } } })
       .on('change', debounce(async () => {
         console.log()
-        log(`quasar.conf.js changed`)
+        log(`${this.esmSafeFilename} changed`)
 
         try {
           await this.prepare()
@@ -124,7 +126,7 @@ class QuasarConfig {
         catch (e) {
           if (e.message !== 'NETWORK_ERROR') {
             console.log(e)
-            warn(`⚠️  quasar.conf.js has JS errors. Please fix them then save file again.`)
+            warn(`⚠️  ${this.esmSafeFilename} has JS errors. Please fix them then save file again.`)
             warn()
           }
 
@@ -299,14 +301,14 @@ class QuasarConfig {
   }
 
   readConfig () {
-    log(`Reading quasar.conf.js`)
+    log(`Reading ${this.esmSafeFilename}`)
 
     if (fs.existsSync(this.filename)) {
       delete require.cache[this.filename]
       this.quasarConfigFunction = require(this.filename)
     }
     else {
-      warn(`⚠️  [FAIL] Could not load quasar.conf.js config file`)
+      warn(`⚠️  [FAIL] Could not load ${this.esmSafeFilename} config file`)
       process.exit(1)
     }
   }

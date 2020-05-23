@@ -164,7 +164,7 @@ async function build () {
   }
   catch (e) {
     console.log(e)
-    warn(`⚠️  [FAIL] quasar.conf.js has JS errors`)
+    warn(`⚠️  [FAIL] ${quasarConfig.esmSafeFilename} has JS errors`)
     process.exit(1)
   }
 

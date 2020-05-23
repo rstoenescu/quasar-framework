@@ -3,7 +3,8 @@ const merge = require('webpack-merge')
 
 const appPaths = require('../app-paths')
 const cssVariables = require('../helpers/css-variables')
-const postCssConfig = require(appPaths.resolve.app('.postcssrc.js'))
+const esmCompat = require('../helpers/esm-compat')
+const postCssConfig = require(appPaths.resolve.app(esmCompat('.postcssrc')))
 
 function injectRule (chain, pref, lang, test, loader, loaderOptions) {
   const baseRule = chain.module.rule(lang).test(test)

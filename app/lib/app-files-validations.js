@@ -2,6 +2,7 @@ const fs = require('fs')
 const { green } = require('chalk')
 
 const appPaths = require('./app-paths')
+const esmCompat = require('./helpers/esm-compat')
 
 module.exports = function (cfg) {
   let file
@@ -60,9 +61,10 @@ ${green('Example:')}
     process.exit(1)
   }
 
-  file = appPaths.resolve.app('babel.config.js')
+  const babelConfigFilename = esmCompat('babel.config');
+  file = appPaths.resolve.app(babelConfigFilename)
   if (!fs.existsSync(file)) {
-    console.log(' ⚠️  Missing babel.config.js file...')
+    console.log(` ⚠️  Missing ${babelConfigFilename} file...`)
     console.log()
     process.exit(1)
   }
