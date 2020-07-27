@@ -109,7 +109,7 @@ export default {
       }
 
       if (this.hasRouterLink === true) {
-        attrs.href = this.$router.resolve(this.to).href
+        attrs.href = this.$router.resolve(this.to, this.$route).href
         attrs.role = 'link'
       }
       else {
