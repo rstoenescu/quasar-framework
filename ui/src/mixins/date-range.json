@@ -1,0 +1,32 @@
+{
+  "mixins": [ "mixins/form" ],
+
+  "props": {
+    "date-range": {
+      "type": "Array",
+      "desc": "To initiate date range selection, use this prop and array must have two items. The items can be empty strings or valid dates that match the mask property",
+      "category": "model",
+      "sync": true,
+      "addedIn": "v1.9.4",
+      "examples": [
+        ":date-range=\"dateRange\"",
+        "dateRange: ['2018/11/20', '2018/12/05']"
+      ]
+    },
+
+    "range-color": {
+      "type": "String",
+      "desc": "This is the CSS color to use for the background color of the range",
+      "category": "style",
+      "addedIn": "v1.9.4",
+      "examples": [
+        "range-color=\"#bbdefb\""
+      ]
+    },
+
+    "range-text-color": {
+      "extends": "color",
+      "addedIn": "v1.9.4"
+    }
+  }
+}

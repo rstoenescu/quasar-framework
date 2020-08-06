@@ -160,5 +160,32 @@ When dealing with a native form which has an `action` and a `method` (eg. when u
 
 <doc-example title="Native form" file="QDate/NativeForm" />
 
+### Date range selection
+
+To initiate a QDate with date range selection, add the property `date-range` and assign it an array with two items. The items must be empty strings or valid dates according to the `mask` property. For instance, `:date-range="dateRange"` where `dateRange` is like this: `['2018/11/20', '2018/12/05']`. A couple of caveats to know about `date-range`. You are responsible for updating the `date-range` array. Listen for `v-model` changes and update the `date-range` array appropriately. For instance, add a handler: `@input="onInput"`, then:
+```js
+    onInput (value, reason, date) {
+      if (this.dateRange[0].length > 0 && this.dateRange[1].length > 0) {
+        this.$set(this.dateRange, 0, value)
+        this.$set(this.dateRange, 1, '')
+      }
+      else {
+        this.$set(this.dateRange, 1, value)
+      }
+    }
+```
+What this does is set the first item of the array and then the second, if the first is already set. If both items are set, then the array is reset on the next selection. You can change the logic to meet your own needs, if this doesn't offer what you need.
+
+The second thing to know, is the first date should always be less (or equal) to the second date. If the user selects a second date less than first date, the array will be normalized. Meaning, it will be adjusted so that the smallest date is always in the first position. In this case, you should always use the `.snyc` modifier unless you handle this case yourself in your input handler.
+
+Be sure to check out the examples to understand how range selection works.
+
+<doc-example title="Basic Date Range" file="QDate/DateRangeBasic" />
+
+<doc-example title="Date Range Color" file="QDate/DateRangeColor" />
+
+<doc-example title="Date Range Multi-Month" file="QDate/DateRangeMultiMonth" />
+
+
 ## QDate API
 <doc-api file="QDate" />

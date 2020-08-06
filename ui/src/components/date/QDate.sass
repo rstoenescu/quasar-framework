@@ -125,6 +125,26 @@
   &--readonly .q-date__navigation
     display: none
 
+  &__range
+    position: relative
+
+    &:before
+      content: ''
+      display: block
+      position: absolute
+      width: 100%
+      height: 96% // for separation in weeks
+      top: 2%
+      left: 0
+      background: var(--q-color-blue-1)
+
+    &--start, &--end
+      &:before
+        width: 50%
+
+    &--start:before
+      left: 50%
+
   &--portrait
     flex-direction: column
 

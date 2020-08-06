@@ -2,6 +2,7 @@ import Vue from 'vue'
 
 import QBtn from '../btn/QBtn.js'
 import DateTimeMixin from '../../mixins/datetime.js'
+import DateRangeMixin from '../../mixins/date-range.js'
 
 import { slot } from '../../utils/slot.js'
 import { formatDate, __splitDate } from '../../utils/date.js'
@@ -15,7 +16,7 @@ const viewIsValid = v => ['Calendar', 'Years', 'Months'].includes(v)
 export default Vue.extend({
   name: 'QDate',
 
-  mixins: [ DateTimeMixin ],
+  mixins: [ DateTimeMixin, DateRangeMixin ],
 
   props: {
     title: String,
@@ -508,27 +509,7 @@ export default Vue.extend({
               h('div', {
                 key: this.innerModel.year + '/' + this.innerModel.month,
                 staticClass: 'q-date__calendar-days fit'
-              }, this.days.map(day => h('div', {
-                staticClass: `q-date__calendar-item q-date__calendar-item--${day.fill === true ? 'fill' : (day.in === true ? 'in' : 'out')}`
-              }, [
-                day.in === true
-                  ? h(QBtn, {
-                    staticClass: day.today === true ? 'q-date__today' : null,
-                    props: {
-                      dense: true,
-                      flat: day.flat,
-                      unelevated: day.unelevated,
-                      color: day.color,
-                      textColor: day.textColor,
-                      label: day.i,
-                      tabindex: this.computedTabindex
-                    },
-                    on: cache(this, 'day#' + day.i, { click: () => { this.__setDay(day.i) } })
-                  }, day.event !== false ? [
-                    h('div', { staticClass: 'q-date__event bg-' + day.event })
-                  ] : null)
-                  : h('div', [ day.i ])
-              ])))
+              }, this.days.map(day => this.__renderDayWrapper(h, day)))
             ])
           ])
         ])
@@ -759,6 +740,44 @@ export default Vue.extend({
           })
         }
       }
+    },
+
+    __renderDayWrapper (h, day) {
+      return h('div', {
+        staticClass: `q-date__calendar-item q-date__calendar-item--${day.fill === true ? 'fill' : (day.in === true ? 'in' : 'out')}` + this.__getRangeClasses(day),
+        style: this.__getRangeStyle(day)
+      }, [
+        this.__renderDay(h, day)
+      ])
+    },
+
+    __renderDay (h, day) {
+      if (day.in === true) {
+        const isRangeDate = this.isDateRangeValid === true && this.__isSelectedDateRange(day.i, this.innerModel.month, this.innerModel.year)
+        const color = this.isDateRangeValid === true ? isRangeDate === true ? this.computedColor : void 0 : day.color
+        const textColor = this.isDateRangeValid === true ? isRangeDate === true ? this.computedTextColor : void 0 : day.textColor
+        const flat = isRangeDate === true ? false : day.flat
+        const unelevated = isRangeDate === true ? false : day.unelevated
+        const staticClass = isRangeDate === true || day.today === true ? 'q-date__today' : ''
+
+        return h(QBtn, {
+          staticClass: staticClass,
+          props: {
+            dense: true,
+            flat: flat,
+            unelevated: unelevated,
+            color: color,
+            textColor: textColor,
+            label: day.i,
+            tabindex: this.computedTabindex
+          },
+          on: cache(this, 'day#' + day.i, { click: () => { this.__setDay(day.i) } })
+        }, day.event !== false ? [
+          h('div', { staticClass: 'q-date__event bg-' + day.event })
+        ] : null)
+      }
+
+      return h('div', [ day.i ])
     }
   },
 
