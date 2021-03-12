@@ -38,6 +38,7 @@
         "size": {
           "type": "Object",
           "desc": "New size",
+          "tsType": "QLayoutSize",
           "definition": {
             "height": {
               "type": "Number",
@@ -60,6 +61,7 @@
         "details": {
           "type": "Object",
           "desc": "Scroll details",
+          "tsType": "QLayoutScrollDetails",
           "definition": {
             "position": {
               "type": "Number",

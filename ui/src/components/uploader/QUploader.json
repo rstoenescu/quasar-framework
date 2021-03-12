@@ -130,6 +130,7 @@
         "info": {
           "type": "Object",
           "desc": "Object containing information about the event",
+          "tsType": "QUploaderInfo",
           "definition": {
             "files": {
               "type": "Array",
@@ -152,6 +153,7 @@
         "info": {
           "type": "Object",
           "desc": "Object containing information about the event",
+          "tsType": "QUploaderFailedInfo",
           "definition": {
             "files": {
               "type": "Array",
@@ -174,6 +176,7 @@
         "info": {
           "type": "Object",
           "desc": "Object containing information about the event",
+          "tsType": "QUploaderUploadingInfo",
           "definition": {
             "files": {
               "type": "Array",

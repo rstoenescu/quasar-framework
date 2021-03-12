@@ -10,6 +10,7 @@
       "details": {
         "type": "Object",
         "desc": "Event details",
+        "tsType": "TouchSwipeDetails",
         "definition": {
           "evt": {
             "type": "Object",
@@ -37,6 +38,7 @@
           "distance": {
             "type": "Object",
             "desc": "Absolute distance (in pixels) since movement started from initial point",
+            "tsType": "TouchSwipeDetailsDistance",
             "definition": {
               "x": {
                 "type": "Number",

@@ -31,6 +31,7 @@
     "sizes": {
       "type": "Object",
       "desc": "Breakpoints (in pixels)",
+      "tsType": "ScreenSizesOptions",
       "definition": {
         "sm": {
           "type": "Number",
@@ -62,6 +63,7 @@
     "lt": {
       "type": "Object",
       "desc": "Tells if current screen width is lower than breakpoint-name",
+      "tsType": "ScreenLtDetails",
       "reactive": true,
       "definition": {
         "sm": {
@@ -89,6 +91,7 @@
     "gt": {
       "type": "Object",
       "desc": "Tells if current screen width is greater than breakpoint-name",
+      "tsType": "ScreenGtDetails",
       "reactive": true,
       "definition": {
         "xs": {
@@ -151,6 +154,7 @@
         "breakpoints": {
           "type": "Object",
           "desc": "Pick what you want to override",
+          "tsType": "ScreenSetSizesBreakpointsOptions",
           "definition": {
             "sm": {
               "type": "Number",

@@ -13,7 +13,9 @@
       "desc": "Creates an ad-hoc Bottom Sheet; Same as calling $q.bottomSheet(...)",
       "params": {
         "opts": {
+          "type": "Object",
           "desc": "Bottom Sheet options",
+          "tsType": "BottomSheetOptions",
           "definition": {
             "title": {
               "type": "String",
@@ -30,6 +32,7 @@
             "actions": {
               "type": "Array",
               "desc": "Array of Objects, each Object defining an action",
+              "tsType": "BottomSheetActions",
               "definition": {
                 "classes": {
                   "type": [ "String", "Array", "Object" ],

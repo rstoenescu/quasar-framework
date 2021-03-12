@@ -177,6 +177,7 @@
         "opts": {
           "type": [ "Object", "String" ],
           "desc": "Notification options",
+          "tsType": "NotifyOptions",
           "definition": {
             "type": {
               "type": "String",
@@ -376,6 +377,7 @@
           "props": {
             "type": "Object",
             "desc": "Notification properties that will be shallow merged to previous ones in order to update the non-grouped notification",
+            "tsType": "NotifyReturnsOptions",
             "definition": {
               "type": {
                 "type": "String",
@@ -516,6 +518,7 @@
         "opts": {
           "type": "Object",
           "desc": "Notification options",
+          "tsType": "NotifyDefaultOptions",
           "definition": {
             "type": {
               "type": "String",
@@ -710,6 +713,7 @@
         "typeOpts": {
           "type": "Object",
           "desc": "Notification options",
+          "tsType": "NotifyOptions",
           "definition": {
             "type": {
               "type": "String",

@@ -6,6 +6,7 @@
         "opts": {
           "type": "Object",
           "required": true,
+          "tsType": "GlobalDialogOptions",
           "definition": {
             "class": {
               "type": [ "String", "Array", "Object" ],

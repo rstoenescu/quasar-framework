@@ -10,6 +10,7 @@
       "details": {
         "type": "Object",
         "desc": "Event details",
+        "tsType": "TouchPanDetails",
         "definition": {
           "evt": {
             "type": "Object",
@@ -27,6 +28,7 @@
           "position": {
             "type": "Object",
             "desc": "Event Position Object",
+            "tsType": "TouchPanDetailsPosition",
             "definition": {
               "top": {
                 "type": "Number",
@@ -61,6 +63,7 @@
           "distance": {
             "type": "Object",
             "desc": "Absolute distance (in pixels) since movement started from initial point",
+            "tsType": "TouchPanDetailsDistance",
             "definition": {
               "x": {
                 "type": "Number",
@@ -77,6 +80,7 @@
           "offset": {
             "type": "Object",
             "desc": "Distance (in pixels) since movement started from initial point",
+            "tsType": "TouchPanDetailsOffset",
             "definition": {
               "x": {
                 "type": "Number",
@@ -93,6 +97,7 @@
           "delta": {
             "type": "Object",
             "desc": "Delta of distance (in pixels) since handler was called last time",
+            "tsType": "TouchPanDetailsDelta",
             "definition": {
               "x": {
                 "type": "Number",

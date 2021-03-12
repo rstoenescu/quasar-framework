@@ -74,6 +74,7 @@
     "definitions": {
       "type": "Object",
       "desc": "Definition of commands and their buttons to be included in the 'toolbar' prop",
+      "tsType": "QEditorDefinitions",
       "examples": [
         ":definitions=\"{ save: { tip: 'Save your work', icon: 'save', label: 'Save', handler: saveWork }, upload: { tip: 'Upload to cloud', icon: 'cloud_upload', label: 'Upload', handler: uploadIt } }\""
       ],

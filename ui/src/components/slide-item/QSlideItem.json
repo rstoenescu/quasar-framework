@@ -71,6 +71,7 @@
         "details": {
           "type": "Object",
           "desc": "Details",
+          "tsType": "QSlideItemLeftDetails",
           "definition": {
             "reset": {
               "type": "Function",
@@ -89,6 +90,7 @@
         "details": {
           "type": "Object",
           "desc": "Details",
+          "tsType": "QSlideItemRightDetails",
           "definition": {
             "reset": {
               "type": "Function",
@@ -108,6 +110,7 @@
         "details": {
           "type": "Object",
           "desc": "Details",
+          "tsType": "QSlideItemTopDetails",
           "definition": {
             "reset": {
               "type": "Function",
@@ -127,6 +130,7 @@
         "details": {
           "type": "Object",
           "desc": "Details",
+          "tsType": "QSlideItemBottomDetails",
           "definition": {
             "reset": {
               "type": "Function",
@@ -172,6 +176,7 @@
         "details": {
           "type": "Object",
           "desc": "Details",
+          "tsType": "QSlideItemActionDetails",
           "definition": {
             "side": {
               "type": "String",

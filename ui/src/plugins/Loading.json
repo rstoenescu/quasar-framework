@@ -66,6 +66,7 @@
         "opts": {
           "type": "Object",
           "desc": "All props are optional",
+          "tsType": "LoadingOptions",
           "definition": {
             "delay": {
               "type": "Number",
@@ -127,6 +128,7 @@
         "opts": {
           "type": "Object",
           "desc": "Pick the subprop you want to define",
+          "tsType": "LoadingDefaultOptions",
           "required": true,
           "definition": {
             "delay": {

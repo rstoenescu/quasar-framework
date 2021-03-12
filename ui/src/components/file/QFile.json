@@ -43,6 +43,7 @@
         "props": {
           "type": "Object",
           "desc": "Object containing counter label information",
+          "tsType": "QFileCounterLabel",
           "definition": {
             "totalSize": {
               "type": "String",

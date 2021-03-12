@@ -29,6 +29,7 @@
         "details": {
           "type": "Object",
           "desc": "Scroll details",
+          "tsType": "QScrollObserverScrollDetails",
           "definition": {
             "position": {
               "type": "Number",

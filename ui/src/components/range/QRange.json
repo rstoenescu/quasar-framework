@@ -9,6 +9,7 @@
     "value": {
       "type": "Object",
       "desc": "Model of the component of type { min, max } (both values must be between global min/max); Either use this property (along with a listener for 'input' event) OR use v-model directive",
+      "tsType": "QRangeMinMax",
       "definition": {
         "min": {
           "type": "Number",

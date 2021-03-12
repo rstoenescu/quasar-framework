@@ -8,6 +8,7 @@
   "value": {
     "type": [ "Object", "Any" ],
     "desc": "Configuration object or trigger value",
+    "tsType": "MorphConfigurationOptions",
     "definition": {
       "group": {
         "type": "String",

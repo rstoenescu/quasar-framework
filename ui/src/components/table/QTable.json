@@ -139,6 +139,7 @@
     "columns": {
       "type": "Array",
       "desc": "The column definitions (Array of Objects)",
+      "tsType": "QTableColumnOptions",
       "examples": [ ":columns=\"tableColumns\"" ],
       "category": "column",
       "definition": {
@@ -584,6 +585,7 @@
     "pagination": {
       "type": "Object",
       "desc": "Pagination object; You can use the '.sync' modifier on it if you want to have access on the current pagination in your components; When not using the .sync modifier it simply initializes the pagination on first render",
+      "tsType": "QTablePaginationOptions",
       "definition": {
         "sortBy": {
           "type": "String",
@@ -1353,6 +1355,7 @@
         "pagination": {
           "type": "Object",
           "desc": "Pagination object",
+          "tsType": "QTableSlotTopPaginationOptions",
           "definition": {
             "sortBy": {
               "type": "String",
@@ -1433,6 +1436,7 @@
         "pagination": {
           "type": "Object",
           "desc": "Pagination object",
+          "tsType": "QTableSlotBottomPaginationOptions",
           "definition": {
             "sortBy": {
               "type": "String",
@@ -1513,6 +1517,7 @@
         "pagination": {
           "type": "Object",
           "desc": "Pagination object",
+          "tsType": "QTableSlotPaginationOptions",
           "definition": {
             "sortBy": {
               "type": "String",
@@ -1593,6 +1598,7 @@
         "pagination": {
           "type": "Object",
           "desc": "Pagination object",
+          "tsType": "QTableSlotTopLeftPaginationOptions",
           "definition": {
             "sortBy": {
               "type": "String",
@@ -1673,6 +1679,7 @@
         "pagination": {
           "type": "Object",
           "desc": "Pagination object",
+          "tsType": "QTableSlotTopRightPaginationOptions",
           "definition": {
             "sortBy": {
               "type": "String",
@@ -1753,6 +1760,7 @@
         "pagination": {
           "type": "Object",
           "desc": "Pagination object",
+          "tsType": "QTableSlotTopSelectionPaginationOptions",
           "definition": {
             "sortBy": {
               "type": "String",
@@ -1928,10 +1936,12 @@
         "requestProp": {
           "type": "Object",
           "desc": "Props of the request",
+          "tsType": "QTableRequestOptions",
           "definition": {
             "pagination": {
               "type": "Object",
               "desc": "Pagination object",
+              "tsType": "QTableRequestOptionsPagination",
               "definition": {
                 "sortBy": {
                   "type": "String",
@@ -2035,6 +2045,7 @@
         "details": {
           "type": "Object",
           "desc": "Selection details",
+          "tsType": "QTableRowSelection",
           "definition": {
             "rows": {
               "type": "Array",
@@ -2068,6 +2079,7 @@
         "newPagination": {
           "type": "Object",
           "desc": "The updated pagination object",
+          "tsType": "QTablePaginationUpdated",
           "definition": {
             "sortBy": {
               "type": "String",
@@ -2126,6 +2138,7 @@
         "details": {
           "type": "Object",
           "desc": "Object of properties on the new scroll position",
+          "tsType": "QTableVirtualScrollDetails",
           "definition": {
             "index": {
               "type": "Number",
@@ -2161,10 +2174,12 @@
         "props": {
           "type": "Object",
           "desc": "Request details",
+          "tsType": "QTableRequestServerInteractionOptions",
           "definition": {
             "pagination": {
               "type": "Object",
               "desc": "Optional pagination object",
+              "tsType": "QTableRequestServerInteractionPaginationOptions",
               "definition": {
                 "sortBy": {
                   "type": "String",
@@ -2247,6 +2262,7 @@
         "pagination": {
           "type": "Object",
           "desc": "Pagination object",
+          "tsType": "QTableSetPaginationOptions",
           "required": true,
           "definition": {
             "sortBy": {

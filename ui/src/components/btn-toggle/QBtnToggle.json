@@ -20,6 +20,7 @@
     "options": {
       "type": "Array",
       "desc": "Array of Objects defining each option",
+      "tsType": "QBtnToggleOptions",
       "required": true,
       "definition": {
         "attrs": {

@@ -39,6 +39,7 @@
   "value": {
     "type": [ "Boolean", "Object" ],
     "desc": "Boolean (if just wanting to enable/disable) or Object for configuring more options",
+    "tsType": "RippleOptions",
     "definition": {
       "early": {
         "type": "Boolean",

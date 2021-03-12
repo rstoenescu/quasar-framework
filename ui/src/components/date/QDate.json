@@ -185,6 +185,7 @@
         "details": {
           "type": "Object",
           "desc": "Object of properties on the new model",
+          "tsType": "QDateDetails",
           "definition": {
             "year": {
               "type": "Number",
@@ -204,6 +205,7 @@
             "from": {
               "type": "Object",
               "desc": "Object of properties of the range starting point (only if range)",
+              "tsType": "QDateFrom",
               "definition": {
                 "year": {
                   "type": "Number",
@@ -226,6 +228,7 @@
             "to": {
               "type": "Object",
               "desc": "Object of properties of the range ending point (only if range)",
+              "tsType": "QDateTo",
               "definition": {
                 "year": {
                   "type": "Number",
@@ -261,6 +264,7 @@
         "view": {
           "type": "Object",
           "desc": "Definition of the current view (year, month)",
+          "tsType": "QDateNavigation",
           "definition": {
             "year": {
               "type": "Number",
@@ -284,6 +288,7 @@
         "from": {
           "type": "Object",
           "desc": "Definition of date from where the range begins",
+          "tsType": "QDateRangeStart",
           "definition": {
             "year": {
               "type": "Number",
@@ -312,10 +317,12 @@
         "range": {
           "type": "Object",
           "desc": "Definition of the range",
+          "tsType": "QDateRangeEnd",
           "definition": {
             "from": {
               "type": "Object",
               "desc": "Definition of date from where the range begins",
+              "tsType": "QDateRangeEndFrom",
               "definition": {
                 "year": {
                   "type": "Number",
@@ -337,6 +344,7 @@
             "to": {
               "type": "Object",
               "desc": "Definition of date to where the range ends",
+              "tsType": "QDateRangeEndTo",
               "definition": {
                 "year": {
                   "type": "Number",
@@ -421,6 +429,7 @@
         "from": {
           "type": "Object",
           "desc": "Definition of date from where the range begins",
+          "tsType": "QDateSetEditingRangeFrom",
           "definition": {
             "year": {
               "type": "Number",
@@ -442,6 +451,7 @@
         "to": {
           "type": "Object",
           "desc": "Definition of date to where the range ends",
+          "tsType": "QDateSetEditingRangeTo",
           "definition": {
             "year": {
               "type": "Number",

@@ -72,6 +72,7 @@
         "details": {
           "type": "Object",
           "desc": "Object of properties on the new scroll position",
+          "tsType": "VirtualScrollDetails",
           "definition": {
             "index": {
               "type": "Number",

@@ -22,6 +22,7 @@
     "locale": {
       "type": "Object",
       "desc": "Locale formatting options",
+      "tsType": "DateTimeLocaleOptions",
       "examples": [ ":locale=\"{ monthsShort: ['Ian', 'Feb', 'Mar', '...'] }\"" ],
       "definition": {
         "days": {

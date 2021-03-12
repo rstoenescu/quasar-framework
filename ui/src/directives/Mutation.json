@@ -21,6 +21,7 @@
       "mutationList": {
         "type": "Array",
         "desc": "Array of MutationRecord items",
+        "tsType": "MutationRecordOptions",
         "definition": {
           "type": {
             "type": "String",

@@ -127,6 +127,7 @@
         "details": {
           "type": "Object",
           "desc": "Object of properties on the new model",
+          "tsType": "QTimeDetails",
           "definition": {
             "year": {
               "type": "Number",

@@ -25,6 +25,7 @@
     "has": {
       "type": "Object",
       "desc": "Client browser detectable properties",
+      "tsType": "PlatformHasDetails",
       "definition": {
         "touch": {
           "type": "Boolean",
@@ -41,6 +42,7 @@
     "within": {
       "type": "Object",
       "desc": "Client browser environment",
+      "tsType": "PlatformWithinDetails",
       "definition": {
         "iframe": {
           "type": "Boolean",

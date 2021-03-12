@@ -25,9 +25,11 @@
           "entry": {
             "type": "Object",
             "desc": "The IntersectionObserverEntry object",
+            "tsType": "IntersectionObserverEntryObject",
             "definition": {
               "boundingClientRect": {
                 "type": "Object",
+                "tsType": "IntersectionObserverEntryObjectBoundingRect",
                 "desc": "Object containing the client rect information",
                 "__exemption": [ "examples" ],
                 "definition": {
@@ -83,6 +85,7 @@
               "intersectionRect": {
                 "type": "Object",
                 "desc": "Object containing the client rect information",
+                "tsType": "IntersectionObserverEntryObjectIntersectionRect",
                 "definition": {
                   "bottom": {
                     "type": "Number",
@@ -135,6 +138,7 @@
               "rootBounds": {
                 "type": "Object",
                 "desc": "Object containing the client rect information",
+                "tsType": "IntersectionObserverEntryObjectRootBounds",
                 "definition": {
                   "bottom": {
                     "type": "Number",
@@ -198,6 +202,7 @@
       "cfg": {
         "type": "Object",
         "desc": "Intersection observer options (can be omitted and all its props are optional)",
+        "tsType": "IntersectionObserverOptions",
         "definition": {
           "root": {
             "type": "Element",

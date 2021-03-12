@@ -10,6 +10,7 @@
       "details": {
         "type": "Object",
         "desc": "Event details",
+        "tsType": "TouchHoldDetails",
         "definition": {
           "evt": {
             "type": "Object",
@@ -27,6 +28,7 @@
           "position": {
             "type": "Object",
             "desc": "Event Position Object",
+            "tsType": "TouchHoldDetailsPosition",
             "definition": {
               "top": {
                 "type": "Number",

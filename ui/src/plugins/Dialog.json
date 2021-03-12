@@ -13,7 +13,7 @@
       "params": {
         "opts": {
           "desc": "Dialog options",
-          "tsType": "QDialogOptions",
+          "tsType": "DialogOptions",
           "definition": {
             "title": {
               "type": "String",
@@ -42,6 +42,7 @@
             "prompt": {
               "type": "Object",
               "desc": "An object definition of the input field for the prompting question.",
+              "tsType": "DialogPromptOptions",
               "examples": [ "prompt: { model: this.promptVal, type: 'number' }" ],
               "definition": {
                 "model": {
@@ -159,6 +160,7 @@
             "options": {
               "type": "Object",
               "desc": "An object definition for creating the selection form content",
+              "tsType": "DialogFormOptions",
               "examples": [ "{ model: this.dialogSelection, type: 'radio', items: [...listOfItems] }" ],
               "definition": {
                 "model": {
@@ -209,6 +211,7 @@
             "progress": {
               "type": [ "Boolean", "Object" ],
               "desc": "Display a Quasar spinner (if value is true, then the defaults are used); Useful for conveying the idea that something is happening behind the covers; Tip: use along with persistent, ok: false and update() method",
+              "tsType": "DialogProgressOptions",
               "definition": {
                 "spinner": {
                   "type": "Component",
@@ -224,6 +227,7 @@
             "ok": {
               "type": [ "String", "Object", "Boolean" ],
               "desc": "Props for an 'OK' button",
+              "tsType": "DialogOkOptions",
               "definition": {
                 "...props": {
                   "type": "Any",
@@ -236,6 +240,7 @@
             "cancel": {
               "type": [ "String", "Object", "Boolean" ],
               "desc": "Props for a 'CANCEL' button",
+              "tsType": "DialogCancelOptions",
               "definition": {
                 "...props": {
                   "type": "Any",

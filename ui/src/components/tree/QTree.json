@@ -348,6 +348,7 @@
         "details": {
           "type": "Object",
           "desc": "Lazy loading details",
+          "tsType": "QTtreeLazyLoadDetails",
           "definition": {
             "node": {
               "type": "Object",

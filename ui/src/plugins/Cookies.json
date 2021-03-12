@@ -55,6 +55,7 @@
         "options": {
           "type": "Object",
           "desc": "Cookie options",
+          "tsType": "CookieOptions",
           "definition": {
             "expires": {
               "type": [ "Number", "String", "Date" ],
@@ -125,6 +126,7 @@
         "options": {
           "type": "Object",
           "desc": "Cookie options",
+          "tsType": "CookieRemoveOptions",
           "definition": {
             "path": {
               "type": "String",
