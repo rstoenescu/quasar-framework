@@ -156,6 +156,11 @@
   .q-focus-helper
     z-index: 1
 
+  /* dialog */
+  .q-body--prevent-scroll[dir] body
+    position: fixed !important
+    overflow: visible
+
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none)
   @include ie_style
 

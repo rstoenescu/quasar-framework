@@ -2,6 +2,7 @@ import Vue from 'vue'
 
 import { isSSR } from '../plugins/Platform.js'
 import { getBodyFullscreenElement } from '../utils/dom.js'
+import { FOCUSABLE_SELECTOR, changeFocusedElement, focusNoScroll } from '../utils/focus'
 
 export function closePortalMenus (vm, evt) {
   do {
@@ -74,6 +75,26 @@ const Portal = {
   },
 
   methods: {
+    focus () {
+      const node = this.__getInnerNode()
+
+      if (node !== void 0 && node.contains(document.activeElement) !== true) {
+        const autofocusNode = node.querySelector('[autofocus], [data-autofocus]')
+
+        if (autofocusNode !== null && typeof autofocusNode.focus === 'function') {
+          focusNoScroll(autofocusNode)
+        }
+        else {
+          const focusableElements = Array.prototype.slice.call(node.querySelectorAll(FOCUSABLE_SELECTOR))
+          focusableElements.length > 0 && changeFocusedElement(
+            focusableElements,
+            focusableElements[0].classList.contains('q-key-group-navigation--ignore-focus') === true ? 1 : 0,
+            1
+          )
+        }
+      }
+    },
+
     __showPortal () {
       if (this.$q.fullscreen !== void 0 && this.$q.fullscreen.isCapable === true) {
         const append = isFullscreen => {
@@ -142,6 +163,12 @@ const Portal = {
             directives: this.$options.directives
           }).$mount()
       }
+    },
+
+    __getInnerNode () {
+      return this.__portal !== void 0 && this.__portal.$refs !== void 0
+        ? this.__portal.$refs.inner
+        : void 0
     }
   },
 

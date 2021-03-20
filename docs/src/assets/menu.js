@@ -112,6 +112,11 @@ const options = [
     path: 'screen-plugin'
   },
   {
+    name: 'Interaction Plugin',
+    badge: 'new',
+    path: 'interaction-plugin'
+  },
+  {
     name: 'Animations',
     path: 'animations'
   },
@@ -695,6 +700,11 @@ const directives = [
   {
     name: 'Go Back (Handling Back Button)',
     path: 'go-back'
+  },
+  {
+    name: 'Key Group Navigation',
+    badge: 'new',
+    path: 'key-group-navigation'
   },
   {
     name: 'Intersection',

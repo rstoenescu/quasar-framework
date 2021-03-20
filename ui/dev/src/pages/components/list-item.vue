@@ -21,7 +21,17 @@
         </q-item-section>
       </q-item>
 
-      <q-list bordered padding class="q-my-md" :dark="dark" :separator="separator">
+      <q-item tag="label" dark class="q-my-sm bg-secondary shadow-1" style="border-radius: 30px">
+        <q-item-section>
+          <q-item-label>Group Key Navigation in first list</q-item-label>
+        </q-item-section>
+
+        <q-item-section side>
+          <q-toggle v-model="keyNavEnabled" color="accent" :dark="dark" />
+        </q-item-section>
+      </q-item>
+
+      <q-list bordered padding class="q-my-md" :dark="dark" :separator="separator" v-key-group-navigation.vertical="keyNavEnabled">
         <q-item clickable class="text-primary" @click="onClick">
           <q-item-section>Single line item</q-item-section>
         </q-item>
@@ -792,6 +802,7 @@ export default {
     return {
       dark: null,
       separator: false,
+      keyNavEnabled: true,
 
       check1: true,
       check2: false,

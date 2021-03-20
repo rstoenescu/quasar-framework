@@ -11,6 +11,7 @@ export default Vue.extend({
   render (h) {
     return h('div', {
       staticClass: 'q-tab-panel',
+      attrs: { role: 'tabpanel' },
       on: { ...this.qListeners }
     }, slot(this, 'default'))
   }

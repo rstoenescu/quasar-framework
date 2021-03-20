@@ -76,6 +76,19 @@ export function getEventPath (e) {
   }
 }
 
+export function eventOnAncestors (e, el) {
+  const { target } = e
+
+  while (el !== null && el !== void 0) {
+    if (el === target) {
+      return true
+    }
+    el = el.parentNode
+  }
+
+  return false
+}
+
 // Reasonable defaults
 const
   LINE_HEIGHT = 40,
@@ -108,19 +121,6 @@ export function prevent (e) {
 export function stopAndPrevent (e) {
   e.cancelable !== false && e.preventDefault()
   e.stopPropagation()
-}
-
-export function stopAndPreventClick (evt) {
-  stopAndPrevent(evt)
-
-  if (evt.type === 'mousedown') {
-    const handler = e => {
-      e.target === evt.target && stopAndPrevent(e)
-      document.removeEventListener('click', handler, listenOpts.notPassiveCapture)
-    }
-
-    document.addEventListener('click', handler, listenOpts.notPassiveCapture)
-  }
 }
 
 export function preventDraggable (el, status) {
@@ -187,6 +187,7 @@ export default {
   rightClick,
   position,
   getEventPath,
+  eventOnAncestors,
   getMouseWheelDistance,
   stop,
   prevent,

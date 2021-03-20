@@ -1,5 +1,6 @@
 import Vue from 'vue'
 
+import KeyGroupNavigation from '../../directives/KeyGroupNavigation.js'
 import QBtn from '../btn/QBtn.js'
 import DateTimeMixin from '../../mixins/datetime.js'
 
@@ -19,6 +20,10 @@ export default Vue.extend({
   name: 'QDate',
 
   mixins: [ DateTimeMixin ],
+
+  directives: {
+    KeyGroupNavigation
+  },
 
   props: {
     multiple: Boolean,
@@ -101,7 +106,9 @@ export default Vue.extend({
     },
 
     view () {
-      this.$refs.blurTarget !== void 0 && this.$refs.blurTarget.focus()
+      this.$nextTick(() => {
+        this.$refs.viewTarget !== void 0 && this.$refs.viewTarget.$el.focus()
+      })
     },
 
     'viewModel.year' (year) {
@@ -815,7 +822,8 @@ export default Vue.extend({
 
       return h('div', {
         staticClass: 'q-date__header',
-        class: this.headerClass
+        class: this.headerClass,
+        directives: [ KeyGroupNavigation ]
       }, [
         h('div', {
           staticClass: 'relative-position'
@@ -939,13 +947,18 @@ export default Vue.extend({
     },
 
     __getCalendarView (h) {
+      const selectedDay = this.days.find(day => day.unelevated === true)
+      const viewDay = selectedDay === void 0 ? this.days.find(day => day.today === true) : selectedDay
+      const viewTarget = viewDay === void 0 ? 1 : viewDay.i
+
       return [
         h('div', {
           key: 'calendar-view',
           staticClass: 'q-date__view q-date__calendar'
         }, [
           h('div', {
-            staticClass: 'q-date__navigation row items-center no-wrap'
+            staticClass: 'q-date__navigation row items-center no-wrap',
+            directives: [ KeyGroupNavigation ]
           }, this.__getNavigation(h, {
             label: this.innerLocale.months[ this.viewModel.month - 1 ],
             view: 'Months',
@@ -969,7 +982,11 @@ export default Vue.extend({
           }, this.daysOfWeek.map(day => h('div', { staticClass: 'q-date__calendar-item' }, [ h('div', [ day ]) ]))),
 
           h('div', {
-            staticClass: 'q-date__calendar-days-container relative-position overflow-hidden'
+            staticClass: 'q-date__calendar-days-container relative-position overflow-hidden',
+            directives: cache(this, 'kNavC', [{
+              name: 'key-group-navigation',
+              arg: '7'
+            }])
           }, [
             h('transition', {
               props: {
@@ -983,6 +1000,7 @@ export default Vue.extend({
                 day.in === true
                   ? h(QBtn, {
                     staticClass: day.today === true ? 'q-date__today' : null,
+                    ref: viewTarget === day.i ? 'viewTarget' : void 0,
                     props: {
                       dense: true,
                       flat: day.flat,
@@ -994,7 +1012,8 @@ export default Vue.extend({
                     },
                     on: cache(this, 'day#' + day.i, {
                       click: () => { this.__onDayClick(day.i) },
-                      mouseover: () => { this.__onDayMouseover(day.i) }
+                      focusin: () => { this.__onDayMouseover(day.i) },
+                      mouseenter: () => { this.__onDayMouseover(day.i) }
                     })
                   }, day.event !== false ? [
                     h('div', { staticClass: 'q-date__event bg-' + day.event })
@@ -1024,6 +1043,7 @@ export default Vue.extend({
         }, [
           h(QBtn, {
             staticClass: currentYear === true && this.today.month === i + 1 ? 'q-date__today' : null,
+            ref: this.viewModel.month === i + 1 ? 'viewTarget' : void 0,
             props: {
               flat: active !== true,
               label: month,
@@ -1054,7 +1074,11 @@ export default Vue.extend({
 
       return h('div', {
         key: 'months-view',
-        staticClass: 'q-date__view q-date__months flex flex-center'
+        staticClass: 'q-date__view q-date__months flex flex-center',
+        directives: cache(this, 'kNavYM', [{
+          name: 'key-group-navigation',
+          arg: '3'
+        }])
       }, content)
     },
 
@@ -1062,7 +1086,14 @@ export default Vue.extend({
       const
         start = this.startYear,
         stop = start + yearsInterval,
-        years = []
+        years = [],
+        viewTarget = this.viewModel.year >= start && this.viewModel.year <= stop
+          ? this.viewModel.year
+          : (
+            this.today.year >= start && this.today.year <= stop
+              ? this.today.year
+              : start
+          )
 
       const isDisabled = year => {
         return (
@@ -1081,8 +1112,9 @@ export default Vue.extend({
             h(QBtn, {
               key: 'yr' + i,
               staticClass: this.today.year === i ? 'q-date__today' : null,
+              ref: viewTarget === i ? 'viewTarget' : void 0,
               props: {
-                flat: !active,
+                flat: active !== true,
                 label: i,
                 dense: true,
                 unelevated: active,
@@ -1117,7 +1149,11 @@ export default Vue.extend({
         ]),
 
         h('div', {
-          staticClass: 'q-date__years-content col self-stretch row items-center'
+          staticClass: 'q-date__years-content col self-stretch row items-center',
+          directives: cache(this, 'kNavYM', [{
+            name: 'key-group-navigation',
+            arg: '3'
+          }])
         }, years),
 
         h('div', {
@@ -1450,11 +1486,7 @@ export default Vue.extend({
     }, [
       this.__getHeader(h),
 
-      h('div', {
-        staticClass: 'q-date__main col column',
-        attrs: { tabindex: -1 },
-        ref: 'blurTarget'
-      }, content)
+      h('div', { staticClass: 'q-date__main col column' }, content)
     ])
   }
 })

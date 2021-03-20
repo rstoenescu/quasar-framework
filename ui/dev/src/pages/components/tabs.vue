@@ -35,8 +35,8 @@
         </q-tabs>
       </div>
 
-      <q-tabs :dense="dense">
-        <q-tab label="Item one - tooltip">
+      <q-tabs :dense="dense" aria-label="First test">
+        <q-tab label="Item one - tooltip" aria-controls="controls-nobody">
           <q-tooltip>
             <q-icon name="wifi" /> Wifi
           </q-tooltip>
@@ -407,11 +407,12 @@
           indicator-color="yellow"
           class="bg-cyan text-white"
           style="margin-bottom: 0"
+          aria-label="Tabs controlling panels"
         >
-          <q-tab name="one" icon="phone" label="One" />
-          <q-tab name="two" icon="favorite" label="Two" />
-          <q-tab name="three" icon="location_on" label="Three" />
-          <q-tab disable name="four" icon="map" label="Four" />
+          <q-tab name="one" icon="phone" label="One" id="tab-one" aria-controls="panel-one" />
+          <q-tab name="two" icon="favorite" label="Two" id="tab-two" aria-controls="panel-two" />
+          <q-tab name="three" icon="location_on" label="Three" id="tab-three" aria-controls="panel-three" />
+          <q-tab disable name="four" icon="map" label="Four" id="tab-four" aria-controls="panel-four" />
         </q-tabs>
 
         <q-tab-panels
@@ -422,23 +423,23 @@
           keep-alive
           class="text-center"
         >
-          <q-tab-panel :name="panelTest ? 'two' : 'one'">
+          <q-tab-panel :name="panelTest ? 'two' : 'one'" :id="panelTest ? 'panel-two' : 'panel-one'" :aria-labelledby="panelTest ? 'tab-two' : 'tab-one'">
             <q-btn dense round icon="map" class="absolute-bottom-right" />
             Tab One <strong v-if="panelTest">(Swapped)</strong> <br> Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident obcaecati repellendus dolores totam nostrum ut repudiandae perspiciatis est accusamus, eaque natus modi rem beatae optio cumque, velit ducimus autem magnam.
             <keep-alive-test name="one" />
           </q-tab-panel>
 
-          <q-tab-panel :name="panelTest ? 'one' : 'two'">
+          <q-tab-panel :name="panelTest ? 'one' : 'two'" :id="panelTest ? 'panel-one' : 'panel-two'" :aria-labelledby="panelTest ? 'tab-one' : 'tab-two'">
             Tab Two <strong v-if="panelTest">(Swapped)</strong>  <br> Lorem ipsum dolor sit amet consectetur adipisicing elit. At iusto neque odio porro, animi ducimus iure autem commodi sint, magni voluptatum molestias illo accusamus voluptate ratione aperiam. Saepe, fugiat vel.
             <keep-alive-test name="two" />
           </q-tab-panel>
 
-          <q-tab-panel name="three">
+          <q-tab-panel name="three" id="panel-three" aria-labelledby="tab-three">
             Tab Three <br> Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis labore inventore accusantium, perferendis eos sapiente culpa consectetur deserunt praesentium cumque distinctio placeat, recusandae id qui odit similique officia? Mollitia, ea!
             <keep-alive-test name="three" />
           </q-tab-panel>
 
-          <q-tab-panel disable name="four">
+          <q-tab-panel disable name="four" id="panel-four" aria-labelledby="tab-four">
             Tab Four <br> Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis labore inventore accusantium, perferendis eos sapiente culpa consectetur deserunt praesentium cumque distinctio placeat, recusandae id qui odit similique officia? Mollitia, ea!
             <keep-alive-test name="four" />
           </q-tab-panel>

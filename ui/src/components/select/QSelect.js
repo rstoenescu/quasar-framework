@@ -20,7 +20,6 @@ import cache from '../../utils/cache.js'
 
 import { FormFieldMixin } from '../../mixins/form.js'
 import VirtualScroll from '../../mixins/virtual-scroll.js'
-import CompositionMixin from '../../mixins/composition.js'
 import ListenersMixin from '../../mixins/listeners.js'
 
 const validateNewValueMode = v => ['add', 'add-unique', 'toggle'].includes(v)
@@ -32,7 +31,6 @@ export default Vue.extend({
   mixins: [
     QField,
     VirtualScroll,
-    CompositionMixin,
     FormFieldMixin,
     ListenersMixin
   ],
@@ -363,8 +361,9 @@ export default Vue.extend({
     },
 
     inputControlEvents () {
-      const on = {
+      return {
         input: this.__onInput,
+        compositionend: this.__onInput,
         // Safari < 10.2 & UIWebView doesn't fire compositionend when
         // switching focus before confirming composition choice
         // this also fixes the issue where some browsers e.g. iOS Chrome
@@ -378,10 +377,6 @@ export default Vue.extend({
           this.hasDialog === true && stop(e)
         }
       }
-
-      on.compositionstart = on.compositionupdate = on.compositionend = this.__onComposition
-
-      return on
     },
 
     virtualScrollItemSizeComputed () {
@@ -850,7 +845,7 @@ export default Vue.extend({
         ? this.$refs.menuContent
         : (
           this.$refs.menu !== void 0 && this.$refs.menu.__portal !== void 0
-            ? this.$refs.menu.__portal.$el
+            ? (this.$refs.menu.__portal.$el.children || [])[0] // fallback [] for IE
             : void 0
         )
     },
@@ -1051,7 +1046,10 @@ export default Vue.extend({
     },
 
     __onChange (e) {
-      this.__onComposition(e)
+      if (e.target.composing === true) {
+        e.target.composing = false
+        this.__onInput(e)
+      }
     },
 
     __onInput (e) {
@@ -1330,7 +1328,7 @@ export default Vue.extend({
           value: this.dialog,
           dark: this.isOptionsDark,
           position: this.useInput === true ? 'top' : void 0,
-          transitionShow: this.transitionShowComputed,
+          transitionShow: this.transitionShow,
           transitionHide: this.transitionHide
         },
         on: cache(this, 'dialog', {
@@ -1461,10 +1459,6 @@ export default Vue.extend({
             ? this.$scopedSlots['no-option'] !== void 0 || this.qListeners.filter !== void 0 || this.noOptions === false
             : true
         )
-
-      this.transitionShowComputed = this.hasDialog === true && this.useInput === true && this.$q.platform.is.ios === true
-        ? 'fade'
-        : this.transitionShow
     },
 
     __onPostRender () {

@@ -5,6 +5,40 @@ const scrollTargets = isSSR === false
   ? [ null, document, document.body, document.scrollingElement, document.documentElement ]
   : []
 
+let buggyRTLScroll
+export function isBuggyRTLScroll () {
+  if (isSSR === true) {
+    return false
+  }
+
+  if (buggyRTLScroll === void 0) {
+    const scroller = document.createElement('div')
+    const spacer = document.createElement('div')
+
+    Object.assign(scroller.style, {
+      direction: 'rtl',
+      width: '1px',
+      height: '1px',
+      overflow: 'auto'
+    })
+
+    Object.assign(spacer.style, {
+      width: '1000px',
+      height: '1px'
+    })
+
+    scroller.appendChild(spacer)
+    document.body.appendChild(scroller)
+    scroller.scrollLeft = -1000
+
+    buggyRTLScroll = scroller.scrollLeft >= 0
+
+    scroller.remove()
+  }
+
+  return buggyRTLScroll
+}
+
 export function getScrollTarget (el, target) {
   if (typeof target === 'string') {
     try {
@@ -195,6 +229,7 @@ export default {
 
   getScrollPosition,
   getHorizontalScrollPosition,
+  isBuggyRTLScroll,
 
   animScrollTo,
   animHorizontalScrollTo,

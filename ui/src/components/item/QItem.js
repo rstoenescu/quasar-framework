@@ -85,13 +85,18 @@ export default Vue.extend({
 
     __onClick (e) {
       if (this.isClickable === true) {
-        if (this.$refs.blurTarget !== void 0) {
-          if (e.qKeyEvent !== true && document.activeElement === this.$el) {
-            this.$refs.blurTarget.focus()
-          }
-          else if (document.activeElement === this.$refs.blurTarget) {
-            this.$el.focus()
-          }
+        if (
+          this.$q.interaction.isPointer === true &&
+          this.$refs.blurTarget !== void 0 &&
+          document.activeElement === this.$el
+        ) {
+          this.$refs.blurTarget.focus()
+        }
+        else if (
+          this.$q.interaction.isKeyboard === true &&
+          document.activeElement === this.$refs.blurTarget
+        ) {
+          this.$el.focus()
         }
 
         this.$emit('click', e)
@@ -102,12 +107,8 @@ export default Vue.extend({
       if (this.isClickable === true && isKeyCode(e, 13) === true) {
         stopAndPrevent(e)
 
-        // for ripple
-        e.qKeyEvent = true
-
         // for click trigger
         const evt = new MouseEvent('click', e)
-        evt.qKeyEvent = true
         this.$el.dispatchEvent(evt)
       }
 

@@ -115,7 +115,8 @@ export default Vue.extend({
         (this.disable === true ? ' disabled' : (this.readonly === true ? ' q-time--readonly' : '')) +
         (this.bordered === true ? ` q-time--bordered` : '') +
         (this.square === true ? ` q-time--square no-border-radius` : '') +
-        (this.flat === true ? ` q-time--flat no-shadow` : '')
+        (this.flat === true ? ` q-time--flat no-shadow` : '') +
+        ' q-key-group-navigation--ignore-key'
     },
 
     stringModel () {

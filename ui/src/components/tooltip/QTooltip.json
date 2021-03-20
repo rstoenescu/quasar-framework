@@ -6,16 +6,30 @@
   },
 
   "props": {
+    "min-height": {
+      "extends": "size",
+      "desc": "The minimum height of the Tooltip; Size in CSS units, including unit name",
+      "category": "style",
+      "addedIn": "v1.15.5"
+    },
+
+    "min-width": {
+      "extends": "size",
+      "desc": "The minimum width of the Tooltip; Size in CSS units, including unit name",
+      "category": "style",
+      "addedIn": "v1.15.5"
+    },
+
     "max-height": {
       "extends": "size",
       "desc": "The maximum height of the Tooltip; Size in CSS units, including unit name",
-      "category": "content"
+      "category": "style"
     },
 
     "max-width": {
       "extends": "size",
       "desc": "The maximum width of the Tooltip; Size in CSS units, including unit name",
-      "category": "content"
+      "category": "style"
     },
 
     "transition-show": {

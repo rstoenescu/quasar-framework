@@ -71,7 +71,7 @@ export default Vue.extend({
 
   computed: {
     classes () {
-      return 'q-knob non-selectable' + (
+      return 'q-knob non-selectable q-key-group-navigation--ignore-key' + (
         this.editable === true
           ? ' q-knob--editable'
           : (this.disable === true ? ' disabled' : '')

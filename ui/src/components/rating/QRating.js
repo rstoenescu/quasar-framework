@@ -196,7 +196,7 @@ export default Vue.extend({
     }
 
     return h('div', {
-      staticClass: 'q-rating row inline items-center',
+      staticClass: 'q-rating row inline items-center q-key-group-navigation--ignore-key',
       class: this.classes,
       style: this.sizeStyle,
       attrs: this.attrs,

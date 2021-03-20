@@ -33,6 +33,17 @@
           </h4>
         </div>
 
+        <q-btn dense class="q-mx-md" icon="event" round color="primary">
+          <q-popup-proxy @before-show="updateProxy" transition-show="scale" transition-hide="scale">
+            <q-date v-model="proxyDate">
+              <div class="row items-center justify-end q-gutter-sm">
+                <q-btn label="Cancel" color="primary" flat v-close-popup />
+                <q-btn label="OK" color="primary" flat @click="save" v-close-popup />
+              </div>
+            </q-date>
+          </q-popup-proxy>
+        </q-btn>
+
         <q-btn-dropdown no-caps color="primary" class="q-mt-sm" label="Btn dropdown">
           <q-list dense>
             <q-item clickable v-close-popup class="text-caption text-weight-bold">
@@ -131,11 +142,33 @@
                 color="primary"
                 @click="fullscreenNone"
               />
+
+              <q-btn dense class="q-mx-md" icon="event" round color="primary">
+                <q-popup-proxy @before-show="updateProxy" transition-show="scale" transition-hide="scale">
+                  <q-date v-model="proxyDate">
+                    <div class="row items-center justify-end q-gutter-sm">
+                      <q-btn label="Cancel" color="primary" flat v-close-popup />
+                      <q-btn label="OK" color="primary" flat @click="save" v-close-popup />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-btn>
             </q-card-section>
 
             <q-card-section ref="fullscreenInside1" class="bg-orange-2 q-pa-md">
               Fullscreen inside modal dialog
               <span class="text-italic">Hover here for tooltip <q-tooltip>Some tooltip</q-tooltip></span>
+
+              <q-btn dense class="q-mx-md" icon="event" round color="primary">
+                <q-popup-proxy @before-show="updateProxy" transition-show="scale" transition-hide="scale">
+                  <q-date v-model="proxyDate">
+                    <div class="row items-center justify-end q-gutter-sm">
+                      <q-btn label="Cancel" color="primary" flat v-close-popup />
+                      <q-btn label="OK" color="primary" flat @click="save" v-close-popup />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-btn>
             </q-card-section>
           </q-card>
         </q-dialog>
@@ -170,6 +203,17 @@
                 color="primary"
                 @click="fullscreenNone"
               />
+
+              <q-btn dense class="q-mx-md" icon="event" round color="primary">
+                <q-popup-proxy @before-show="updateProxy" transition-show="scale" transition-hide="scale">
+                  <q-date v-model="proxyDate">
+                    <div class="row items-center justify-end q-gutter-sm">
+                      <q-btn label="Cancel" color="primary" flat v-close-popup />
+                      <q-btn label="OK" color="primary" flat @click="save" v-close-popup />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-btn>
             </q-card-section>
 
             <q-card-section ref="fullscreenInside2" class="bg-blue-2 q-pa-md">
@@ -209,6 +253,17 @@
                       color="primary"
                       @click="fullscreenNone"
                     />
+
+                    <q-btn dense class="q-mx-md" icon="event" round color="primary">
+                      <q-popup-proxy @before-show="updateProxy" transition-show="scale" transition-hide="scale">
+                        <q-date v-model="proxyDate">
+                          <div class="row items-center justify-end q-gutter-sm">
+                            <q-btn label="Cancel" color="primary" flat v-close-popup />
+                            <q-btn label="OK" color="primary" flat @click="save" v-close-popup />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-btn>
                   </q-card-section>
 
                   <q-card-section ref="fullscreenInside4" class="bg-red-2 q-pa-md">
@@ -261,11 +316,33 @@
             color="primary"
             @click="fullscreenNone"
           />
+
+          <q-btn dense class="q-mx-md" icon="event" round color="primary">
+            <q-popup-proxy @before-show="updateProxy" transition-show="scale" transition-hide="scale">
+              <q-date v-model="proxyDate">
+                <div class="row items-center justify-end q-gutter-sm">
+                  <q-btn label="Cancel" color="primary" flat v-close-popup />
+                  <q-btn label="OK" color="primary" flat @click="save" v-close-popup />
+                </div>
+              </q-date>
+            </q-popup-proxy>
+          </q-btn>
         </q-card-section>
 
         <q-card-section ref="fullscreenInside3" class="bg-green-2 q-pa-md">
           Fullscreen inside seamless dialog (outside fullscreen el)
           <span class="text-italic">Hover here for tooltip <q-tooltip>Some tooltip</q-tooltip></span>
+
+          <q-btn dense class="q-mx-md" icon="event" round color="primary">
+            <q-popup-proxy @before-show="updateProxy" transition-show="scale" transition-hide="scale">
+              <q-date v-model="proxyDate">
+                <div class="row items-center justify-end q-gutter-sm">
+                  <q-btn label="Cancel" color="primary" flat v-close-popup />
+                  <q-btn label="OK" color="primary" flat @click="save" v-close-popup />
+                </div>
+              </q-date>
+            </q-popup-proxy>
+          </q-btn>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -278,6 +355,9 @@ export default {
     return {
       model: null,
       options: ['Option 1', 'Option 2', 'Option 3'],
+
+      date: '2019/03/01',
+      proxyDate: '2019/03/01',
 
       dialog1: false,
       dialog2: false,
@@ -350,6 +430,14 @@ export default {
           this.fullscreenNone()
         }
       })
+    },
+
+    updateProxy () {
+      this.proxyDate = this.date
+    },
+
+    save () {
+      this.date = this.proxyDate
     }
   }
 }

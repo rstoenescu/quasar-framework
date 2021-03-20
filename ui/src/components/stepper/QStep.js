@@ -99,6 +99,7 @@ export default Vue.extend({
       'div',
       {
         staticClass: 'q-stepper__step',
+        attrs: { role: 'tabpanel' },
         on: { ...this.qListeners }
       },
       vertical === true

@@ -5,12 +5,14 @@ import ModelToggleMixin from '../../mixins/model-toggle.js'
 import PortalMixin from '../../mixins/portal.js'
 import PreventScrollMixin from '../../mixins/prevent-scroll.js'
 import AttrsMixin, { ariaHidden } from '../../mixins/attrs.js'
+import FocusWrapMixin from '../../mixins/focus-wrap.js'
 
 import { childHasFocus } from '../../utils/dom.js'
 import EscapeKey from '../../utils/escape-key.js'
-import { slot } from '../../utils/slot.js'
 import { create, stop } from '../../utils/event.js'
 import cache from '../../utils/cache.js'
+import { focusNoScroll, EDITABLE_SELECTOR } from '../../utils/focus.js'
+import { animScrollTo } from '../../utils/scroll.js'
 
 let maximizedModals = 0
 
@@ -38,7 +40,8 @@ export default Vue.extend({
     HistoryMixin,
     ModelToggleMixin,
     PortalMixin,
-    PreventScrollMixin
+    PreventScrollMixin,
+    FocusWrapMixin
   ],
 
   props: {
@@ -91,7 +94,6 @@ export default Vue.extend({
 
     useBackdrop (v) {
       this.__preventScroll(v)
-      this.__preventFocusout(v)
     }
   },
 
@@ -146,19 +148,8 @@ export default Vue.extend({
   },
 
   methods: {
-    focus () {
-      let node = this.__getInnerNode()
-
-      if (node === void 0 || node.contains(document.activeElement) === true) {
-        return
-      }
-
-      node = node.querySelector('[autofocus], [data-autofocus]') || node
-      node.focus()
-    },
-
     shake () {
-      this.focus()
+      this.__focusFirst()
       this.$emit('shake')
 
       const node = this.__getInnerNode()
@@ -171,12 +162,6 @@ export default Vue.extend({
           node.classList.remove('q-animate--scale')
         }, 170)
       }
-    },
-
-    __getInnerNode () {
-      return this.__portal !== void 0 && this.__portal.$refs !== void 0
-        ? this.__portal.$refs.inner
-        : void 0
     },
 
     __show (evt) {
@@ -192,13 +177,31 @@ export default Vue.extend({
 
       EscapeKey.register(this, () => {
         if (this.seamless !== true) {
+          // if it should not close then focus at start
           if (this.persistent === true || this.noEscDismiss === true) {
-            this.maximized !== true && this.shake()
+            if (this.maximized !== true) {
+              this.shake()
+            }
+            else {
+              this.__focusFirst()
+            }
           }
           else {
             this.$emit('escape-key')
             this.hide()
           }
+        }
+        // if focus is in menu focus the activator
+        // if focus is outside menu focus menu
+        else if (
+          this.__refocusTarget !== null &&
+          this.__refocusTarget !== void 0 &&
+          this.__portal.$el.contains(document.activeElement) === true
+        ) {
+          focusNoScroll(this.__refocusTarget)
+        }
+        else {
+          this.__focusFirst()
         }
       })
 
@@ -207,12 +210,13 @@ export default Vue.extend({
       if (this.noFocus !== true) {
         // IE can have null document.activeElement
         document.activeElement !== null && document.activeElement.blur()
+
         this.__nextTick(this.focus)
       }
 
       this.__setTimeout(() => {
         if (this.$q.platform.is.ios === true) {
-          if (this.seamless !== true && document.activeElement) {
+          if (this.seamless !== true && document.activeElement && document.activeElement.matches(EDITABLE_SELECTOR) === true) {
             const
               { top, bottom } = document.activeElement.getBoundingClientRect(),
               { innerHeight } = window,
@@ -220,24 +224,31 @@ export default Vue.extend({
                 ? window.visualViewport.height
                 : innerHeight
 
-            if (top > 0 && bottom > height / 2) {
-              document.scrollingElement.scrollTop = Math.min(
-                document.scrollingElement.scrollHeight - height,
-                bottom >= innerHeight
-                  ? Infinity
-                  : Math.ceil(document.scrollingElement.scrollTop + bottom - height / 2)
+            if (top <= 0) {
+              document.scrollingElement.scrollTop = 0
+            }
+            else if (bottom > height / 1.5) {
+              animScrollTo(
+                document.scrollingElement,
+                Math.min(
+                  document.scrollingElement.scrollHeight - height,
+                  bottom >= innerHeight
+                    ? Infinity
+                    : Math.ceil(document.scrollingElement.scrollTop + bottom - height / 1.5)
+                ),
+                100
               )
             }
-
-            document.activeElement.scrollIntoView()
           }
 
           // required in order to avoid the "double-tap needed" issue
           this.__portal.$el.click()
         }
 
-        this.$emit('show', evt)
-      }, 300)
+        this.__setTimeout(() => {
+          this.$emit('show', evt)
+        }, 100)
+      }, 200)
     },
 
     __hide (evt) {
@@ -246,7 +257,7 @@ export default Vue.extend({
 
       // check null for IE
       if (this.__refocusTarget !== void 0 && this.__refocusTarget !== null) {
-        this.__refocusTarget.focus()
+        focusNoScroll(this.__refocusTarget)
       }
 
       this.$el.dispatchEvent(create('popup-hide', { bubbles: true }))
@@ -266,7 +277,6 @@ export default Vue.extend({
 
         if (this.seamless !== true) {
           this.__preventScroll(false)
-          this.__preventFocusout(false)
         }
       }
     },
@@ -287,13 +297,6 @@ export default Vue.extend({
 
         maximizedModals--
         this.isMaximized = false
-      }
-    },
-
-    __preventFocusout (state) {
-      if (this.$q.platform.is.desktop === true) {
-        const action = `${state === true ? 'add' : 'remove'}EventListener`
-        document.body[action]('focusin', this.__onFocusChange)
       }
     },
 
@@ -350,7 +353,7 @@ export default Vue.extend({
             class: this.classes,
             attrs: { tabindex: -1 },
             on: this.onEvents
-          }, slot(this, 'default')) : null
+          }, this.__getFocusWrappedContent('default')) : null
         ])
       ])
     }

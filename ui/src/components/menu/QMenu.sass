@@ -1,16 +1,17 @@
 .q-menu
-  position: fixed !important
   display: inline-block
   max-width: $menu-max-width
-
+  max-height: 65vh
+  outline: 0
+  border-radius: $generic-border-radius
   box-shadow: $menu-box-shadow
   background: $menu-background
-  border-radius: $generic-border-radius
-  overflow-y: auto
-  overflow-x: hidden
-  outline: 0
-  max-height: 65vh
-  z-index: $z-menu
+  opacity: 0
+
+  &__container
+    position: fixed
+    z-index: $z-menu
+    contain: layout
 
   &--square
     border-radius: 0

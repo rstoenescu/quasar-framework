@@ -115,7 +115,7 @@ export default Vue.extend({
     },
 
     'layout.totalWidth' (val) {
-      this.__updateLocal('belowBreakpoint', (
+      document.qScrollPrevented !== true && this.__updateLocal('belowBreakpoint', (
         this.behavior === 'mobile' ||
         (this.behavior !== 'desktop' && val <= this.breakpoint)
       ))

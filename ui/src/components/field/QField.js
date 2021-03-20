@@ -12,6 +12,7 @@ import AttrsMixin from '../../mixins/attrs.js'
 import { slot } from '../../utils/slot.js'
 import uid from '../../utils/uid.js'
 import { stop, prevent, stopAndPrevent } from '../../utils/event.js'
+import { focusNoScroll } from '../../utils/focus.js'
 
 function getTargetUid (val) {
   return val === void 0 ? `f_${uid()}` : val
@@ -259,7 +260,7 @@ export default Vue.extend({
       // IE can have null document.activeElement
       if (target !== void 0 && (el === null || el.id !== this.targetUid)) {
         target.hasAttribute('tabindex') === true || (target = target.querySelector('[tabindex]'))
-        target !== null && target !== el && target.focus()
+        target !== null && focusNoScroll(target)
       }
     },
 
@@ -529,7 +530,7 @@ export default Vue.extend({
     this.__onPostRender !== void 0 && this.$nextTick(this.__onPostRender)
 
     return h('label', {
-      staticClass: 'q-field row no-wrap items-start',
+      staticClass: 'q-field row no-wrap items-start q-key-group-navigation--ignore-key',
       class: this.classes,
       attrs: this.attrs
     }, [

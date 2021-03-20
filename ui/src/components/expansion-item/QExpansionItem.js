@@ -113,11 +113,23 @@ export default Vue.extend({
     },
 
     __toggleIconKeyboard (e) {
-      e.keyCode === 13 && this.__toggleIcon(e, true)
+      e.keyCode === 13 && this.__toggleIcon(e)
     },
 
-    __toggleIcon (e, keyboard) {
-      keyboard !== true && this.$refs.blurTarget !== void 0 && this.$refs.blurTarget.focus()
+    __toggleIcon (e) {
+      if (
+        this.$q.interaction.isPointer === true &&
+        this.$refs.blurTarget !== void 0 &&
+        document.activeElement !== this.$refs.blurTarget
+      ) {
+        this.$refs.blurTarget.focus()
+      }
+      else if (
+        this.$q.interaction.isKeyboard === true &&
+        document.activeElement === this.$refs.blurTarget
+      ) {
+        this.$refs.blurTarget.parentNode.focus()
+      }
       this.toggle(e)
       stopAndPrevent(e)
     },

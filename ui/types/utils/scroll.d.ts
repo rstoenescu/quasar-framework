@@ -8,6 +8,7 @@ export namespace scroll {
 
   function getScrollPosition(scrollTarget: Element | Window): number;
   function getHorizontalScrollPosition(scrollTarget: Element | Window): number;
+  function isBuggyRTLScroll(): boolean;
 
   function animScrollTo(el: Element | Window, to: number, duration: number): void;
   function animHorizontalScrollTo(el: Element | Window, to: number, duration: number): void;

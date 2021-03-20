@@ -27,6 +27,7 @@ export default Vue.extend({
     return h('div', {
       staticClass: 'q-carousel__slide',
       style: this.style,
+      attrs: { role: 'tabpanel' },
       on: { ...this.qListeners }
     }, slot(this, 'default'))
   }
