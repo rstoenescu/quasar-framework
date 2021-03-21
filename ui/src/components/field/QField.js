@@ -529,7 +529,7 @@ export default Vue.extend({
     this.__onPostRender !== void 0 && this.$nextTick(this.__onPostRender)
 
     return h('label', {
-      staticClass: 'q-field row no-wrap items-start',
+      staticClass: 'q-field row no-wrap items-start q-key-group-navigation--ignore-key',
       class: this.classes,
       attrs: this.attrs
     }, [

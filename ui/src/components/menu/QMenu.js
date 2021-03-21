@@ -6,13 +6,12 @@ import DarkMixin from '../../mixins/dark.js'
 import PortalMixin, { closePortalMenus } from '../../mixins/portal.js'
 import TransitionMixin from '../../mixins/transition.js'
 import AttrsMixin from '../../mixins/attrs.js'
+import FocusWrapMixin from '../../mixins/focus-wrap.js'
 
 import ClickOutside from './ClickOutside.js'
 import { getScrollTarget } from '../../utils/scroll.js'
-import { create, stop, position, stopAndPreventClick } from '../../utils/event.js'
+import { create, stop, position, stopAndPrevent } from '../../utils/event.js'
 import EscapeKey from '../../utils/escape-key.js'
-
-import { slot } from '../../utils/slot.js'
 
 import {
   validatePosition, validateOffset, setPosition, parsePosition
@@ -27,7 +26,8 @@ export default Vue.extend({
     AnchorMixin,
     ModelToggleMixin,
     PortalMixin,
-    TransitionMixin
+    TransitionMixin,
+    FocusWrapMixin
   ],
 
   directives: {
@@ -128,17 +128,6 @@ export default Vue.extend({
   },
 
   methods: {
-    focus () {
-      let node = this.__portal !== void 0 && this.__portal.$refs !== void 0
-        ? this.__portal.$refs.inner
-        : void 0
-
-      if (node !== void 0 && node.contains(document.activeElement) !== true) {
-        node = node.querySelector('[autofocus], [data-autofocus]') || node
-        node.focus()
-      }
-    },
-
     __show (evt) {
       // IE can have null document.activeElement
       this.__refocusTarget = this.noRefocus === false && document.activeElement !== null
@@ -146,7 +135,21 @@ export default Vue.extend({
         : void 0
 
       EscapeKey.register(this, () => {
-        if (this.persistent !== true) {
+        if (this.persistent === true) {
+          // if focus is in menu focus the activator
+          // if focus is outside menu focus menu
+          if (
+            this.__refocusTarget !== null &&
+            this.__refocusTarget !== void 0 &&
+            this.__portal.$el.contains(document.activeElement) === true
+          ) {
+            this.__refocusTarget.focus()
+          }
+          else {
+            this.__focusFirst()
+          }
+        }
+        else {
           this.$emit('escape-key')
           this.hide()
         }
@@ -182,7 +185,6 @@ export default Vue.extend({
 
       this.__nextTick(() => {
         this.updatePosition()
-        this.noFocus !== true && this.focus()
       })
 
       this.__setTimeout(() => {
@@ -196,6 +198,8 @@ export default Vue.extend({
 
         this.updatePosition()
         this.$emit('show', evt)
+
+        this.noFocus !== true && this.focus()
       }, 300)
     },
 
@@ -301,7 +305,8 @@ export default Vue.extend({
           // prevent click if it's on a dialog backdrop
           targetClassList.contains('q-dialog__backdrop')
         ) {
-          stopAndPreventClick(e)
+          stopAndPrevent(e)
+          this.$q.interaction.preventClick(e.target, true)
         }
         return true
       }
@@ -323,7 +328,7 @@ export default Vue.extend({
             value: this.__onClickOutside,
             arg: this.anchorEl
           }]
-        }, slot(this, 'default')) : null
+        }, this.__getFocusWrappedContent('default')) : null
       ])
     }
   },

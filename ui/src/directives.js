@@ -1,6 +1,7 @@
 import ClosePopup from './directives/ClosePopup.js'
 import GoBack from './directives/GoBack.js'
 import Intersection from './directives/Intersection.js'
+import KeyGroupNavigation from './directives/KeyGroupNavigation.js'
 import Morph from './directives/Morph.js'
 import Mutation from './directives/Mutation.js'
 import Ripple from './directives/Ripple.js'
@@ -15,6 +16,7 @@ export {
   ClosePopup,
   GoBack,
   Intersection,
+  KeyGroupNavigation,
   Morph,
   Mutation,
   Ripple,

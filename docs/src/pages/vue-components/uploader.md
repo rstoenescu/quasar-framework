@@ -275,7 +275,7 @@ cors = CORS()
 cors.init_app(app, resource={r"/api/*": {"origins": "*"}})
 
 @app.route('/upload', methods=['POST'])
-def upload():        
+def upload():
     for fname in request.files:
         f = request.files.get(fname)
         print(f)

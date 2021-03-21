@@ -17,7 +17,7 @@ q-page.doc-page
 
   slot
 
-  .doc-page-nav.text-primary.q-pb-lg(v-if="related !== void 0")
+  .doc-page-nav.text-primary.q-pb-lg(v-if="related !== void 0", v-key-group-navigation)
     .text-h6.q-pb-md Related
     .q-gutter-md.flex
       router-link.q-link.doc-page-related.rounded-borders.q-pa-md.cursor-pointer.column.justify-center.bg-grey-4(
@@ -32,7 +32,7 @@ q-page.doc-page
 
           q-icon.q-ml-lg(:name="mdiLaunch")
 
-  .doc-page-nav.text-primary.q-pb-xl(v-if="nav !== void 0")
+  .doc-page-nav.text-primary.q-pb-xl(v-if="nav !== void 0", v-key-group-navigation)
     .text-h6.q-pb-md Ready for more?
     .q-gutter-md.flex
       router-link.q-link.doc-page-related.doc-page-related-bordered.rounded-borders.q-pa-md.cursor-pointer.column.justify-center.bg-white(
@@ -57,7 +57,7 @@ q-page.doc-page
     .q-mb-md(v-if="noEdit === false")
       | Caught a mistake? <doc-link :to="editHref">Suggest an edit on GitHub</doc-link>
 
-    .doc-page-footer__icons.row.items-center.q-gutter-sm
+    .doc-page-footer__icons.row.items-center.q-gutter-sm(v-key-group-navigation)
       a(href="https://github.quasar.dev", target="_blank", rel="noopener")
         q-icon(:name="fabGithub")
 
@@ -161,6 +161,9 @@ export default {
     text-decoration: none
     outline: 0
 
+    &:focus-visible
+      border-bottom: 2px solid currentColor
+
   &__badge
     vertical-align: super
 
@@ -190,10 +193,14 @@ export default {
       text-decoration: none
       outline: 0
       color: $primary
+      border-bottom: 2px solid transparent
       transition: color .28s
 
       &:hover
         color: $grey-8
+
+      &:focus-visible
+        border-bottom-color: currentColor
 
 .doc-page-nav
   margin: 68px 0 0

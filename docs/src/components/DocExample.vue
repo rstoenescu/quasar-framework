@@ -5,7 +5,7 @@ q-card.doc-example.q-my-lg(:class="classes", flat, bordered)
 
     q-space
 
-    div.col-auto
+    div.col-auto(v-key-group-navigation)
       q-btn(dense, flat, round, :icon="fabGithub", @click="openGitHub")
         q-tooltip View on GitHub
       q-btn.q-ml-sm(v-if="noEdit === false", dense, flat, round, :icon="fabCodepen", @click="openCodepen")

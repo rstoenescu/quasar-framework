@@ -101,7 +101,8 @@ export const SliderMixin = {
         (this.label || this.labelAlways === true ? ' q-slider--label' : '') +
         (this.labelAlways === true ? ' q-slider--label-always' : '') +
         (this.isDark === true ? ' q-slider--dark' : '') +
-        (this.dense === true ? ' q-slider--dense q-slider--dense' + this.axis : '')
+        (this.dense === true ? ' q-slider--dense q-slider--dense' + this.axis : '') +
+        ' q-key-group-navigation--ignore-key'
     },
 
     editable () {

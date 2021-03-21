@@ -5,10 +5,10 @@ import ModelToggleMixin from '../../mixins/model-toggle.js'
 import PortalMixin from '../../mixins/portal.js'
 import PreventScrollMixin from '../../mixins/prevent-scroll.js'
 import AttrsMixin, { ariaHidden } from '../../mixins/attrs.js'
+import FocusWrapMixin from '../../mixins/focus-wrap.js'
 
 import { childHasFocus } from '../../utils/dom.js'
 import EscapeKey from '../../utils/escape-key.js'
-import { slot } from '../../utils/slot.js'
 import { create, stop } from '../../utils/event.js'
 import cache from '../../utils/cache.js'
 
@@ -38,7 +38,8 @@ export default Vue.extend({
     HistoryMixin,
     ModelToggleMixin,
     PortalMixin,
-    PreventScrollMixin
+    PreventScrollMixin,
+    FocusWrapMixin
   ],
 
   props: {
@@ -91,7 +92,6 @@ export default Vue.extend({
 
     useBackdrop (v) {
       this.__preventScroll(v)
-      this.__preventFocusout(v)
     }
   },
 
@@ -146,19 +146,8 @@ export default Vue.extend({
   },
 
   methods: {
-    focus () {
-      let node = this.__getInnerNode()
-
-      if (node === void 0 || node.contains(document.activeElement) === true) {
-        return
-      }
-
-      node = node.querySelector('[autofocus], [data-autofocus]') || node
-      node.focus()
-    },
-
     shake () {
-      this.focus()
+      this.__focusFirst()
       this.$emit('shake')
 
       const node = this.__getInnerNode()
@@ -171,12 +160,6 @@ export default Vue.extend({
           node.classList.remove('q-animate--scale')
         }, 170)
       }
-    },
-
-    __getInnerNode () {
-      return this.__portal !== void 0 && this.__portal.$refs !== void 0
-        ? this.__portal.$refs.inner
-        : void 0
     },
 
     __show (evt) {
@@ -192,13 +175,31 @@ export default Vue.extend({
 
       EscapeKey.register(this, () => {
         if (this.seamless !== true) {
+          // if it should not close then focus at start
           if (this.persistent === true || this.noEscDismiss === true) {
-            this.maximized !== true && this.shake()
+            if (this.maximized !== true) {
+              this.shake()
+            }
+            else {
+              this.__focusFirst()
+            }
           }
           else {
             this.$emit('escape-key')
             this.hide()
           }
+        }
+        // if focus is in menu focus the activator
+        // if focus is outside menu focus menu
+        else if (
+          this.__refocusTarget !== null &&
+          this.__refocusTarget !== void 0 &&
+          this.__portal.$el.contains(document.activeElement) === true
+        ) {
+          this.__refocusTarget.focus()
+        }
+        else {
+          this.__focusFirst()
         }
       })
 
@@ -266,7 +267,6 @@ export default Vue.extend({
 
         if (this.seamless !== true) {
           this.__preventScroll(false)
-          this.__preventFocusout(false)
         }
       }
     },
@@ -287,13 +287,6 @@ export default Vue.extend({
 
         maximizedModals--
         this.isMaximized = false
-      }
-    },
-
-    __preventFocusout (state) {
-      if (this.$q.platform.is.desktop === true) {
-        const action = `${state === true ? 'add' : 'remove'}EventListener`
-        document.body[action]('focusin', this.__onFocusChange)
       }
     },
 
@@ -350,7 +343,7 @@ export default Vue.extend({
             class: this.classes,
             attrs: { tabindex: -1 },
             on: this.onEvents
-          }, slot(this, 'default')) : null
+          }, this.__getFocusWrappedContent('default')) : null
         ])
       ])
     }

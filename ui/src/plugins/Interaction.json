@@ -1,0 +1,84 @@
+{
+  "meta": {
+    "docsUrl": "https://v1.quasar.dev/options/interaction-plugins"
+  },
+
+  "injection": "$q.interaction",
+
+  "addedIn": "v1.4.6",
+
+  "props": {
+    "isKeyboard": {
+      "type": "Boolean",
+      "desc": "Last event was a keyboard one",
+      "reactive": true
+    },
+
+    "isComposing": {
+      "type": "Boolean",
+      "desc": "Last event was a keyboard composing one",
+      "reactive": true
+    },
+
+    "isPointer": {
+      "type": "Boolean",
+      "desc": "Last event was a pointer one (mouse or touch)",
+      "reactive": true
+    },
+
+    "isMouse": {
+      "type": "Boolean",
+      "desc": "Last event was a mouse one",
+      "reactive": true
+    },
+
+    "isTouch": {
+      "type": "Boolean",
+      "desc": "Last event was a touch one",
+      "reactive": true
+    },
+
+    "isDrag": {
+      "type": "Boolean",
+      "desc": "Last event was a drag and drop one",
+      "reactive": true
+    },
+
+    "isContext": {
+      "type": "Boolean",
+      "desc": "Last event was a context menu one",
+      "reactive": true
+    },
+
+    "isPending": {
+      "type": "Boolean",
+      "desc": "Last event is in progress (start event without a cancel or end event)",
+      "reactive": true
+    },
+
+    "event": {
+      "type": "Object",
+      "desc": "Last event",
+      "__exemption": [ "examples" ],
+      "reactive": true
+    }
+  },
+
+  "methods": {
+    "preventClick": {
+      "desc": "Prevent next click event on a target element",
+      "params": {
+        "target": {
+          "type": "Element",
+          "desc": "The element where it should prevent click",
+          "__exemption": [ "examples" ]
+        },
+
+        "stop": {
+          "type": "Boolean",
+          "desc": "Stop propagation of the event"
+        }
+      }
+    }
+  }
+}

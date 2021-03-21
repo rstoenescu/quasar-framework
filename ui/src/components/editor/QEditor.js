@@ -1,5 +1,7 @@
 import Vue from 'vue'
 
+import KeyGroupNavigation from '../../directives/KeyGroupNavigation.js'
+
 import { getToolbar, getFonts, getLinkEditor } from './editor-utils.js'
 import { Caret } from './editor-caret.js'
 
@@ -489,7 +491,8 @@ export default Vue.extend({
 
       toolbars = h('div', {
         key: 'toolbar_ctainer',
-        staticClass: 'q-editor__toolbars-container'
+        staticClass: 'q-editor__toolbars-container relative-position',
+        directives: [ KeyGroupNavigation ]
       }, bars)
     }
 
