@@ -25,3 +25,7 @@ module.exports.route = function (callback) {
 module.exports.store = function (callback) {
   return callback
 }
+
+module.exports.extendApp = function (callback) {
+  return callback
+}

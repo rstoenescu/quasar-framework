@@ -13,6 +13,8 @@ declare module "quasar/wrappers" {
   import { PrefetchCallback } from "@quasar/app";
   import { RouteCallback } from "@quasar/app";
   import { StoreCallback } from "@quasar/app";
+  import { ExtendAppCallback } from "@quasar/app";
+
   function boot<TStore = any>(
     callback: BootCallback<TStore>
   ): BootCallback<TStore>;
@@ -28,4 +30,6 @@ declare module "quasar/wrappers" {
   ): RouteCallback<TStore>;
 
   function store(callback: StoreCallback): StoreCallback;
+
+  function extendApp(callback: ExtendAppCallback): ExtendAppCallback;
 }

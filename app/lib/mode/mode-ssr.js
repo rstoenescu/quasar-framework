@@ -9,6 +9,11 @@ class Mode {
     return fs.existsSync(appPaths.ssrDir)
   }
 
+  get isTypeScript () {
+    const tsConfig = appPaths.resolve.app('tsconfig.json')
+    return fs.existsSync(tsConfig)
+  }
+
   add () {
     if (this.isInstalled) {
       warn(`SSR support detected already. Aborting.`)
@@ -16,7 +21,8 @@ class Mode {
     }
 
     log(`Creating SSR source folder...`)
-    fse.copySync(appPaths.resolve.cli('templates/ssr'), appPaths.ssrDir)
+    const format = 'default' // this.isTypeScript ? 'ts' : 'default'
+    fse.copySync(appPaths.resolve.cli(`templates/ssr/${format}`), appPaths.ssrDir)
     log(`SSR support was added`)
   }
 
