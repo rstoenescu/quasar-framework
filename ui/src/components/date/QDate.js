@@ -821,9 +821,7 @@ export default Vue.extend({
           staticClass: 'relative-position'
         }, [
           h('transition', {
-            props: {
-              name: 'q-transition--fade'
-            }
+            props: { name: 'q-transition--fade' }
           }, [
             h('div', {
               key: 'h-yr-' + this.headerSubtitle,
@@ -845,9 +843,7 @@ export default Vue.extend({
             staticClass: 'relative-position col'
           }, [
             h('transition', {
-              props: {
-                name: 'q-transition--fade'
-              }
+              props: { name: 'q-transition--fade' }
             }, [
               h('div', {
                 key: 'h-sub' + this.headerTitle,
@@ -900,9 +896,7 @@ export default Vue.extend({
           staticClass: 'relative-position overflow-hidden flex flex-center' + cls
         }, [
           h('transition', {
-            props: {
-              name: 'q-transition--jump-' + dir
-            }
+            props: { name: 'q-transition--jump-' + dir }
           }, [
             h('div', { key }, [
               h(QBtn, {
@@ -972,9 +966,7 @@ export default Vue.extend({
             staticClass: 'q-date__calendar-days-container relative-position overflow-hidden'
           }, [
             h('transition', {
-              props: {
-                name: 'q-transition--slide-' + this.monthDirection
-              }
+              props: { name: 'q-transition--slide-' + this.monthDirection }
             }, [
               h('div', {
                 key: this.viewMonthHash,

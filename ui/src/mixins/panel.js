@@ -1,5 +1,7 @@
 import Vue from 'vue'
 
+import { onTransitionHideScroll } from '../mixins/transition'
+
 import TouchSwipe from '../directives/TouchSwipe.js'
 
 import ListenersMixin from './listeners.js'
@@ -245,9 +247,8 @@ export const PanelParentMixin = {
       return this.animated === true
         ? [
           h('transition', {
-            props: {
-              name: this.panelTransition
-            }
+            props: { name: this.panelTransition },
+            on: onTransitionHideScroll
           }, content)
         ]
         : content
