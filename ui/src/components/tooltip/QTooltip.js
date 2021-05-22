@@ -20,6 +20,15 @@ export default Vue.extend({
   mixins: [ AnchorMixin, ModelToggleMixin, PortalMixin, TransitionMixin ],
 
   props: {
+    minHeight: {
+      type: String,
+      default: null
+    },
+    minWidth: {
+      type: String,
+      default: null
+    },
+
     maxHeight: {
       type: String,
       default: null
@@ -86,8 +95,6 @@ export default Vue.extend({
       this.__showPortal()
 
       this.__nextTick(() => {
-        this.observer = new MutationObserver(() => this.updatePosition())
-        this.observer.observe(this.__portal.$el, { attributes: false, childList: true, characterData: true, subtree: true })
         this.updatePosition()
         this.__configureScrollTarget()
       })
@@ -114,11 +121,6 @@ export default Vue.extend({
     },
 
     __anchorCleanup () {
-      if (this.observer !== void 0) {
-        this.observer.disconnect()
-        this.observer = void 0
-      }
-
       if (this.unwatch !== void 0) {
         this.unwatch()
         this.unwatch = void 0
@@ -140,14 +142,21 @@ export default Vue.extend({
         return
       }
 
-      setPosition({
-        el,
-        offset: this.offset,
-        anchorEl: this.anchorEl,
-        anchorOrigin: this.anchorOrigin,
-        selfOrigin: this.selfOrigin,
-        maxHeight: this.maxHeight,
-        maxWidth: this.maxWidth
+      this.settingPosition !== void 0 && cancelAnimationFrame(this.settingPosition)
+      this.settingPosition = requestAnimationFrame(() => {
+        setPosition({
+          el,
+          offset: this.offset,
+          anchorEl: this.anchorEl,
+          anchorOrigin: this.anchorOrigin,
+          selfOrigin: this.selfOrigin,
+          minHeight: this.minHeight,
+          minWidth: this.minWidth,
+          maxHeight: this.maxHeight,
+          maxWidth: this.maxWidth,
+          rtl: this.$q.lang.rtl
+        })
+        this.settingPosition = void 0
       })
     },
 
@@ -201,20 +210,16 @@ export default Vue.extend({
     },
 
     __unconfigureScrollTarget () {
-      if (this.__scrollTarget !== void 0) {
-        this.__changeScrollEvent(this.__scrollTarget)
-        this.__scrollTarget = void 0
-      }
+      this.__changeScrollEvent()
     },
 
     __configureScrollTarget () {
-      if (this.anchorEl !== void 0 || this.scrollTarget !== void 0) {
-        this.__scrollTarget = getScrollTarget(this.anchorEl, this.scrollTarget)
+      if (this.showing === true && (this.anchorEl !== void 0 || this.scrollTarget !== void 0)) {
         const fn = this.noParentEvent === true
           ? this.updatePosition
           : this.hide
 
-        this.__changeScrollEvent(this.__scrollTarget, fn)
+        this.__changeScrollEvent(fn, getScrollTarget(this.anchorEl, this.scrollTarget))
       }
     },
 
@@ -223,18 +228,26 @@ export default Vue.extend({
         props: { name: this.transition }
       }, [
         this.showing === true ? h('div', {
-          staticClass: 'q-tooltip q-tooltip--style q-position-engine no-pointer-events',
-          class: this.contentClass,
-          style: this.contentStyle,
-          attrs: {
-            role: 'complementary'
-          }
-        }, slot(this, 'default')) : null
+          class: 'q-tooltip__container column no-pointer-events'
+        }, [
+          h('div', {
+            staticClass: 'q-tooltip q-tooltip--style scroll',
+            class: this.contentClass,
+            style: this.contentStyle,
+            attrs: {
+              role: 'complementary'
+            }
+          }, slot(this, 'default'))
+        ]) : null
       ])
     }
   },
 
   mounted () {
     this.__processModelChange(this.value)
+  },
+
+  beforeDestroy () {
+    this.settingPosition !== void 0 && cancelAnimationFrame(this.settingPosition)
   }
 })

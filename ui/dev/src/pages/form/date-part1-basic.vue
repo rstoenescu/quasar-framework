@@ -247,7 +247,7 @@
       </div>
       <div class="q-gutter-md">
         <q-input :dark="dark" filled v-model="inputFull">
-          <template v-slot:append>
+          <template v-slot:prepend>
             <q-icon name="event" class="cursor-pointer" @click.prevent>
               <q-popup-proxy ref="qDateProxy1">
                 <q-date
@@ -260,6 +260,8 @@
                 />
               </q-popup-proxy>
             </q-icon>
+          </template>
+          <template v-slot:append>
             <q-icon name="access_time" class="cursor-pointer" @click.prevent>
               <q-popup-proxy ref="qDateProxy2">
                 <q-time

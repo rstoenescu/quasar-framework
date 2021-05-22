@@ -850,7 +850,7 @@ export default Vue.extend({
         ? this.$refs.menuContent
         : (
           this.$refs.menu !== void 0 && this.$refs.menu.__portal !== void 0
-            ? this.$refs.menu.__portal.$el
+            ? (this.$refs.menu.__portal.$el.children || [])[0] // fallback [] for IE
             : void 0
         )
     },

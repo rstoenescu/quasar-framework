@@ -112,6 +112,20 @@
       "category": "behavior"
     },
 
+    "min-height": {
+      "extends": "size",
+      "desc": "The minimum height of the menu; Size in CSS units, including unit name",
+      "category": "style",
+      "addedIn": "v1.15.5"
+    },
+
+    "min-width": {
+      "extends": "size",
+      "desc": "The minimum width of the menu; Size in CSS units, including unit name",
+      "category": "style",
+      "addedIn": "v1.15.5"
+    },
+
     "max-height": {
       "extends": "size",
       "desc": "The maximum height of the menu; Size in CSS units, including unit name",

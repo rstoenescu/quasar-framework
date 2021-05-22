@@ -20,6 +20,7 @@ export namespace event {
   function rightClick(evt: MouseEvent): boolean;
   function position(evt: TouchEvent): { top: number; left: number };
   function getEventPath(evt: Event): EventTarget[];
+  function eventOnAncestors(evt: Event, el: Element | null | undefined): boolean;
   function getMouseWheelDistance(evt: WheelEvent): { x: number; y: number };
   function stop(evt: Event): void;
   function prevent(evt: Event): void;

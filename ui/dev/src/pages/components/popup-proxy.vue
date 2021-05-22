@@ -154,7 +154,7 @@
         <q-input filled v-model="input" mask="date" :rules="['date']">
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
-              <q-menu :breakpoint="600" @before-show="onBeforeShow2" @show="onShow2" @before-hide="onBeforeHide2" @hide="onHide2">
+              <q-menu :breakpoint="600" cover @before-show="onBeforeShow2" @show="onShow2" @before-hide="onBeforeHide2" @hide="onHide2">
                 <q-date v-model="input" filled />
                 <q-btn label="Close" v-close-popup />
               </q-menu>

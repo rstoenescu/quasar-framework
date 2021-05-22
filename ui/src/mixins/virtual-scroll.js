@@ -1,4 +1,5 @@
 import debounce from '../utils/debounce.js'
+import { isBuggyRTLScroll } from '../utils/scroll.js'
 
 const aggBucketSize = 1000
 
@@ -12,30 +13,6 @@ const scrollToEdges = [
 ]
 
 const slice = Array.prototype.slice
-
-let buggyRTL = void 0
-
-// mobile Chrome takes the crown for this
-function detectBuggyRTL () {
-  const scroller = document.createElement('div')
-  const spacer = document.createElement('div')
-
-  scroller.setAttribute('dir', 'rtl')
-  scroller.style.width = '1px'
-  scroller.style.height = '1px'
-  scroller.style.overflow = 'auto'
-
-  spacer.style.width = '1000px'
-  spacer.style.height = '1px'
-
-  document.body.appendChild(scroller)
-  scroller.appendChild(spacer)
-  scroller.scrollLeft = -1000
-
-  buggyRTL = scroller.scrollLeft >= 0
-
-  scroller.remove()
-}
 
 function sumFn (acc, h) {
   return acc + h
@@ -65,7 +42,7 @@ function getScrollDetails (
   if (horizontal === true) {
     if (parent === window) {
       details.scrollStart = window.pageXOffset || window.scrollX || document.body.scrollLeft || 0
-      details.scrollViewSize += window.innerWidth
+      details.scrollViewSize += document.documentElement.clientWidth
     }
     else {
       details.scrollStart = parentCalc.scrollLeft
@@ -74,13 +51,13 @@ function getScrollDetails (
     details.scrollMaxSize = parentCalc.scrollWidth
 
     if (rtl === true) {
-      details.scrollStart = (buggyRTL === true ? details.scrollMaxSize - details.scrollViewSize : 0) - details.scrollStart
+      details.scrollStart = (isBuggyRTLScroll() === true ? details.scrollMaxSize - details.scrollViewSize : 0) - details.scrollStart
     }
   }
   else {
     if (parent === window) {
       details.scrollStart = window.pageYOffset || window.scrollY || document.body.scrollTop || 0
-      details.scrollViewSize += window.innerHeight
+      details.scrollViewSize += document.documentElement.clientHeight
     }
     else {
       details.scrollStart = parentCalc.scrollTop
@@ -131,7 +108,7 @@ function setScroll (parent, scroll, horizontal, rtl) {
   if (parent === window) {
     if (horizontal === true) {
       if (rtl === true) {
-        scroll = (buggyRTL === true ? document.body.scrollWidth - window.innerWidth : 0) - scroll
+        scroll = (isBuggyRTLScroll() === true ? document.body.scrollWidth - document.documentElement.clientWidth : 0) - scroll
       }
       window.scrollTo(scroll, window.pageYOffset || window.scrollY || document.body.scrollTop || 0)
     }
@@ -141,7 +118,7 @@ function setScroll (parent, scroll, horizontal, rtl) {
   }
   else if (horizontal === true) {
     if (rtl === true) {
-      scroll = (buggyRTL === true ? parent.scrollWidth - parent.offsetWidth : 0) - scroll
+      scroll = (isBuggyRTLScroll() === true ? parent.scrollWidth - parent.offsetWidth : 0) - scroll
     }
     parent.scrollLeft = scroll
   }
@@ -518,7 +495,7 @@ export default {
 
       if (contentEl !== void 0) {
         const
-          children = slice.call(contentEl.children).filter(el => el.classList.contains('q-virtual-scroll--skip') === false),
+          children = slice.call(contentEl.children || []).filter(el => el.classList.contains('q-virtual-scroll--skip') === false), // fallback [] for IE
           childrenLength = children.length,
           sizeFn = this.virtualScrollHorizontal === true
             ? el => el.getBoundingClientRect().width
@@ -708,7 +685,6 @@ export default {
   },
 
   beforeMount () {
-    buggyRTL === void 0 && detectBuggyRTL()
     this.__onVirtualScrollEvt = debounce(this.__onVirtualScrollEvt, this.$q.platform.is.ios === true ? 120 : 35)
     this.__setVirtualScrollSize()
   },

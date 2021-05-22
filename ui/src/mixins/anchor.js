@@ -1,7 +1,17 @@
 import { clearSelection } from '../utils/selection.js'
-import { addEvt, cleanEvt, prevent, listenOpts } from '../utils/event.js'
+import { addEvt, cleanEvt, prevent, listenOpts, eventOnAncestors } from '../utils/event.js'
 import { getTouchTarget } from '../utils/touch.js'
 import { isKeyCode } from '../utils/key-composition.js'
+
+const scrollListenerHandlers = []
+
+function scrollEventDispatcher (e) {
+  scrollListenerHandlers
+    .slice()
+    .forEach(fn => {
+      eventOnAncestors(e, fn.scrollTarget) === true && fn(e)
+    })
+}
 
 export default {
   props: {
@@ -168,17 +178,32 @@ export default {
       }
     },
 
-    __changeScrollEvent (scrollTarget, fn) {
-      const fnProp = `${fn !== void 0 ? 'add' : 'remove'}EventListener`
-      const fnHandler = fn !== void 0 ? fn : this.__scrollFn
+    __changeScrollEvent (fn, scrollTarget) {
+      const hadHandlers = scrollListenerHandlers.length > 0
 
-      if (scrollTarget !== window) {
-        scrollTarget[fnProp]('scroll', fnHandler, listenOpts.passive)
+      if (this.__scrollFn !== void 0) {
+        const index = scrollListenerHandlers.indexOf(this.__scrollFn)
+
+        if (index > -1) {
+          scrollListenerHandlers.splice(index, 1)
+        }
+
+        this.__scrollFn = void 0
       }
 
-      window[fnProp]('scroll', fnHandler, listenOpts.passive)
+      if (fn !== void 0 && scrollTarget !== null && scrollTarget !== void 0) {
+        fn.scrollTarget = scrollTarget === window ? document : scrollTarget
+        scrollListenerHandlers.push(fn)
 
-      this.__scrollFn = fn
+        this.__scrollFn = fn
+      }
+
+      if (hadHandlers === true && scrollListenerHandlers.length === 0) {
+        window.removeEventListener('scroll', scrollEventDispatcher, listenOpts.passiveCapture)
+      }
+      else if (hadHandlers === false && scrollListenerHandlers.length > 0) {
+        window.addEventListener('scroll', scrollEventDispatcher, listenOpts.passiveCapture)
+      }
     }
   },
 
@@ -188,10 +213,8 @@ export default {
       typeof this.__unconfigureScrollTarget === 'function'
     ) {
       this.noParentEventWatcher = this.$watch('noParentEvent', () => {
-        if (this.__scrollTarget !== void 0) {
-          this.__unconfigureScrollTarget()
-          this.__configureScrollTarget()
-        }
+        this.__unconfigureScrollTarget()
+        this.__configureScrollTarget()
       })
     }
   },

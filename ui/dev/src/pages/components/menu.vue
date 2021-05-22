@@ -1,8 +1,22 @@
 <template>
   <div>
     <div class="q-layout-padding">
-      <div class="caption" style="margin-top: 120px;">
+      <div class="caption row items-center justify-between" style="margin-top: 134px;">
         This page has intended scroll so you can see multiple scenarios.
+
+        <q-select
+          v-model="transition"
+          :options="transitions"
+          map-options
+          emit-value
+          label="transition"
+          clearable
+          color="deep-orange"
+          outlined
+          dense
+          style="min-width: 14em"
+          behavior="menu"
+        />
       </div>
 
       <div class="q-gutter-sm">
@@ -25,7 +39,7 @@
                 v-close-popup
                 @click="showNotify()"
               >
-                <q-item-section>Label</q-item-section>
+                <q-item-section>Label {{ n }}/20</q-item-section>
               </q-item>
             </q-list>
           </q-menu>
@@ -50,7 +64,7 @@
                 v-close-popup
                 @click="showNotify()"
               >
-                <q-item-section>Label</q-item-section>
+                <q-item-section>Label {{ n }}/20</q-item-section>
               </q-item>
             </q-list>
           </q-menu>
@@ -70,14 +84,14 @@
                 v-close-popup
                 @click="showNotify()"
               >
-                <q-item-section>Label</q-item-section>
+                <q-item-section>Label {{ n }}/20</q-item-section>
               </q-item>
             </q-list>
           </q-menu>
         </q-btn>
 
         <q-btn color="primary" label="Cover">
-          <q-menu cover @show="log('@show cover')" @hide="log('@hide cover')">
+          <q-menu cover @show="log('@show cover')" @hide="log('@hide cover')" v-bind="transition">
             <q-list style="min-width: 100px">
               <q-item
                 v-for="n in 20"
@@ -86,14 +100,14 @@
                 v-close-popup
                 @click="showNotify()"
               >
-                <q-item-section>Label</q-item-section>
+                <q-item-section>Label {{ n }}/20</q-item-section>
               </q-item>
             </q-list>
           </q-menu>
         </q-btn>
 
         <q-btn color="primary" label="Menu with select">
-          <q-menu cover @show="log('@show cover')" @hide="log('@hide cover')" content-class="q-pa-md">
+          <q-menu cover @show="log('@show cover')" @hide="log('@hide cover')" content-class="q-pa-md" v-bind="transition">
             <div class="column q-gutter-md">
               <q-select v-model="selectModelS" :options="selectOptions" behavior="menu" filled label="Select single - menu" clearable />
               <q-select v-model="selectModelM" :options="selectOptions" behavior="menu" filled multiple label="Select multiple - menu" clearable />
@@ -140,7 +154,7 @@
                 <q-menu>
                   <q-list>
                     <q-item v-for="n in 5" :key="n" v-close-popup clickable>
-                      <q-item-section>Menu Item {{ n }}</q-item-section>
+                      <q-item-section>Menu Item {{ n }}/5</q-item-section>
                     </q-item>
                     <q-item clickable>
                       <q-item-section>Submenu Label</q-item-section>
@@ -150,7 +164,7 @@
                       <q-menu anchor="top right" self="top left">
                         <q-list>
                           <q-item v-for="n in 5" :key="n" v-close-popup clickable>
-                            <q-item-section>Menu Item {{ n }}</q-item-section>
+                            <q-item-section>Menu Item {{ n }}/5</q-item-section>
                           </q-item>
                           <q-item clickable v-close-popup="2">
                             <q-item-section>Close dialog</q-item-section>
@@ -166,7 +180,7 @@
         </q-dialog>
 
         <q-btn color="purple" label="Account Settings">
-          <q-menu>
+          <q-menu v-bind="transition">
             <div class="row no-wrap q-pa-md">
               <div class="column">
                 <div class="text-h6 q-mb-md">Settings</div>
@@ -194,6 +208,82 @@
             </div>
           </q-menu>
         </q-btn>
+
+        <q-btn color="brown" label="Max Height Menu">
+          <q-menu max-height="130px" v-bind="transition">
+            <q-list style="min-width: 100px">
+              <q-item clickable>
+                <q-item-section>New tab</q-item-section>
+              </q-item>
+              <q-item clickable>
+                <q-item-section>New incognito tab</q-item-section>
+              </q-item>
+              <q-separator />
+              <q-item clickable>
+                <q-item-section>Recent tabs</q-item-section>
+              </q-item>
+              <q-item clickable>
+                <q-item-section>History</q-item-section>
+              </q-item>
+              <q-item clickable>
+                <q-item-section>Downloads</q-item-section>
+              </q-item>
+              <q-separator />
+              <q-item clickable>
+                <q-item-section>Settings</q-item-section>
+              </q-item>
+              <q-separator />
+              <q-item clickable>
+                <q-item-section>Help &amp; Feedback</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-btn>
+
+        <q-btn color="indigo" label="Max Width Menu">
+          <q-menu max-width="80px" v-bind="transition">
+            <q-list style="min-width: 100px">
+              <q-item clickable>
+                <q-item-section>
+                  <q-item-label lines="1">New tab</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item clickable>
+                <q-item-section>
+                  <q-item-label lines="1">New incognito tab</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-separator />
+              <q-item clickable>
+                <q-item-section>
+                  <q-item-label lines="1">Recent tabs</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item clickable>
+                <q-item-section>
+                  <q-item-label lines="1">History</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item clickable>
+                <q-item-section>
+                  <q-item-label lines="1">Downloads</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-separator />
+              <q-item clickable>
+                <q-item-section>
+                  <q-item-label lines="1">Settings</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-separator />
+              <q-item clickable>
+                <q-item-section>
+                  <q-item-label lines="1">Help & Feedback</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-btn>
       </div>
 
       <div class="q-gutter-md q-my-md">
@@ -205,7 +295,9 @@
                 :cover="cover"
                 :anchor="anchor"
                 :self="self"
+                :offset="calculatedOffset"
                 auto-close
+                v-bind="transition"
               >
                 <q-list style="min-width: 400px">
                   <q-item
@@ -214,7 +306,7 @@
                     clickable
                     @click="showNotify()"
                   >
-                    <q-item-section>Label</q-item-section>
+                    <q-item-section>Label {{ n }}/50</q-item-section>
                   </q-item>
                 </q-list>
               </q-menu>
@@ -225,6 +317,8 @@
                 :cover="cover"
                 :anchor="anchor"
                 :self="self"
+                :offset="calculatedOffset"
+                v-bind="transition"
               >
                 <q-list>
                   <q-item
@@ -234,7 +328,7 @@
                     clickable
                     @click="showNotify()"
                   >
-                    <q-item-section>Label</q-item-section>
+                    <q-item-section>Label {{ n }}/5</q-item-section>
                   </q-item>
                 </q-list>
               </q-menu>
@@ -266,6 +360,7 @@
           <div class="row flex-center q-my-sm q-gutter-md">
             <q-toggle v-model="fit" label="Fit" />
             <q-toggle v-model="cover" label="Cover" />
+            <q-toggle v-model="offset" label="Offset [50, 50]" />
           </div>
           <q-card-section class="row" :class="cover ? 'justify-center' : ''">
             <div class="column items-center col-6">
@@ -317,12 +412,18 @@
         <q-card class="q-mx-auto" style="width: 500px; max-width: 90vw;">
           <q-card-section>
             <div class="q-gutter-sm">
-              <q-toggle label="touch-position" v-model="touchPosition" />
+              <q-toggle label="touch-position" v-model="touchPosition" toggle-indeterminate :indeterminate-value="null" />
               <q-toggle label="context-menu" v-model="contextMenu" />
             </div>
           </q-card-section>
           <q-img src="https://cdn.quasar.dev/img/material.png" style="height: 100px">
-            <q-menu :touch-position="touchPosition" :context-menu="contextMenu">
+            <q-menu
+              :touch-position="touchPosition"
+              :context-menu="contextMenu"
+              :offset="calculatedOffset"
+              :fit="fit"
+              :cover="cover"
+            >
               <q-list>
                 <q-item
                   v-for="n in 5"
@@ -331,14 +432,21 @@
                   clickable
                   @click="showNotify()"
                 >
-                  <q-item-section>Label</q-item-section>
+                  <q-item-section>Label {{ n }}/5</q-item-section>
                 </q-item>
               </q-list>
             </q-menu>
           </q-img>
           <div>With model: {{ menuModelTouch }}</div>
           <q-img src="https://cdn.quasar.dev/img/material.png" style="height: 100px">
-            <q-menu v-model="menuModelTouch" :touch-position="touchPosition" :context-menu="contextMenu">
+            <q-menu
+              v-model="menuModelTouch"
+              :touch-position="touchPosition"
+              :context-menu="contextMenu"
+              :offset="calculatedOffset"
+              :fit="fit"
+              :cover="cover"
+            >
               <q-list>
                 <q-item
                   v-for="n in 5"
@@ -347,7 +455,7 @@
                   clickable
                   @click="showNotify()"
                 >
-                  <q-item-section>Label</q-item-section>
+                  <q-item-section>Label {{ n }}/5</q-item-section>
                 </q-item>
               </q-list>
             </q-menu>
@@ -371,7 +479,7 @@
                   clickable
                   @click="showNotify()"
                 >
-                  <q-item-section>Label</q-item-section>
+                  <q-item-section>Label {{ n }}/5</q-item-section>
                 </q-item>
               </q-list>
             </q-menu>
@@ -389,7 +497,7 @@
                   clickable
                   @click="showNotify()"
                 >
-                  <q-item-section>Label</q-item-section>
+                  <q-item-section>Label {{ n }}/5</q-item-section>
                 </q-item>
               </q-list>
             </q-menu>
@@ -432,7 +540,7 @@
                   clickable
                   @click="showNotify()"
                 >
-                  <q-item-section>Label</q-item-section>
+                  <q-item-section>Label {{ n }}/5</q-item-section>
                 </q-item>
               </q-list>
             </q-menu>
@@ -463,7 +571,7 @@
                     <q-icon name="keyboard_arrow_right" />
                   </q-item-section>
 
-                  <q-menu anchor="top right" self="top left">
+                  <q-menu anchor="top end" self="top start">
                     <q-list>
                       <q-item
                         v-close-popup
@@ -481,7 +589,7 @@
                         <q-item-section side>
                           <q-icon name="keyboard_arrow_right" />
                         </q-item-section>
-                        <q-menu auto-close anchor="top right" self="top left">
+                        <q-menu auto-close anchor="top end" self="top start">
                           <q-list>
                             <q-item
                               v-for="y in 3"
@@ -499,11 +607,11 @@
                         <q-item-section side>
                           <q-icon name="keyboard_arrow_right" />
                         </q-item-section>
-                        <q-menu anchor="top right" self="top left">
+                        <q-menu anchor="top end" self="top start">
                           <q-list>
                             <q-item
-                              v-for="y in 3"
-                              :key="y"
+                              v-for="x in 3"
+                              :key="x"
                               clickable
                               v-close-popup
                             >
@@ -521,7 +629,7 @@
         </q-card>
       </div>
 
-      <div style="width: 250vw; height: 400vh">
+      <div style="width: 110vw; height: 40vh">
         <div class="row q-pa-sm">
           <div class="col-4">Left col</div>
           <div class="col-4">
@@ -536,8 +644,8 @@
         </div>
       </div>
 
-      <q-btn color="secondary" class="fixed-top-right" icon="directions" style="top: 65px; right: 16px;">
-        <q-menu ref="popover3">
+      <q-btn color="secondary" class="fixed-top-right" icon="directions" style="margin: 65px 35px;">
+        <q-menu ref="popover3" v-bind="transition">
           <q-img
             src="https://cdn.quasar.dev/img/map.png"
             style="height: 150px; width: 200px;"
@@ -547,8 +655,8 @@
         </q-menu>
       </q-btn>
 
-      <q-btn color="accent" class="fixed-bottom-right" icon="plus_one" style="bottom: 10px; right: 16px;">
-        <q-menu ref="popover4">
+      <q-btn color="accent" class="fixed-bottom-right" icon="plus_one" style="margin: 35px;">
+        <q-menu ref="popover4" v-bind="transition">
           <div class="group" style="width: 220px; text-align: center;">
             <q-btn icon="thumb_up" flat color="primary" @click="showNotify(), $refs.popover4.hide()" />
             <q-btn icon="thumb_down" flat color="primary" @click="showNotify(), $refs.popover4.hide()" />
@@ -558,8 +666,8 @@
       </q-btn>
     </div>
 
-    <q-btn icon="menu" color="primary" class="fixed-bottom-left" style="bottom: 10px; left: 10px;">
-      <q-menu ref="popover5">
+    <q-btn icon="menu" color="primary" class="fixed-bottom-left" style="margin: 35px;">
+      <q-menu ref="popover5" v-bind="transition">
         <q-list style="min-width: 200px">
           <q-item
             v-for="n in 20"
@@ -567,7 +675,7 @@
             clickable
             @click.native="showNotify(), $refs.popover5.hide()"
           >
-            <q-item-section>Label</q-item-section>
+            <q-item-section>Label {{ n }}/20</q-item-section>
           </q-item>
         </q-list>
       </q-menu>
@@ -588,6 +696,7 @@ export default {
       gigi: '',
       fit: false,
       cover: false,
+      offset: false,
       toggle: true,
       anchorOrigin: { vertical: 'bottom', horizontal: 'left' },
       selfOrigin: { vertical: 'top', horizontal: 'left' },
@@ -612,7 +721,15 @@ export default {
       dialog2: false,
 
       mobileData: true,
-      bluetooth: false
+      bluetooth: false,
+
+      transitions: [
+        { label: 'Flip', value: { transitionShow: 'flip-right', transitionHide: 'flip-left' } },
+        { label: 'Scale', value: { transitionShow: 'scale', transitionHide: 'scale' } },
+        { label: 'Jump', value: { transitionShow: 'jump-down', transitionHide: 'jump-up' } },
+        { label: 'Rotate', value: { transitionShow: 'rotate', transitionHide: 'rotate' } }
+      ],
+      transition: null
     }
   },
   computed: {
@@ -621,6 +738,9 @@ export default {
     },
     self () {
       return `${this.selfOrigin.vertical} ${this.selfOrigin.horizontal}`
+    },
+    calculatedOffset () {
+      return this.offset === true ? [50, 50] : void 0
     }
   },
   methods: {
