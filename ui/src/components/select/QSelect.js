@@ -15,7 +15,7 @@ import { isDeepEqual } from '../../utils/is.js'
 import { stop, prevent, stopAndPrevent } from '../../utils/event.js'
 import { normalizeToInterval } from '../../utils/format.js'
 import { shouldIgnoreKey, isKeyCode } from '../../utils/key-composition.js'
-import { mergeSlot } from '../../utils/slot.js'
+import { slot, mergeSlot } from '../../utils/slot.js'
 import cache from '../../utils/cache.js'
 
 import { FormFieldMixin } from '../../mixins/form.js'
@@ -80,6 +80,11 @@ export default Vue.extend({
 
     popupContentClass: String,
     popupContentStyle: [String, Array, Object],
+
+    dialogContentClass: [String, Array, Object],
+    dialogContentStyle: [String, Array, Object],
+
+    dialogCloseIcon: [Boolean, String],
 
     useInput: Boolean,
     useChips: Boolean,
@@ -326,6 +331,18 @@ export default Vue.extend({
         : this.$q.iconSet.arrow.dropdown
     },
 
+    computedDialogCloseIcon () {
+      if (this.dialogCloseIcon === true) {
+        return this.$q.lang.rtl === true
+          ? this.$q.iconSet.chevron.right
+          : this.$q.iconSet.chevron.left
+      }
+
+      return typeof this.dialogCloseIcon === 'string' && this.dialogCloseIcon.length > 0
+        ? this.dialogCloseIcon
+        : false
+    },
+
     squaredMenu () {
       return this.optionsCover === false &&
         this.outlined !== true &&
@@ -382,6 +399,15 @@ export default Vue.extend({
       on.compositionstart = on.compositionupdate = on.compositionend = this.__onComposition
 
       return on
+    },
+
+    closeButtonEvents () {
+      return {
+        click: e => {
+          stopAndPrevent(e)
+          this.hidePopup()
+        }
+      }
     },
 
     virtualScrollItemSizeComputed () {
@@ -465,6 +491,9 @@ export default Vue.extend({
             true,
             true
           )
+
+          this.dialogFieldFocused = false
+          document.activeElement.blur()
 
           this.hidePopup()
         }
@@ -569,8 +598,12 @@ export default Vue.extend({
       return this.innerOptionsValue.find(v => isDeepEqual(v, val)) !== void 0
     },
 
-    __selectInputText () {
-      if (this.useInput === true && this.$refs.target !== void 0) {
+    __selectInputText (ev) {
+      if (
+        this.useInput === true &&
+        this.$refs.target !== void 0 &&
+        (ev === void 0 || (this.$refs.target === ev.target && ev.target.value === this.selectedString))
+      ) {
         this.$refs.target.select()
       }
     },
@@ -913,15 +946,16 @@ export default Vue.extend({
         child.push(this.__getInput(h, fromDialog, isTarget))
       }
       // there can be only one (when dialog is opened the control in dialog should be target)
-      else if (this.editable === true && isTarget === true) {
+      else if (this.editable === true) {
         child.push(
-          h('div', {
-            ref: 'target',
+          h('input', {
+            ref: isTarget === true ? 'target' : void 0,
             key: 'd_t',
-            staticClass: 'no-outline',
+            staticClass: 'q-field__focus-target',
             attrs: {
-              id: this.targetUid,
-              tabindex: this.tabindex
+              id: isTarget === true ? this.targetUid : void 0,
+              tabindex: this.tabindex,
+              readonly: true
             },
             on: cache(this, 'f-tget', {
               keydown: this.__onTargetKeydown,
@@ -931,7 +965,7 @@ export default Vue.extend({
           })
         )
 
-        if (typeof this.autocomplete === 'string' && this.autocomplete.length > 0) {
+        if (isTarget === true && typeof this.autocomplete === 'string' && this.autocomplete.length > 0) {
           child.push(
             h('input', {
               staticClass: 'q-select__autocomplete-input no-outline',
@@ -1009,6 +1043,25 @@ export default Vue.extend({
       return mergeSlot(options, this, 'after-options')
     },
 
+    __prependDialogCloseIcon (h) {
+      if (
+        this.computedDialogCloseIcon === false ||
+        this.hasDialog !== true ||
+        this.dialog !== true
+      ) {
+        return slot(this, 'prepend')
+      }
+
+      return mergeSlot([
+        h(QIcon, {
+          staticClass: 'q-select__close-icon q-field__focusable-action',
+          props: { tag: 'button', name: this.computedDialogCloseIcon },
+          attrs: { tabindex: 0, type: 'button' },
+          on: this.closeButtonEvents
+        })
+      ], this, 'prepend')
+    },
+
     __getInnerAppend (h) {
       return this.loading !== true && this.innerLoadingIndicator !== true && this.hideDropdownIcon !== true
         ? [
@@ -1032,7 +1085,7 @@ export default Vue.extend({
           // required for Android in order to show ENTER key when in form
           type: 'search',
           ...this.qAttrs,
-          id: this.targetUid,
+          id: isTarget === true ? this.targetUid : void 0,
           maxlength: this.maxlength, // this is converted to prop by QField
           tabindex: this.tabindex,
           autocomplete: this.autocomplete,
@@ -1055,13 +1108,21 @@ export default Vue.extend({
     },
 
     __onInput (e) {
-      clearTimeout(this.inputTimer)
-
-      if (e && e.target && e.target.composing === true) {
+      if (!e || !e.target || e.target.composing === true) {
         return
       }
 
-      this.__setInputValue(e.target.value || '')
+      const val = typeof e.data === 'string' && e.isComposing === true && e.data.length + 1 === e.target.value.length
+        ? e.data
+        : e.target.value
+
+      if (this.inputValue === val) {
+        return
+      }
+
+      clearTimeout(this.inputTimer)
+
+      this.__setInputValue(val)
       // mark it here as user input so that if updateInputValue is called
       // before filter is called the indicator is reset
       this.userInputValue = true
@@ -1155,6 +1216,7 @@ export default Vue.extend({
                 }
                 else {
                   this.menu = true
+                  this.hasDialog === true && (this.dialog = true)
                 }
               }
 
@@ -1265,7 +1327,6 @@ export default Vue.extend({
       stop(e)
       this.$refs.target !== void 0 && this.$refs.target.focus()
       this.dialogFieldFocused = true
-      window.scrollTo(window.pageXOffset || window.scrollX || document.body.scrollLeft || 0, 0)
     },
 
     __onDialogFieldBlur (e) {
@@ -1297,6 +1358,7 @@ export default Vue.extend({
           scopedSlots: {
             ...this.$scopedSlots,
             rawControl: () => this.__getControl(h, true),
+            prepend: () => this.__prependDialogCloseIcon(h),
             before: void 0,
             after: void 0
           }
@@ -1330,6 +1392,8 @@ export default Vue.extend({
           value: this.dialog,
           dark: this.isOptionsDark,
           position: this.useInput === true ? 'top' : void 0,
+          contentClass: this.dialogContentClass,
+          contentStyle: this.dialogContentStyle,
           transitionShow: this.transitionShowComputed,
           transitionHide: this.transitionHide
         },
@@ -1348,11 +1412,17 @@ export default Vue.extend({
     },
 
     __onDialogBeforeHide () {
-      this.$refs.dialog.__refocusTarget = this.$el.querySelector('.q-field__native > [tabindex]:last-child')
+      if (this.useInput !== true || this.$q.platform.is.desktop === true) {
+        this.$refs.dialog.__refocusTarget = this.$el.querySelector('.q-field__native > [tabindex]:last-child')
+      }
       this.focused = false
+      this.dialogFieldFocused = false
     },
 
     __onDialogHide (e) {
+      if (this.$q.platform.is.desktop !== true) {
+        document.activeElement.blur()
+      }
       this.hidePopup()
       this.focused === false && this.$emit('blur', e)
       this.__resetInputValue()

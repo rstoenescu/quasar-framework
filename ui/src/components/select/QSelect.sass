@@ -12,6 +12,14 @@
     &--padding
       padding-left: 4px
 
+  .q-field__focus-target
+    outline: 0 !important
+    width: 0
+    height: 0
+    padding: 0
+    border: 0
+    opacity: 0
+
   &__autocomplete-input
     width: 0
     height: 0
@@ -22,6 +30,12 @@
   &__dropdown-icon
     cursor: pointer
     transition: transform .28s
+
+  &__close-icon
+    cursor: pointer
+
+    &:not(:last-child)
+      margin-right: 12px
 
   &.q-field--readonly
     .q-field__control, .q-select__dropdown-icon

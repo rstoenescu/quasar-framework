@@ -186,9 +186,41 @@
       "desc": "Style definitions to be attributed to the popup content",
       "examples": [
         "background-color: #ff0000",
-        ":content-style=\"{ backgroundColor: '#ff0000' }\""
+        ":popup-content-style=\"{ backgroundColor: '#ff0000' }\""
       ],
       "category": "style"
+    },
+
+    "dialog-content-class": {
+      "type": [ "Array", "String", "Object" ],
+      "desc": "Class definitions to be attributed to the dialog external element",
+      "examples": [
+        "my-special-class"
+      ],
+      "category": "style",
+      "addedIn": "v1.15.5"
+    },
+
+    "dialog-content-style": {
+      "type": [ "Array", "String", "Object" ],
+      "desc": "Style definitions to be attributed to the dialog external element",
+      "examples": [
+        "background-color: #ff0000",
+        ":dialog-content-style=\"{ backgroundColor: '#ff0000' }\""
+      ],
+      "category": "style",
+      "addedIn": "v1.15.5"
+    },
+
+    "dialog-close-icon": {
+      "type": [ "Boolean", "String" ],
+      "desc": "Style definitions to be attributed to the dialog external element",
+      "examples": [
+        "dialog-close-icon",
+        "dialog-close-icon=\"close\""
+      ],
+      "category": "behavior|style",
+      "addedIn": "v1.15.5"
     },
 
     "use-input": {

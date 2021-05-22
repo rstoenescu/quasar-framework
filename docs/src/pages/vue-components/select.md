@@ -64,6 +64,10 @@ Please note that on iOS menu behavior might generate problems, especially when u
 
 <doc-example title="Show options in dialog" file="QSelect/BehaviorDialog" />
 
+### Dialog mode close icon
+
+<doc-example title="Close icon in dialog" file="QSelect/DialogCloseIcon" />
+
 ## The model
 
 ::: danger

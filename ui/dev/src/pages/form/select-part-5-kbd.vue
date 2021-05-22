@@ -1,7 +1,13 @@
 <template>
   <div class="q-layout-padding">
+    <div class="row items-center bg-black text-white q-pa-sm">
+      <q-checkbox v-model="forceMenu" toggle-indeterminate dark :label="forceMenuLabel" />
+      <q-checkbox v-model="dialogCloseIcon" toggle-indeterminate dark :label="dialogCloseIconLabel" />
+    </div>
+
     <div class="bg-black text-white q-pa-sm q-mb-xl">
-      <q-checkbox v-model="forceMenu" toggle-indeterminate dark :label="forceMenuLabel" /> / ModelS: {{ modelS || 'null' }} / ModelM: {{ modelM || 'null' }}
+      <div>ModelS: {{ modelS || 'null' }}</div>
+      <div>ModelM: {{ modelM || 'null' }}</div>
     </div>
 
     <div class="row q-col-gutter-md">
@@ -14,6 +20,7 @@
           label="Single"
           :options="options"
           clearable
+          :dialog-close-icon="dialogCloseIconValue"
           :behavior="behavior"
         >
           <template v-slot:no-option>
@@ -22,6 +29,14 @@
                 No results
               </q-item-section>
             </q-item>
+          </template>
+
+          <template v-slot:prepend>
+            <q-icon name="colorize" />
+          </template>
+
+          <template v-slot:append>
+            <q-icon name="lock" />
           </template>
         </q-select>
 
@@ -35,6 +50,7 @@
           input-debounce="0"
           @filter="filterFn"
           clearable
+          :dialog-close-icon="dialogCloseIconValue"
           :behavior="behavior"
         >
           <template v-slot:no-option>
@@ -43,6 +59,14 @@
                 No results
               </q-item-section>
             </q-item>
+          </template>
+
+          <template v-slot:prepend>
+            <q-icon name="colorize" />
+          </template>
+
+          <template v-slot:append>
+            <q-icon name="lock" />
           </template>
         </q-select>
 
@@ -57,6 +81,7 @@
           hide-selected
           @filter="filterFn"
           clearable
+          :dialog-close-icon="dialogCloseIconValue"
           :behavior="behavior"
         >
           <template v-slot:no-option>
@@ -79,6 +104,7 @@
           fill-input
           @filter="filterFn"
           clearable
+          :dialog-close-icon="dialogCloseIconValue"
           :behavior="behavior"
         >
           <template v-slot:no-option>
@@ -101,6 +127,7 @@
           fill-input
           @filter="filterFn"
           clearable
+          :dialog-close-icon="dialogCloseIconValue"
           :behavior="behavior"
         >
           <template v-slot:no-option>
@@ -122,6 +149,7 @@
           label="Multiple"
           :options="options"
           clearable
+          :dialog-close-icon="dialogCloseIconValue"
           :behavior="behavior"
         >
           <template v-slot:no-option>
@@ -143,6 +171,7 @@
           input-debounce="0"
           @filter="filterFn"
           clearable
+          :dialog-close-icon="dialogCloseIconValue"
           :behavior="behavior"
         >
           <template v-slot:no-option>
@@ -165,6 +194,7 @@
           hide-selected
           @filter="filterFn"
           clearable
+          :dialog-close-icon="dialogCloseIconValue"
           :behavior="behavior"
         >
           <template v-slot:no-option>
@@ -187,6 +217,7 @@
           fill-input
           @filter="filterFn"
           clearable
+          :dialog-close-icon="dialogCloseIconValue"
           :behavior="behavior"
         >
           <template v-slot:no-option>
@@ -210,6 +241,7 @@
           fill-input
           @filter="filterFn"
           clearable
+          :dialog-close-icon="dialogCloseIconValue"
           :behavior="behavior"
         >
           <template v-slot:no-option>
@@ -232,6 +264,7 @@
           label="Multiple Chips"
           :options="options"
           clearable
+          :dialog-close-icon="dialogCloseIconValue"
           :behavior="behavior"
         >
           <template v-slot:no-option>
@@ -254,6 +287,7 @@
           input-debounce="0"
           @filter="filterFn"
           clearable
+          :dialog-close-icon="dialogCloseIconValue"
           :behavior="behavior"
         >
           <template v-slot:no-option>
@@ -277,6 +311,7 @@
           hide-selected
           @filter="filterFn"
           clearable
+          :dialog-close-icon="dialogCloseIconValue"
           :behavior="behavior"
         >
           <template v-slot:no-option>
@@ -300,6 +335,7 @@
           fill-input
           @filter="filterFn"
           clearable
+          :dialog-close-icon="dialogCloseIconValue"
           :behavior="behavior"
         >
           <template v-slot:no-option>
@@ -324,6 +360,7 @@
           fill-input
           @filter="filterFn"
           clearable
+          :dialog-close-icon="dialogCloseIconValue"
           :behavior="behavior"
         >
           <template v-slot:no-option>
@@ -348,6 +385,7 @@
           input-debounce="0"
           @filter="filterFnObj"
           clearable
+          :dialog-close-icon="dialogCloseIconValue"
           :behavior="behavior"
         >
           <template v-slot:no-option>
@@ -370,6 +408,7 @@
         option-value="value"
         option-label="label"
         clearable
+        :dialog-close-icon="dialogCloseIconValue"
         :behavior="behavior"
       />
 
@@ -383,6 +422,7 @@
         emit-value
         map-options
         clearable
+        :dialog-close-icon="dialogCloseIconValue"
         :behavior="behavior"
       />
 
@@ -396,6 +436,7 @@
         emit-value
         map-options
         clearable
+        :dialog-close-icon="dialogCloseIconValue"
         :behavior="behavior"
       />
 
@@ -407,6 +448,7 @@
         option-value="value"
         option-label="label"
         clearable
+        :dialog-close-icon="dialogCloseIconValue"
         :behavior="behavior"
       />
 
@@ -418,6 +460,7 @@
         :option-value="kOptionValue"
         :option-label="kOptionLabel"
         clearable
+        :dialog-close-icon="dialogCloseIconValue"
         :behavior="behavior"
       />
 
@@ -431,6 +474,7 @@
         emit-value
         map-options
         clearable
+        :dialog-close-icon="dialogCloseIconValue"
         :behavior="behavior"
       />
 
@@ -444,6 +488,7 @@
         emit-value
         map-options
         clearable
+        :dialog-close-icon="dialogCloseIconValue"
         :behavior="behavior"
       />
 
@@ -455,6 +500,7 @@
         :option-value="kOptionValue"
         :option-label="kOptionLabel"
         clearable
+        :dialog-close-icon="dialogCloseIconValue"
         :behavior="behavior"
       />
     </div>
@@ -490,7 +536,8 @@ export default {
       optionsK,
       objOptions,
       objOptionsK,
-      forceMenu: null
+      forceMenu: null,
+      dialogCloseIcon: false
     }
   },
 
@@ -507,7 +554,21 @@ export default {
       }
 
       return this.forceMenu === false ? 'Force dialog' : 'Based on platform'
-    }
+    },
+
+    dialogCloseIconValue () {
+      return this.dialogCloseIcon === null
+        ? 'close'
+        : this.dialogCloseIcon
+    },
+
+    dialogCloseIconLabel () {
+      if (this.dialogCloseIcon === true) {
+        return 'Default dialog close icon'
+      }
+
+      return this.dialogCloseIcon === false ? 'No dialog close icon' : 'Custom dialog close icon'
+    },
   },
 
   methods: {
