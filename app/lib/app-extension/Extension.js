@@ -28,9 +28,9 @@ async function promptOverwrite ({ targetPath, options }) {
   return answer
 }
 
-async function renderFile ({ sourcePath, targetPath, rawCopy, scope, overwritePrompt }) {
+async function renderFile ({ sourcePath, targetPath, rawCopy, scope, overwritePrompt, templateCompiler = 'lodash' }) {
   const isBinary = require('isbinaryfile').isBinaryFileSync
-  const compileTemplate = require('lodash.template')
+  const compileTemplate = templateCompiler === 'handlebars' ? require('handlebars').compile : require('lodash.template')
 
   if (overwritePrompt === true && fs.existsSync(targetPath)) {
     const answer = await promptOverwrite({
@@ -50,12 +50,16 @@ async function renderFile ({ sourcePath, targetPath, rawCopy, scope, overwritePr
   }
   else {
     const rawContent = fs.readFileSync(sourcePath, 'utf-8')
-    const template = compileTemplate(rawContent, { 'interpolate': /<%=([\s\S]+?)%>/g })
+    let template
+    if (templateCompiler === 'handlebars')
+      template = compileTemplate(rawContent)
+    else
+      template = compileTemplate(rawContent, { 'interpolate': /<%=([\s\S]+?)%>/g })
     fs.writeFileSync(targetPath, template(scope), 'utf-8')
   }
 }
 
-async function renderFolders ({ source, rawCopy, scope }) {
+async function renderFolders ({ source, rawCopy, scope, templateCompiler }) {
   const fglob = require('fast-glob')
 
   let overwrite
@@ -74,8 +78,11 @@ async function renderFolders ({ source, rawCopy, scope }) {
       return name
     }).join('/')
 
-    const targetPath = appPaths.resolve.app(targetRelativePath)
+    let targetPath = appPaths.resolve.app(targetRelativePath)
     const sourcePath = path.resolve(source, rawPath)
+
+    if (templateCompiler === 'handlebars')
+      targetPath = targetPath.replace('.hbs', '')
 
     if (overwrite !== 'overwriteAll' && fs.existsSync(targetPath)) {
       if (overwrite === 'skipAll') {
@@ -97,7 +104,7 @@ async function renderFolders ({ source, rawCopy, scope }) {
       }
     }
 
-    renderFile({ sourcePath, targetPath, rawCopy, scope })
+    renderFile({ sourcePath, targetPath, rawCopy, scope, templateCompiler })
   }
 }
 

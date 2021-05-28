@@ -234,8 +234,10 @@ module.exports = class InstallAPI {
    *
    * @param {string} templatePath (relative path to folder to render in app)
    * @param {object} scope (optional; rendering scope variables)
+   * @param {object} options (optional); { templateCompiler: 'lodash' | 'handlebars' }
    */
-  render (templatePath, scope) {
+  render (templatePath, scope, options) {
+    const { templateCompiler } = options || {}
     const dir = getCallerPath()
     const source = path.resolve(dir, templatePath)
     const rawCopy = !scope || Object.keys(scope).length === 0
@@ -254,7 +256,8 @@ module.exports = class InstallAPI {
     this.__hooks.renderFolders.push({
       source,
       rawCopy,
-      scope
+      scope,
+      templateCompiler
     })
   }
 
@@ -266,11 +269,13 @@ module.exports = class InstallAPI {
    * @param {string} relativeTargetPath (file path relative to the root of the app -- including filename!)
    * @param {object} scope (optional; rendering scope variables)
    */
-  renderFile (relativeSourcePath, relativeTargetPath, scope) {
+  renderFile (relativeSourcePath, relativeTargetPath, scope, options) {
     const dir = getCallerPath()
     const sourcePath = path.resolve(dir, relativeSourcePath)
     const targetPath = appPaths.resolve.app(relativeTargetPath)
     const rawCopy = !scope || Object.keys(scope).length === 0
+    const { templateCompiler } = options || {}
+    console.log(templateCompiler)
 
     if (!fs.existsSync(sourcePath)) {
       warn()
@@ -288,7 +293,8 @@ module.exports = class InstallAPI {
       targetPath,
       rawCopy,
       scope,
-      overwritePrompt: true
+      overwritePrompt: true,
+      templateCompiler
     })
   }
 

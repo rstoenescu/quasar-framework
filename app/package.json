@@ -71,6 +71,7 @@
     "fork-ts-checker-webpack-plugin": "4.1.6",
     "friendly-errors-webpack-plugin": "1.7.0",
     "fs-extra": "9.0.1",
+    "handlebars": "^4.7.7",
     "html-minifier": "4.0.0",
     "html-webpack-plugin": "4.5.0",
     "inquirer": "7.3.3",

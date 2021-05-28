@@ -155,6 +155,7 @@ Needs a relative path to the folder of the file calling render().
  *
  * @param {string} templatePath (relative path to folder to render in app)
  * @param {object} scope (optional; rendering scope variables)
+ * @param {object} options (optional; { templateCompiler: 'lodash' | 'handlebars' }
  */
 api.render('./path/to/a/template/folder')
 ```
@@ -215,6 +216,9 @@ const message = 'This is content when we don\'t have "Feature X"'
 
 Possibilities are limited only by your imagination.
 
+### Using Handlebars as template compiler <q-badge align="top" label="@quasar/app v3+" />
+
+If `templateCompiler` in `options` is set to `handlebars`, the source files will be rendered with the [Handlebars](https://handlebarsjs.com/) templating engine instead of lodash. Any .hbs extensions will also be stripped automatically.
 ## api.renderFile <q-badge align="top" label="@quasar/app v2+" />
 
 Similar with api.render() with the difference that this method renders a single file.
@@ -227,6 +231,7 @@ Similar with api.render() with the difference that this method renders a single 
  * @param {string} relativeSourcePath (file path relative to the folder from which the install script is called)
  * @param {string} relativeTargetPath (file path relative to the root of the app -- including filename!)
  * @param {object} scope (optional; rendering scope variables)
+ * @param {object} options (optional; { templateCompiler: 'lodash' | 'handlebars' }
  */
 api.renderFile('./path/to/a/template/filename', 'path/relative/to/app/root/filename', {
   prompts: api.prompts
