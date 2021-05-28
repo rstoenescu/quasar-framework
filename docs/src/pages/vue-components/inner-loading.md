@@ -13,6 +13,7 @@ related:
 The QInnerLoading component allows you to add a progress animation within a component. Much like the [Loading Plugin](/quasar-plugins/loading), its purpose is to offer visual confirmation to the user that some process is happening in the background, which takes an excessive amount of time. QInnerLoading will add an opaque overlay over the delayed element along with a [Spinner](/vue-components/spinners).
 
 ## Installation
+
 <doc-installation components="QInnerLoading" />
 
 If using a custom [Spinner](/vue-components/spinners), add it to the list of components. Example: `QSpinnerGears`.
@@ -28,6 +29,8 @@ QInnerLoading must be the last element inside its parent so it can appear on top
 :::
 
 <doc-example title="Basic" file="QInnerLoading/Basic" />
+<doc-example title="Labeled" file="QInnerLoading/Labeled" />
 
 ## QInnerLoading API
+
 <doc-api file="QInnerLoading" />
