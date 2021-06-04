@@ -74,6 +74,7 @@
   "arg": {
     "type": "String",
     "desc": "String of numbers (at least one number) separated by ':' which defines the amount of time to wait for 1st handler call, 2nd, 3rd and so on; All subsequent calls will use last value as time to wait until triggering",
+    "reactive": true,
     "default": "0:600:300",
     "examples": [ "v-touch-repeat:0:400=\"fnToCall\"" ]
   },
@@ -81,72 +82,86 @@
   "modifiers": {
     "capture": {
       "type": "Boolean",
-      "desc": "Use capture for touchstart event"
+      "desc": "Use capture for touchstart event",
+      "reactive": true
     },
 
     "mouse": {
       "type": "Boolean",
-      "desc": "Listen for mouse events too"
+      "desc": "Listen for mouse events too",
+      "reactive": true
     },
 
     "mouseCapture": {
       "type": "Boolean",
-      "desc": "Use capture for mousedown event"
+      "desc": "Use capture for mousedown event",
+      "reactive": true
     },
 
     "keyCapture": {
       "type": "Boolean",
-      "desc": "Use capture for keydown event"
+      "desc": "Use capture for keydown event",
+      "reactive": true
     },
 
     "esc": {
       "type": "Boolean",
-      "desc": "Catch ESC key"
+      "desc": "Catch ESC key",
+      "reactive": true
     },
 
     "tab": {
       "type": "Boolean",
-      "desc": "Catch TAB key"
+      "desc": "Catch TAB key",
+      "reactive": true
     },
 
     "enter": {
       "type": "Boolean",
-      "desc": "Catch ENTER key"
+      "desc": "Catch ENTER key",
+      "reactive": true
     },
 
     "space": {
       "type": "Boolean",
-      "desc": "Catch SPACE key"
+      "desc": "Catch SPACE key",
+      "reactive": true
     },
 
     "up": {
       "type": "Boolean",
-      "desc": "Catch UP arrow key"
+      "desc": "Catch UP arrow key",
+      "reactive": true
     },
 
     "left": {
       "type": "Boolean",
-      "desc": "Catch LEFT arrow key"
+      "desc": "Catch LEFT arrow key",
+      "reactive": true
     },
 
     "right": {
       "type": "Boolean",
-      "desc": "Catch RIGHT arrow key"
+      "desc": "Catch RIGHT arrow key",
+      "reactive": true
     },
 
     "down": {
       "type": "Boolean",
-      "desc": "Catch DOWN key"
+      "desc": "Catch DOWN key",
+      "reactive": true
     },
 
     "delete": {
       "type": "Boolean",
-      "desc": "Catch DELETE key"
+      "desc": "Catch DELETE key",
+      "reactive": true
     },
 
     "[keycode]": {
       "type": "Number",
       "desc": "Key code to catch",
+      "reactive": true,
       "examples": [ "v-touch-repeat.68=\"fnToCall\"" ]
     }
   }

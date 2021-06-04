@@ -77,32 +77,30 @@
   "arg": {
     "type": "String",
     "desc": "Color name from Quasar Color Palette; Overrides default dynamic color",
-    "examples": [
-      "v-ripple:orange-5"
-    ]
+    "reactive": true,
+    "examples": [ "v-ripple:orange-5" ]
   },
 
   "modifiers": {
     "early": {
       "type": "Boolean",
       "desc": "Trigger early/immediately on user interaction",
+      "reactive": true,
       "addedIn": "v1.9.8"
     },
 
     "stop": {
       "type": "Boolean",
       "desc": "Stop click/touch event propagation",
-      "examples": [
-        "v-ripple.stop"
-      ]
+      "reactive": true,
+      "examples": [ "v-ripple.stop" ]
     },
 
     "center": {
       "type": "Boolean",
       "desc": "Ripple starts from the absolute center",
-      "examples": [
-        "v-ripple.center"
-      ]
+      "reactive": true,
+      "examples": [ "v-ripple.center" ]
     }
   }
 }

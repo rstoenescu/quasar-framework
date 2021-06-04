@@ -83,9 +83,9 @@ export default {
     el.__qvisible = ctx
   },
 
-  update (el, binding) {
+  update (el, { value }) {
     const ctx = el.__qvisible
-    ctx !== void 0 && update(el, ctx, binding.value)
+    ctx !== void 0 && update(el, ctx, value)
   },
 
   unbind (el) {

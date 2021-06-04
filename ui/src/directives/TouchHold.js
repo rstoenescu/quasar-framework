@@ -1,7 +1,26 @@
 import { client } from '../plugins/Platform.js'
+import { isDeepEqual } from '../utils/is.js'
 import { getTouchTarget } from '../utils/touch.js'
 import { addEvt, cleanEvt, position, leftClick, stopAndPrevent, noop } from '../utils/event.js'
 import { clearSelection } from '../utils/selection.js'
+
+function parseArg (arg) {
+  // duration in ms, touch in pixels, mouse in pixels
+  const data = [600, 5, 7]
+
+  if (typeof arg === 'string' && arg.length > 0) {
+    arg.split(':').forEach((val, index) => {
+      const v = parseInt(val, 10)
+      v && (data[index] = v)
+    })
+  }
+
+  return {
+    duration: data[0],
+    touchSensitivity: data[1],
+    mouseSensitivity: data[2]
+  }
+}
 
 function destroy (el) {
   const ctx = el.__qtouchhold
@@ -16,31 +35,50 @@ function destroy (el) {
   }
 }
 
+function configureEvents (el, ctx, modifiers) {
+  if (ctx.modifiers.mouse !== modifiers.mouse || ctx.modifiers.mouseCapture !== modifiers.mouseCapture) {
+    ctx.modifiers.mouse === true && cleanEvt(ctx, 'main_mouse')
+
+    modifiers.mouse === true && addEvt(ctx, 'main_mouse', [
+      [ el, 'mousedown', 'mouseStart', `passive${modifiers.mouseCapture === true ? 'Capture' : ''}` ]
+    ])
+  }
+
+  if (client.has.touch === true && ctx.modifiers.capture !== modifiers.capture) {
+    cleanEvt(ctx, 'main_touch')
+
+    addEvt(ctx, 'main_touch', [
+      [ el, 'touchstart', 'touchStart', `passive${modifiers.capture === true ? 'Capture' : ''}` ],
+      [ el, 'touchmove', 'noop', `notPassiveCapture` ]
+    ])
+  }
+
+  ctx.modifiers = modifiers
+}
+
 export default {
   name: 'touch-hold',
 
-  bind (el, binding) {
+  bind (el, { modifiers, arg, value }) {
     if (el.__qtouchhold !== void 0) {
       destroy(el)
       el.__qtouchhold_destroyed = true
     }
 
-    const { modifiers } = binding
-
-    // early return, we don't need to do anything
-    if (modifiers.mouse !== true && client.has.touch !== true) {
-      return
-    }
-
     const ctx = {
-      handler: binding.value,
+      handler: value,
+      arg,
+      modifiers: { capture: null }, // make sure touch listeners are initiated
+
+      ...parseArg(arg),
+
       noop,
 
       mouseStart (evt) {
         if (typeof ctx.handler === 'function' && leftClick(evt) === true) {
           addEvt(ctx, 'temp', [
-            [ document, 'mousemove', 'move', 'passiveCapture' ],
-            [ document, 'click', 'end', 'notPassiveCapture' ]
+            [document, 'mousemove', 'move', 'passiveCapture'],
+            [document, 'click', 'end', 'notPassiveCapture']
           ])
           ctx.start(evt, true)
         }
@@ -50,9 +88,9 @@ export default {
         if (evt.target !== void 0 && typeof ctx.handler === 'function') {
           const target = getTouchTarget(evt.target)
           addEvt(ctx, 'temp', [
-            [ target, 'touchmove', 'move', 'passiveCapture' ],
-            [ target, 'touchcancel', 'end', 'notPassiveCapture' ],
-            [ target, 'touchend', 'end', 'notPassiveCapture' ]
+            [target, 'touchmove', 'move', 'passiveCapture'],
+            [target, 'touchcancel', 'end', 'notPassiveCapture'],
+            [target, 'touchend', 'end', 'notPassiveCapture']
           ])
           ctx.start(evt)
         }
@@ -126,35 +164,26 @@ export default {
       }
     }
 
-    // duration in ms, touch in pixels, mouse in pixels
-    const data = [600, 5, 7]
-
-    if (typeof binding.arg === 'string' && binding.arg.length > 0) {
-      binding.arg.split(':').forEach((val, index) => {
-        const v = parseInt(val, 10)
-        v && (data[index] = v)
-      })
-    }
-
-    [ ctx.duration, ctx.touchSensitivity, ctx.mouseSensitivity ] = data
-
     el.__qtouchhold = ctx
 
-    modifiers.mouse === true && addEvt(ctx, 'main', [
-      [ el, 'mousedown', 'mouseStart', `passive${modifiers.mouseCapture === true ? 'Capture' : ''}` ]
-    ])
-
-    client.has.touch === true && addEvt(ctx, 'main', [
-      [ el, 'touchstart', 'touchStart', `passive${modifiers.capture === true ? 'Capture' : ''}` ],
-      [ el, 'touchend', 'noop', 'notPassiveCapture' ]
-    ])
+    configureEvents(el, ctx, modifiers)
   },
 
-  update (el, binding) {
+  update (el, { modifiers, arg, value, oldValue }) {
     const ctx = el.__qtouchhold
-    if (ctx !== void 0 && binding.oldValue !== binding.value) {
-      typeof binding.value !== 'function' && ctx.end()
-      ctx.handler = binding.value
+    if (ctx !== void 0) {
+      if (oldValue !== value) {
+        typeof value !== 'function' && ctx.end()
+        ctx.handler = value
+      }
+
+      if (ctx.arg !== arg) {
+        Object.assign(ctx, parseArg(arg))
+      }
+
+      if (isDeepEqual(ctx.modifiers, modifiers) !== true) {
+        configureEvents(el, ctx, modifiers)
+      }
     }
   },
 

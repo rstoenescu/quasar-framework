@@ -16,6 +16,7 @@
     "single": {
       "type": "Boolean",
       "desc": "Go back to previous route instead of the whole way to before directive was initialized",
+      "reactive": true,
       "examples": [ "v-go-back.single" ]
     }
   }

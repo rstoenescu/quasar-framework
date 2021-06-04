@@ -1,4 +1,5 @@
 import { client } from '../plugins/Platform.js'
+import { isDeepEqual } from '../utils/is.js'
 import { getModifierDirections, getTouchTarget, shouldStart } from '../utils/touch.js'
 import { addEvt, cleanEvt, position, leftClick, stopAndPrevent, preventDraggable, noop } from '../utils/event.js'
 import { clearSelection } from '../utils/selection.js'
@@ -23,7 +24,8 @@ function destroy (el) {
   const ctx = el.__qtouchswipe
 
   if (ctx !== void 0) {
-    cleanEvt(ctx, 'main')
+    cleanEvt(ctx, 'main_mouse')
+    cleanEvt(ctx, 'main_touch')
     cleanEvt(ctx, 'temp')
 
     client.is.firefox === true && preventDraggable(el, false)
@@ -33,27 +35,41 @@ function destroy (el) {
   }
 }
 
+function configureEvents (el, ctx, modifiers) {
+  if (ctx.modifiers.mouse !== modifiers.mouse || ctx.modifiers.mouseCapture !== modifiers.mouseCapture) {
+    ctx.modifiers.mouse === true && cleanEvt(ctx, 'main_mouse')
+
+    modifiers.mouse === true && addEvt(ctx, 'main_mouse', [
+      [ el, 'mousedown', 'mouseStart', `passive${modifiers.mouseCapture === true ? 'Capture' : ''}` ]
+    ])
+  }
+
+  if (client.has.touch === true && ctx.modifiers.capture !== modifiers.capture) {
+    cleanEvt(ctx, 'main_touch')
+
+    addEvt(ctx, 'main_touch', [
+      [ el, 'touchstart', 'touchStart', `passive${modifiers.capture === true ? 'Capture' : ''}` ],
+      [ el, 'touchmove', 'noop', `notPassiveCapture` ]
+    ])
+  }
+
+  ctx.modifiers = modifiers
+}
+
 export default {
   name: 'touch-swipe',
 
-  bind (el, { value, arg, modifiers }) {
+  bind (el, { modifiers, arg, value }) {
     if (el.__qtouchswipe !== void 0) {
       destroy(el)
       el.__qtouchswipe_destroyed = true
     }
 
-    // early return, we don't need to do anything
-    if (modifiers.mouse !== true && client.has.touch !== true) {
-      return
-    }
-
-    const mouseCapture = modifiers.mouseCapture === true ? 'Capture' : ''
-
     const ctx = {
       handler: value,
       sensitivity: parseArg(arg),
-
-      modifiers: modifiers,
+      arg,
+      modifiers: { capture: null }, // make sure touch listeners are initiated
       direction: getModifierDirections(modifiers),
 
       noop,
@@ -61,7 +77,7 @@ export default {
       mouseStart (evt) {
         if (shouldStart(evt, ctx) && leftClick(evt)) {
           addEvt(ctx, 'temp', [
-            [ document, 'mousemove', 'move', `notPassive${mouseCapture}` ],
+            [ document, 'mousemove', 'move', `notPassive${ctx.modifiers.mouseCapture === true ? 'Capture' : ''}` ],
             [ document, 'mouseup', 'end', 'notPassiveCapture' ]
           ])
           ctx.start(evt, true)
@@ -244,21 +260,26 @@ export default {
 
     el.__qtouchswipe = ctx
 
-    modifiers.mouse === true && addEvt(ctx, 'main', [
-      [ el, 'mousedown', 'mouseStart', `passive${mouseCapture}` ]
-    ])
-
-    client.has.touch === true && addEvt(ctx, 'main', [
-      [ el, 'touchstart', 'touchStart', `passive${modifiers.capture === true ? 'Capture' : ''}` ],
-      [ el, 'touchmove', 'noop', `notPassiveCapture` ]
-    ])
+    configureEvents(el, ctx, modifiers)
   },
 
-  update (el, { oldValue, value }) {
+  update (el, { modifiers, arg, value, oldValue }) {
     const ctx = el.__qtouchswipe
-    if (ctx !== void 0 && oldValue !== value) {
-      typeof value !== 'function' && ctx.end()
-      ctx.handler = value
+    if (ctx !== void 0) {
+      if (oldValue !== value) {
+        typeof value !== 'function' && ctx.end()
+        ctx.handler = value
+      }
+
+      if (ctx.arg !== arg) {
+        ctx.sensitivity = parseArg(arg)
+      }
+
+      if (isDeepEqual(ctx.modifiers, modifiers) !== true) {
+        configureEvents(el, ctx, modifiers)
+
+        ctx.direction = getModifierDirections(modifiers)
+      }
     }
   },
 

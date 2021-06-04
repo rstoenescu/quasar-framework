@@ -1,4 +1,5 @@
 import { client } from '../plugins/Platform.js'
+import { isDeepEqual } from '../utils/is.js'
 import { getModifierDirections, getTouchTarget, shouldStart } from '../utils/touch.js'
 import { addEvt, cleanEvt, position, leftClick, prevent, stop, stopAndPrevent, preventDraggable, noop } from '../utils/event.js'
 import { clearSelection } from '../utils/selection.js'
@@ -122,7 +123,8 @@ function destroy (el) {
     // the condition is also checked in the start of function but we avoid the call
     ctx.event !== void 0 && ctx.end()
 
-    cleanEvt(ctx, 'main')
+    cleanEvt(ctx, 'main_mouse')
+    cleanEvt(ctx, 'main_touch')
     cleanEvt(ctx, 'temp')
 
     client.is.firefox === true && preventDraggable(el, false)
@@ -132,36 +134,52 @@ function destroy (el) {
   }
 }
 
+function configureEvents (el, ctx, modifiers) {
+  if (ctx.modifiers.mouse !== modifiers.mouse || ctx.modifiers.mouseCapture !== modifiers.mouseCapture) {
+    ctx.modifiers.mouse === true && cleanEvt(ctx, 'main_mouse')
+
+    modifiers.mouse === true && addEvt(ctx, 'main_mouse', [
+      [ el, 'mousedown', 'mouseStart', `passive${modifiers.mouseCapture === true ? 'Capture' : ''}` ]
+    ])
+  }
+
+  if (client.has.touch === true && ctx.modifiers.capture !== modifiers.capture) {
+    cleanEvt(ctx, 'main_touch')
+
+    addEvt(ctx, 'main_touch', [
+      [ el, 'touchstart', 'touchStart', `passive${modifiers.capture === true ? 'Capture' : ''}` ],
+      [ el, 'touchmove', 'noop', `notPassiveCapture` ]
+    ])
+  }
+
+  ctx.modifiers = modifiers
+}
+
+function handleEvent (ctx, evt, mouseEvent) {
+  if (ctx.modifiers.mouse === true && mouseEvent === true) {
+    stopAndPrevent(evt)
+  }
+  else {
+    ctx.modifiers.stop === true && stop(evt)
+    ctx.modifiers.prevent === true && prevent(evt)
+  }
+}
+
 let uid = 0
 
 export default {
   name: 'touch-pan',
 
-  bind (el, { value, modifiers }) {
+  bind (el, { modifiers, value }) {
     if (el.__qtouchpan !== void 0) {
       destroy(el)
       el.__qtouchpan_destroyed = true
     }
 
-    // early return, we don't need to do anything
-    if (modifiers.mouse !== true && client.has.touch !== true) {
-      return
-    }
-
-    function handleEvent (evt, mouseEvent) {
-      if (modifiers.mouse === true && mouseEvent === true) {
-        stopAndPrevent(evt)
-      }
-      else {
-        modifiers.stop === true && stop(evt)
-        modifiers.prevent === true && prevent(evt)
-      }
-    }
-
     const ctx = {
       uid: 'qvtp_' + (uid++),
       handler: value,
-      modifiers,
+      modifiers: { capture: null }, // make sure touch listeners are initiated
       direction: getModifierDirections(modifiers),
 
       noop,
@@ -201,7 +219,7 @@ export default {
          * Stop propagation so possible upper v-touch-pan don't catch this as well;
          * If we're not the target (based on modifiers), we'll re-emit the event later
          */
-        if (mouseEvent === true || modifiers.stop === true) {
+        if (mouseEvent === true || ctx.modifiers.stop === true) {
           /*
            * are we directly switching to detected state?
            * clone event only otherwise
@@ -254,9 +272,9 @@ export default {
 
         const isMouseEvt = ctx.event.mouse === true
         const start = () => {
-          handleEvent(evt, isMouseEvt)
+          handleEvent(ctx, evt, isMouseEvt)
 
-          if (modifiers.preserveCursor !== true) {
+          if (ctx.modifiers.preserveCursor !== true) {
             document.documentElement.style.cursor = 'grabbing'
           }
           isMouseEvt === true && document.body.classList.add('no-pointer-events--children')
@@ -266,7 +284,7 @@ export default {
           ctx.styleCleanup = withDelayedFn => {
             ctx.styleCleanup = void 0
 
-            if (modifiers.preserveCursor !== true) {
+            if (ctx.modifiers.preserveCursor !== true) {
               document.documentElement.style.cursor = ''
             }
             document.body.classList.remove('non-selectable')
@@ -291,7 +309,7 @@ export default {
         }
 
         if (ctx.event.detected === true) {
-          ctx.event.isFirst !== true && handleEvent(evt, ctx.event.mouse)
+          ctx.event.isFirst !== true && handleEvent(ctx, evt, ctx.event.mouse)
 
           const { payload, synthetic } = getChanges(evt, ctx, false)
 
@@ -386,21 +404,22 @@ export default {
 
     el.__qtouchpan = ctx
 
-    modifiers.mouse === true && addEvt(ctx, 'main', [
-      [ el, 'mousedown', 'mouseStart', `passive${modifiers.mouseCapture === true ? 'Capture' : ''}` ]
-    ])
-
-    client.has.touch === true && addEvt(ctx, 'main', [
-      [ el, 'touchstart', 'touchStart', `passive${modifiers.capture === true ? 'Capture' : ''}` ],
-      [ el, 'touchmove', 'noop', 'notPassiveCapture' ]
-    ])
+    configureEvents(el, ctx, modifiers)
   },
 
-  update (el, { oldValue, value }) {
+  update (el, { modifiers, value, oldValue }) {
     const ctx = el.__qtouchpan
-    if (ctx !== void 0 && oldValue !== value) {
-      typeof value !== 'function' && ctx.end()
-      ctx.handler = value
+    if (ctx !== void 0) {
+      if (oldValue !== value) {
+        typeof value !== 'function' && ctx.end()
+        ctx.handler = value
+      }
+
+      if (isDeepEqual(ctx.modifiers, modifiers) !== true) {
+        configureEvents(el, ctx, modifiers)
+
+        ctx.direction = getModifierDirections(modifiers)
+      }
     }
   },
 

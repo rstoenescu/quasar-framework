@@ -60,6 +60,7 @@
   "arg": {
     "type": "String",
     "desc": "x:y:z, where x is minimum velocity (dist/time; please use float without a dot, example: 6e-2 which is equivalent to 6 * 10^-2 = 0.06), y is minimum distance on first move on mobile, z is minimum distance on desktop until deciding if it's a swipe indeed",
+    "reactive": true,
     "default": "6e-2:6:50",
     "examples": [ "v-touch-swipe:7e-2:10:100=\"fnToCall\"" ]
   },
@@ -67,47 +68,56 @@
   "modifiers": {
     "capture": {
       "type": "Boolean",
-      "desc": "Use capture for touchstart event"
+      "desc": "Use capture for touchstart event",
+      "reactive": true
     },
 
     "mouse": {
       "type": "Boolean",
-      "desc": "Listen for mouse events too"
+      "desc": "Listen for mouse events too",
+      "reactive": true
     },
 
     "mouseCapture": {
       "type": "Boolean",
-      "desc": "Use capture for mousedown event"
+      "desc": "Use capture for mousedown event",
+      "reactive": true
     },
 
     "horizontal": {
       "type": "Boolean",
-      "desc": "Catch horizontal (left/right) movement"
+      "desc": "Catch horizontal (left/right) movement",
+      "reactive": true
     },
 
     "vertical": {
       "type": "Boolean",
-      "desc": "Catch vertical (up/down) movement"
+      "desc": "Catch vertical (up/down) movement",
+      "reactive": true
     },
 
     "up": {
       "type": "Boolean",
-      "desc": "Catch swipe to up"
+      "desc": "Catch swipe to up",
+      "reactive": true
     },
 
     "right": {
       "type": "Boolean",
-      "desc": "Catch swipe to right"
+      "desc": "Catch swipe to right",
+      "reactive": true
     },
 
     "down": {
       "type": "Boolean",
-      "desc": "Catch swipe to down"
+      "desc": "Catch swipe to down",
+      "reactive": true
     },
 
     "left": {
       "type": "Boolean",
-      "desc": "Catch swipe to left"
+      "desc": "Catch swipe to left",
+      "reactive": true
     }
   }
 }

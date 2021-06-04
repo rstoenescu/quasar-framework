@@ -1,15 +1,14 @@
 import morph from '../utils/morph.js'
 
 const morphGroups = {}
-const props = [
-  'duration', 'delay', 'easing', 'fill',
-  'classes', 'style', 'duration', 'resize',
-  'useCSS', 'hideFromClone', 'keepToClone', 'tween',
-  'tweenFromOpacity', 'tweenToOpacity',
-  'waitFor', 'onEnd'
-]
 const mods = [
   'resize', 'useCSS', 'hideFromClone', 'keepToClone', 'tween'
+]
+const props = [
+  'duration', 'delay', 'easing', 'fill',
+  'classes', 'style', 'duration',
+  'tweenFromOpacity', 'tweenToOpacity',
+  'waitFor', 'onEnd'
 ]
 
 function changeClass (ctx, action) {
@@ -65,47 +64,7 @@ function trigger (group) {
   }
 }
 
-function updateModifiers (mod, ctx) {
-  const opts = ctx.opts
-
-  mods.forEach(name => {
-    opts[name] = mod[name] === true
-  })
-}
-
-function insertArgs (arg, ctx) {
-  const opts = typeof arg === 'string' && arg.length > 0
-    ? arg.split(':') : []
-
-  ctx.name = opts[0]
-  ctx.group = opts[1]
-
-  Object.assign(ctx.opts, {
-    duration: isNaN(opts[2]) === true
-      ? 300
-      : parseFloat(opts[2]),
-    waitFor: opts[3]
-  })
-}
-
-function updateArgs (arg, ctx) {
-  if (arg.group !== void 0) {
-    ctx.group = arg.group
-  }
-  if (arg.name !== void 0) {
-    ctx.name = arg.name
-  }
-
-  const opts = ctx.opts
-
-  props.forEach(name => {
-    if (arg[name] !== void 0) {
-      opts[name] = arg[name]
-    }
-  })
-}
-
-function updateModel (name, ctx) {
+function changeModel (ctx, name) {
   if (ctx.name === name) {
     const group = morphGroups[ctx.group]
 
@@ -138,13 +97,53 @@ function updateModel (name, ctx) {
   }
 }
 
+function setOptsFromValue (ctx, value) {
+  if (value.group !== void 0) {
+    ctx.group = value.group
+  }
+  if (value.name !== void 0) {
+    ctx.name = value.name
+  }
+
+  const opts = ctx.opts
+
+  props.forEach(name => {
+    if (value[name] !== void 0) {
+      opts[name] = value[name]
+    }
+  })
+}
+
+function updateArg (ctx, arg) {
+  const opts = typeof arg === 'string' && arg.length > 0
+    ? arg.split(':') : []
+
+  ctx.name = opts[0]
+  ctx.group = opts[1]
+
+  Object.assign(ctx.opts, {
+    duration: isNaN(opts[2]) === true
+      ? 300
+      : parseFloat(opts[2]),
+    waitFor: opts[3]
+  })
+}
+
+function updateModifiers (ctx, modifiers) {
+  const opts = ctx.opts
+
+  mods.forEach(name => {
+    opts[name] = modifiers[name] === true
+  })
+}
+
 function updateValue (ctx, value) {
   let model
 
   if (Object(value) === value) {
     model = '' + value.model
-    updateArgs(value, ctx)
-    updateModifiers(value, ctx)
+    setOptsFromValue(ctx, value)
+    updateModifiers(ctx, value)
   }
   else {
     model = '' + value
@@ -152,7 +151,7 @@ function updateValue (ctx, value) {
 
   if (model !== ctx.model) {
     ctx.model = model
-    updateModel(model, ctx)
+    changeModel(ctx, model)
   }
   else if (ctx.animating === false && ctx.clsAction !== void 0) {
     // ensure HMR
@@ -190,7 +189,7 @@ function destroy (el) {
 export default {
   name: 'morph',
 
-  inserted (el, binding) {
+  inserted (el, { modifiers, arg, value }) {
     if (el.__qmorph !== void 0) {
       destroy(el)
       el.__qmorph_destroyed = true
@@ -198,20 +197,29 @@ export default {
 
     const ctx = {
       el,
+
+      arg,
+
       animating: false,
       opts: {}
     }
 
-    updateModifiers(binding.modifiers, ctx)
-    insertArgs(binding.arg, ctx)
-    updateValue(ctx, binding.value)
+    updateModifiers(ctx, modifiers)
+    updateArg(ctx, arg)
+    updateValue(ctx, value)
 
     el.__qmorph = ctx
   },
 
-  update (el, binding) {
+  update (el, { modifiers, arg, value }) {
     const ctx = el.__qmorph
-    ctx !== void 0 && updateValue(ctx, binding.value)
+    if (ctx !== void 0) {
+      updateModifiers(ctx, modifiers)
+      if (ctx.arg !== arg) {
+        updateArg(ctx, arg)
+      }
+      updateValue(ctx, value)
+    }
   },
 
   unbind (el) {

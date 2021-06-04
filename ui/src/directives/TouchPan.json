@@ -116,73 +116,87 @@
   "modifiers": {
     "stop": {
       "type": "Boolean",
-      "desc": "Stop event propagation for touch events"
+      "desc": "Stop event propagation for touch events",
+      "reactive": true
     },
 
     "prevent": {
       "type": "Boolean",
-      "desc": "Calls event.preventDefault() for touch events"
+      "desc": "Calls event.preventDefault() for touch events",
+      "reactive": true
     },
 
     "mightPrevent": {
       "type": "Boolean",
-      "desc": "Required when you might call event.preventDefault() in your handler for touch events"
+      "desc": "Required when you might call event.preventDefault() in your handler for touch events",
+      "reactive": true
     },
 
     "capture": {
       "type": "Boolean",
-      "desc": "Use capture for touchstart event"
+      "desc": "Use capture for touchstart event",
+      "reactive": true
     },
 
     "mouse": {
       "type": "Boolean",
-      "desc": "Listen for mouse events too"
+      "desc": "Listen for mouse events too",
+      "reactive": true
     },
 
     "mouseCapture": {
       "type": "Boolean",
-      "desc": "Use capture for mousedown event"
+      "desc": "Use capture for mousedown event",
+      "reactive": true
     },
 
     "mouseAllDir": {
       "type": "Boolean",
-      "desc": "Ignore initial mouse move direction (do not abort if the first mouse move is in an unaccepted direction)"
+      "desc": "Ignore initial mouse move direction (do not abort if the first mouse move is in an unaccepted direction)",
+      "reactive": true
     },
 
     "preserveCursor": {
       "type": "Boolean",
       "desc": "Prevent the mouse cursor from automatically displaying as grabbing when panning",
+      "reactive": true,
       "addedIn": "v1.13.0"
     },
 
     "horizontal": {
       "type": "Boolean",
-      "desc": "Catch horizontal (left/right) movement"
+      "desc": "Catch horizontal (left/right) movement",
+      "reactive": true
     },
 
     "vertical": {
       "type": "Boolean",
-      "desc": "Catch vertical (up/down) movement"
+      "desc": "Catch vertical (up/down) movement",
+      "reactive": true
     },
 
     "up": {
       "type": "Boolean",
-      "desc": "Catch panning to up"
+      "desc": "Catch panning to up",
+      "reactive": true
     },
 
     "right": {
       "type": "Boolean",
-      "desc": "Catch panning to right"
+      "desc": "Catch panning to right",
+      "reactive": true
     },
 
     "down": {
       "type": "Boolean",
-      "desc": "Catch panning to down"
+      "desc": "Catch panning to down",
+      "reactive": true
     },
 
     "left": {
       "type": "Boolean",
-      "desc": "Catch panning to left"
+      "desc": "Catch panning to left",
+      "reactive": true
     }
   }
 }

@@ -1,4 +1,5 @@
 import { client } from '../plugins/Platform.js'
+import { isDeepEqual } from '../utils/is.js'
 import { getTouchTarget } from '../utils/touch.js'
 import { addEvt, cleanEvt, position, leftClick, stopAndPrevent, noop } from '../utils/event.js'
 import { clearSelection } from '../utils/selection.js'
@@ -25,12 +26,25 @@ function shouldEnd (evt, origin) {
     Math.abs(top - origin.top) >= 7
 }
 
+function parseArg (arg) {
+  const durations = typeof arg === 'string' && arg.length > 0
+    ? arg.split(':').map(val => parseInt(val, 10))
+    : [0, 600, 300]
+
+  return {
+    durations,
+    durationsLast: durations.length - 1
+  }
+}
+
 function destroy (el) {
   const ctx = el.__qtouchrepeat
   if (ctx !== void 0) {
     clearTimeout(ctx.timer)
 
-    cleanEvt(ctx, 'main')
+    cleanEvt(ctx, 'main_mouse')
+    cleanEvt(ctx, 'main_touch')
+    cleanEvt(ctx, 'main_kbd')
     cleanEvt(ctx, 'temp')
 
     ctx.styleCleanup !== void 0 && ctx.styleCleanup()
@@ -39,41 +53,60 @@ function destroy (el) {
   }
 }
 
+function configureEvents (el, ctx, modifiers) {
+  if (ctx.modifiers.mouse !== modifiers.mouse || ctx.modifiers.mouseCapture !== modifiers.mouseCapture) {
+    ctx.modifiers.mouse === true && cleanEvt(ctx, 'main_mouse')
+
+    modifiers.mouse === true && addEvt(ctx, 'main_mouse', [
+      [ el, 'mousedown', 'mouseStart', `passive${modifiers.mouseCapture === true ? 'Capture' : ''}` ]
+    ])
+  }
+
+  if (client.has.touch === true && ctx.modifiers.capture !== modifiers.capture) {
+    cleanEvt(ctx, 'main_touch')
+
+    addEvt(ctx, 'main_touch', [
+      [ el, 'touchstart', 'touchStart', `passive${modifiers.capture === true ? 'Capture' : ''}` ],
+      [ el, 'touchmove', 'noop', `notPassiveCapture` ]
+    ])
+  }
+
+  const keyboard = Object.keys(modifiers).reduce((acc, key) => {
+    if (keyRegex.test(key) === true) {
+      const keyCode = isNaN(parseInt(key, 10)) ? keyCodes[key.toLowerCase()] : parseInt(key, 10)
+      keyCode >= 0 && acc.push(keyCode)
+    }
+    return acc
+  }, [])
+
+  if ((ctx.keyboard.length > 0) !== (keyboard.length > 0) || ctx.modifiers.keyCapture !== modifiers.keyCapture) {
+    ctx.keyboard.length > 0 && cleanEvt(ctx, 'main_kbd')
+
+    keyboard.length > 0 && addEvt(ctx, 'main_kbd', [
+      [ el, 'keydown', 'keyboardStart', `notPassive${modifiers.keyCapture === true ? 'Capture' : ''}` ]
+    ])
+  }
+
+  ctx.modifiers = modifiers
+  ctx.keyboard = keyboard
+}
+
 export default {
   name: 'touch-repeat',
 
-  bind (el, { modifiers, value, arg }) {
+  bind (el, { modifiers, arg, value }) {
     if (el.__qtouchrepeat !== void 0) {
       destroy(el)
       el.__qtouchrepeat_destroyed = true
     }
 
-    const keyboard = Object.keys(modifiers).reduce((acc, key) => {
-      if (keyRegex.test(key) === true) {
-        const keyCode = isNaN(parseInt(key, 10)) ? keyCodes[key.toLowerCase()] : parseInt(key, 10)
-        keyCode >= 0 && acc.push(keyCode)
-      }
-      return acc
-    }, [])
-
-    // early return, we don't need to do anything
-    if (
-      modifiers.mouse !== true &&
-      client.has.touch !== true &&
-      keyboard.length === 0
-    ) {
-      return
-    }
-
-    const durations = typeof arg === 'string' && arg.length > 0
-      ? arg.split(':').map(val => parseInt(val, 10))
-      : [0, 600, 300]
-
-    const durationsLast = durations.length - 1
-
     const ctx = {
-      keyboard,
+      keyboard: [],
       handler: value,
+      arg,
+      modifiers: { capture: null }, // make sure touch listeners are initiated
+
+      ...parseArg(arg),
 
       noop,
 
@@ -88,8 +121,8 @@ export default {
       },
 
       keyboardStart (evt) {
-        if (typeof ctx.handler === 'function' && isKeyCode(evt, keyboard) === true) {
-          if (durations[0] === 0 || ctx.event !== void 0) {
+        if (typeof ctx.handler === 'function' && isKeyCode(evt, ctx.keyboard) === true) {
+          if (ctx.durations[0] === 0 || ctx.event !== void 0) {
             stopAndPrevent(evt)
             el.focus()
             if (ctx.event !== void 0) {
@@ -180,18 +213,18 @@ export default {
 
           ctx.handler(ctx.event)
 
-          const index = durationsLast < ctx.event.repeatCount
-            ? durationsLast
+          const index = ctx.durationsLast < ctx.event.repeatCount
+            ? ctx.durationsLast
             : ctx.event.repeatCount
 
-          ctx.timer = setTimeout(fn, durations[index])
+          ctx.timer = setTimeout(fn, ctx.durations[index])
         }
 
-        if (durations[0] === 0) {
+        if (ctx.durations[0] === 0) {
           fn()
         }
         else {
-          ctx.timer = setTimeout(fn, durations[0])
+          ctx.timer = setTimeout(fn, ctx.durations[0])
         }
       },
 
@@ -218,25 +251,24 @@ export default {
 
     el.__qtouchrepeat = ctx
 
-    modifiers.mouse === true && addEvt(ctx, 'main', [
-      [ el, 'mousedown', 'mouseStart', `passive${modifiers.mouseCapture === true ? 'Capture' : ''}` ]
-    ])
-
-    client.has.touch === true && addEvt(ctx, 'main', [
-      [ el, 'touchstart', 'touchStart', `passive${modifiers.capture === true ? 'Capture' : ''}` ],
-      [ el, 'touchend', 'noop', 'notPassiveCapture' ]
-    ])
-
-    keyboard.length > 0 && addEvt(ctx, 'main', [
-      [ el, 'keydown', 'keyboardStart', `notPassive${modifiers.keyCapture === true ? 'Capture' : ''}` ]
-    ])
+    configureEvents(el, ctx, modifiers)
   },
 
-  update (el, { oldValue, value }) {
+  update (el, { modifiers, arg, value, oldValue }) {
     const ctx = el.__qtouchrepeat
-    if (ctx !== void 0 && oldValue !== value) {
-      typeof value !== 'function' && ctx.end()
-      ctx.handler = value
+    if (ctx !== void 0) {
+      if (oldValue !== value) {
+        typeof value !== 'function' && ctx.end()
+        ctx.handler = value
+      }
+
+      if (ctx.arg !== arg) {
+        Object.assign(ctx, parseArg(arg))
+      }
+
+      if (isDeepEqual(ctx.modifiers, modifiers) !== true) {
+        configureEvents(el, ctx, modifiers)
+      }
     }
   },
 

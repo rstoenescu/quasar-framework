@@ -1,3 +1,5 @@
+import { isDeepEqual } from '../utils/is.js'
+
 const defaultCfg = {
   childList: true,
   subtree: true,
@@ -35,28 +37,37 @@ function destroy (el) {
 export default {
   name: 'mutation',
 
-  inserted (el, { modifiers: { once, ...mod }, value }) {
+  inserted (el, { modifiers: { once, ...opts }, value }) {
     if (el.__qmutation !== void 0) {
       destroy(el)
       el.__qmutation_destroyed = true
     }
 
     const ctx = {
-      once,
-      opts: Object.keys(mod).length === 0
-        ? defaultCfg
-        : mod
+      once
     }
 
+    ctx.opts = Object.keys(opts).length === 0
+      ? defaultCfg
+      : opts
     update(el, ctx, value)
 
     el.__qmutation = ctx
   },
 
-  update (el, { oldValue, value }) {
+  update (el, { modifiers: { once, ...opts }, value, oldValue }) {
     const ctx = el.__qmutation
-    if (ctx !== void 0 && oldValue !== value) {
-      update(el, ctx, value)
+    if (ctx !== void 0) {
+      const newOpts = Object.keys(opts).length === 0
+        ? defaultCfg
+        : opts
+      if (
+        oldValue !== value ||
+        isDeepEqual(ctx.opts, newOpts) !== true
+      ) {
+        ctx.opts = newOpts
+        update(el, ctx, value)
+      }
     }
   },
 

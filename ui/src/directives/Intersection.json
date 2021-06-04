@@ -225,9 +225,7 @@
     "once": {
       "type": "Boolean",
       "desc": "Call handler only once, when the conditions are first met",
-      "examples": [
-        "v-intersection.once"
-      ]
+      "examples": [ "v-intersection.once" ]
     }
   }
 }

@@ -55,6 +55,7 @@
   "arg": {
     "type": "String",
     "desc": "x:y:z, where x is the amount of time to wait (in milliseconds), y is the touch event sensitivity (in pixels) and z is the mouse event sensitivity (in pixels)",
+    "reactive": true,
     "default": "600:5:7",
     "examples": [
       "v-touch-hold:400=\"fnToCall\"",
@@ -66,17 +67,20 @@
   "modifiers": {
     "capture": {
       "type": "Boolean",
-      "desc": "Use capture for touchstart event"
+      "desc": "Use capture for touchstart event",
+      "reactive": true
     },
 
     "mouse": {
       "type": "Boolean",
-      "desc": "Listen for mouse events too"
+      "desc": "Listen for mouse events too",
+      "reactive": true
     },
 
     "mouseCapture": {
       "type": "Boolean",
-      "desc": "Use capture for mousedown event"
+      "desc": "Use capture for mousedown event",
+      "reactive": true
     }
   }
 }

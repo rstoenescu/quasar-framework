@@ -13,7 +13,7 @@ function destroy (el) {
 export default {
   name: 'go-back',
 
-  bind (el, { value, modifiers }, vnode) {
+  bind (el, { modifiers, value }, vnode) {
     if (el.__qgoback !== void 0) {
       destroy(el)
       el.__qgoback_destroyed = true
@@ -51,11 +51,16 @@ export default {
     el.addEventListener('keyup', ctx.goBackKey)
   },
 
-  update (el, { value, oldValue }) {
+  update (el, { modifiers, value, oldValue }) {
     const ctx = el.__qgoback
 
-    if (ctx !== void 0 && value !== oldValue) {
-      ctx.value = value
+    if (ctx !== void 0) {
+      if (ctx.single !== modifiers.single) {
+        ctx.single = modifiers.single
+      }
+      if (oldValue !== value) {
+        ctx.value = value
+      }
     }
   },
 

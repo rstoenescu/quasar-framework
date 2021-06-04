@@ -51,7 +51,7 @@ function globalHandler (evt) {
 export default {
   name: 'click-outside',
 
-  bind (el, { value, arg }, vnode) {
+  bind (el, { arg, value }, vnode) {
     const vmEl = vnode.componentInstance || vnode.context
 
     const ctx = {
@@ -106,14 +106,16 @@ export default {
     }, 500)
   },
 
-  update (el, { value, oldValue, arg }) {
+  update (el, { arg, value, oldValue }) {
     const ctx = el.__qclickoutside
 
-    if (value !== oldValue) {
-      ctx.trigger = value
-    }
-    if (arg !== ctx.arg) {
-      ctx.toggleEl = arg
+    if (ctx !== void 0) {
+      if (ctx.toggleEl !== arg) {
+        ctx.toggleEl = arg
+      }
+      if (oldValue !== value) {
+        ctx.trigger = value
+      }
     }
   },
 

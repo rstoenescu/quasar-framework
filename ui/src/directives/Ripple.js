@@ -61,7 +61,7 @@ function showRipple (evt, el, ctx, forceCenter) {
   }, 50)
 }
 
-function updateModifiers (ctx, { modifiers, value, arg }) {
+function updateModifiers (ctx, { modifiers, arg, value }) {
   const cfg = Object.assign({}, $q.config.ripple, modifiers, value)
   ctx.modifiers = {
     early: cfg.early === true,
@@ -138,10 +138,10 @@ export default {
 
   update (el, binding) {
     const ctx = el.__qripple
-    if (ctx !== void 0 && binding.oldValue !== binding.value) {
+    if (ctx !== void 0) {
       ctx.enabled = binding.value !== false
 
-      if (ctx.enabled === true && Object(binding.value) === binding.value) {
+      if (ctx.enabled === true) {
         updateModifiers(ctx, binding)
       }
     }

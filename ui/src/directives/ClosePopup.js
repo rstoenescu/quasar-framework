@@ -60,7 +60,7 @@ export default {
   },
 
   update (el, { value, oldValue }) {
-    if (el.__qclosepopup !== void 0 && value !== oldValue) {
+    if (el.__qclosepopup !== void 0 && oldValue !== value) {
       el.__qclosepopup.depth = getDepth(value)
     }
   },

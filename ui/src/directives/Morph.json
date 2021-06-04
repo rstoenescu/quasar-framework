@@ -141,6 +141,7 @@
   "arg": {
     "type": "String",
     "desc": "x:x2:y:z, where x is the morph element name, x2 is the morph group, y is the animation duration (in milliseconds) and z is the amount of time to wait (in milliseconds) or the 'transitionend' string",
+    "reactive": true,
     "examples": [
       "v-morph:name=\"options\"",
       "v-morph:name:groupName=\"options\"",
@@ -153,27 +154,32 @@
   "modifiers": {
     "resize": {
       "type": "Boolean",
-      "desc": "Use resize instead of scale transform for morph (forceResize option of the morph function)"
+      "desc": "Use resize instead of scale transform for morph (forceResize option of the morph function)",
+      "reactive": true
     },
 
     "useCSS": {
       "type": "Boolean",
-      "desc": "Use CSS animations for morph (forceCssAnimation option of the morph function)"
+      "desc": "Use CSS animations for morph (forceCssAnimation option of the morph function)",
+      "reactive": true
     },
 
     "hideFromClone": {
       "type": "Boolean",
-      "desc": "Hide the spacer for the initial element (hideFromClone option of the morph function)"
+      "desc": "Hide the spacer for the initial element (hideFromClone option of the morph function)",
+      "reactive": true
     },
 
     "keepToClone": {
       "type": "Boolean",
-      "desc": "Keep the final element visible while morphing (keepToClone option of the morph function)"
+      "desc": "Keep the final element visible while morphing (keepToClone option of the morph function)",
+      "reactive": true
     },
 
     "tween": {
       "type": "Boolean",
-      "desc": "Use opacity tween morphing between initial and final elements (tween option of the morph function)"
+      "desc": "Use opacity tween morphing between initial and final elements (tween option of the morph function)",
+      "reactive": true
     }
   }
 }
