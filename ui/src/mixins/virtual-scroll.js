@@ -1,4 +1,31 @@
-import debounce from '../utils/debounce.js'
+import throttle from '../utils/throttle.js'
+
+function scrollDebounce (fn) {
+  let timeoutWait
+
+  const fnThrottled = throttle(() => {
+    fn(true)
+  }, 60)
+
+  const fnDebounced = () => {
+    timeoutWait = void 0
+    fn()
+  }
+
+  function debounced () {
+    fnThrottled()
+
+    clearTimeout(timeoutWait)
+    timeoutWait = setTimeout(fnDebounced, 130)
+  }
+
+  debounced.cancel = () => {
+    clearTimeout(timeoutWait)
+    timeoutWait = void 0
+  }
+
+  return debounced
+}
 
 const aggBucketSize = 1000
 
@@ -317,7 +344,7 @@ export default {
       )
     },
 
-    __onVirtualScrollEvt () {
+    __onVirtualScrollEvt (noScroll) {
       const scrollEl = this.__getVirtualScrollTarget()
 
       if (scrollEl === void 0 || scrollEl === null || scrollEl.nodeType === 8) {
@@ -399,11 +426,13 @@ export default {
         scrollEl,
         scrollDetails,
         toIndex,
-        offset
+        offset,
+        void 0,
+        noScroll
       )
     },
 
-    __setVirtualScrollSliceRange (scrollEl, scrollDetails, toIndex, offset, align) {
+    __setVirtualScrollSliceRange (scrollEl, scrollDetails, toIndex, offset, align, noScroll) {
       const alignForce = typeof align === 'string' && align.indexOf('-force') > -1
       const alignEnd = alignForce === true ? align.replace('-force', '') : align
       const alignRange = alignEnd !== void 0 ? alignEnd : 'start'
@@ -434,14 +463,10 @@ export default {
         this.$refs.content !== activeElement &&
         this.$refs.content.contains(activeElement) === true
       ) {
-        const onBlurFn = () => {
-          this.$refs.content.focus()
-        }
-
-        activeElement.addEventListener('blur', onBlurFn, true)
+        activeElement.addEventListener('blur', this.__onBlurRefocusFn)
 
         requestAnimationFrame(() => {
-          activeElement.removeEventListener('blur', onBlurFn, true)
+          activeElement.removeEventListener('blur', this.__onBlurRefocusFn)
         })
       }
 
@@ -466,7 +491,15 @@ export default {
             this.virtualScrollSliceRange = { from: this.virtualScrollSliceRange.from, to }
             this.virtualScrollPaddingAfter = sumSize(this.virtualScrollSizesAgg, this.virtualScrollSizes, to, this.virtualScrollLength)
           }
+          if (noScroll === true && this.prevScrollStart === scrollDetails.scrollStart) {
+            this.prevScrollStart = void 0
+          }
         })
+      }
+
+      if (noScroll === true) {
+        this.__emitScroll(toIndex)
+        return
       }
 
       requestAnimationFrame(() => {
@@ -700,6 +733,10 @@ export default {
 
         this.prevToIndex = index
       }
+    },
+
+    __onBlurRefocusFn () {
+      this.$refs.content !== void 0 && this.$refs.content.focus()
     }
   },
 
@@ -709,7 +746,7 @@ export default {
 
   beforeMount () {
     buggyRTL === void 0 && detectBuggyRTL()
-    this.__onVirtualScrollEvt = debounce(this.__onVirtualScrollEvt, this.$q.platform.is.ios === true ? 120 : 35)
+    this.__onVirtualScrollEvt = scrollDebounce(this.__onVirtualScrollEvt)
     this.__setVirtualScrollSize()
   },
 
