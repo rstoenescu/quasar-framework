@@ -1,29 +1,30 @@
 .q-ripple
-  position absolute
-  top 0
-  left 0 /* rtl:ignore */
-  width 100%
-  height 100%
-  color inherit
-  border-radius inherit
-  z-index 0
-  pointer-events none
-  overflow hidden
-  contain strict
+  position: absolute
+  top: 0
+  left: 0 /* rtl:ignore */
+  width: 100%
+  height: 100%
+  color: inherit
+  border-radius: inherit
+  z-index: 0
+  pointer-events: none
+  overflow: hidden
+  contain: strict
 
   &__inner
-    position absolute
-    top 0
-    left 0 /* rtl:ignore */
-    opacity 0
-    color inherit
-    border-radius 50%
-    background currentColor
-    pointer-events none
-    will-change transform, opacity
+    position: absolute
+    top: 0
+    left: 0 /* rtl:ignore */
+    opacity: 0
+    color: inherit
+    border-radius: 50%
+    background: currentColor
+    background-clip: padding-box
+    pointer-events: none
+    will-change: transform, opacity
 
     &--enter
-      transition transform .225s cubic-bezier(.4, 0, .2, 1), opacity .1s cubic-bezier(.4, 0, .2, 1)
+      transition: transform .225s cubic-bezier(.4, 0, .2, 1), opacity .1s cubic-bezier(.4, 0, .2, 1)
 
     &--leave
-      transition opacity .25s cubic-bezier(.4, 0, .2, 1)
+      transition: opacity .25s cubic-bezier(.4, 0, .2, 1)
