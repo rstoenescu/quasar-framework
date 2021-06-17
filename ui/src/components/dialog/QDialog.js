@@ -356,7 +356,7 @@ export default Vue.extend({
         }, [
           this.showing === true ? h('div', {
             ref: 'inner',
-            staticClass: 'q-dialog__inner flex no-pointer-events',
+            staticClass: 'q-dialog__inner flex',
             class: this.classes,
             attrs: { tabindex: -1 },
             on: this.onEvents
