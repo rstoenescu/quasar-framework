@@ -96,6 +96,15 @@
       "category": "model"
     },
 
+    "model-navigation": {
+      "type": [ "String", "Boolean" ],
+      "desc": "On which end of the range to navigate the calendar when the model changes; Use `false` to skip navigation",
+      "values": [ "from", "to", "(Boolean) false" ],
+      "default": "from",
+      "category": "behavior",
+      "addedIn": "v1.14.8"
+    },
+
     "navigation-min-year-month": {
       "type": "String",
       "desc": "Lock user from navigating below a specific year+month (in YYYY/MM format); This prop is not used to correct the model; You might want to also use 'default-year-month' prop",
@@ -156,6 +165,13 @@
       "addedIn": "v1.13.0"
     },
 
+    "day-as-range": {
+      "type": "Boolean",
+      "desc": "Model single days as a range (object) instead of string",
+      "category": "model|selection",
+      "addedIn": "v1.15.2"
+    },
+
     "emit-immediately": {
       "type": "Boolean",
       "desc": "Emit model when user browses month and year too; ONLY for single selection (non-multiple, non-range)",
@@ -167,6 +183,129 @@
     "default": {
       "desc": "This is where additional buttons can go",
       "addedIn": "v1.2.8"
+    }
+  },
+
+  "scopedSlots": {
+    "day": {
+      "desc": "Override default day content slot; Suggestion: tooltips and / or multiple event markers",
+      "scope": {
+        "i": {
+          "type": "Number",
+          "desc": "The day number in month",
+          "examples": [ 23 ]
+        },
+        "day": {
+          "type": "String",
+          "desc": "Full date in YYYY/MM/DD form",
+          "examples": [ "2020/05/20" ]
+        },
+        "fill": {
+          "type": "Boolean",
+          "desc": "The day does not belong to the currently displayed month / year (no QBtn and hidden by default)"
+        },
+        "in": {
+          "type": "Boolean",
+          "desc": "The day is selectable (QBtn is not disabled)"
+        },
+        "today": {
+          "type": "Boolean",
+          "desc": "The day is today"
+        },
+        "selected": {
+          "type": "Boolean",
+          "desc": "The day is selected"
+        },
+        "unelevated": {
+          "type": "Boolean",
+          "desc": "The day is selected"
+        },
+        "flat": {
+          "type": "Boolean",
+          "desc": "The day is not selected"
+        },
+        "classes": {
+          "type": "String",
+          "desc": "The classes applied to the day",
+          "__exemption": "examples"
+        },
+        "color": {
+          "type": "String",
+          "desc": "The color of the QBtn used for the day",
+          "examples": [ "primary" ]
+        },
+        "textColor": {
+          "type": "String",
+          "desc": "The text color of the QBtn used for the day",
+          "examples": [ "orange-2" ]
+        },
+        "event": {
+          "type": [ "Boolean", "String", "Any" ],
+          "desc": "Boolean false if there is no event for the day; The event-color or the value returned by the event-color function",
+          "examples": [ "red" ]
+        },
+        "range": {
+          "type": "Object",
+          "desc": "The range this day belongs to",
+          "definition": {
+            "from": {
+              "type": "Object",
+              "desc": "Object of properties of the range starting point (only if range)",
+              "definition": {
+                "year": {
+                  "type": "Number",
+                  "desc": "The year",
+                  "__exemption": [
+                    "examples"
+                  ]
+                },
+                "month": {
+                  "type": "Number",
+                  "desc": "The month",
+                  "__exemption": [
+                    "examples"
+                  ]
+                },
+                "day": {
+                  "type": "Number",
+                  "desc": "The day of month",
+                  "__exemption": [
+                    "examples"
+                  ]
+                }
+              }
+            },
+            "to": {
+              "type": "Object",
+              "desc": "Object of properties of the range ending point (only if range)",
+              "definition": {
+                "year": {
+                  "type": "Number",
+                  "desc": "The year",
+                  "__exemption": [
+                    "examples"
+                  ]
+                },
+                "month": {
+                  "type": "Number",
+                  "desc": "The month",
+                  "__exemption": [
+                    "examples"
+                  ]
+                },
+                "day": {
+                  "type": "Number",
+                  "desc": "The day of month",
+                  "__exemption": [
+                    "examples"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "addedIn": "v1.14.8"
     }
   },
 
@@ -304,6 +443,61 @@
         }
       },
       "addedIn": "v1.13.0"
+    },
+
+    "range-change": {
+      "desc": "User has changed a range selection",
+      "params": {
+        "range": {
+          "type": "Object",
+          "desc": "Definition of the range",
+          "definition": {
+            "from": {
+              "type": "Object",
+              "desc": "Definition of date from where the range begins",
+              "definition": {
+                "year": {
+                  "type": "Number",
+                  "desc": "The year",
+                  "__exemption": [ "examples" ]
+                },
+                "month": {
+                  "type": "Number",
+                  "desc": "The month",
+                  "__exemption": [ "examples" ]
+                },
+                "day": {
+                  "type": "Number",
+                  "desc": "The day of month",
+                  "__exemption": [ "examples" ]
+                }
+              }
+            },
+            "to": {
+              "type": "Object",
+              "desc": "Definition of date to where the range ends",
+              "definition": {
+                "year": {
+                  "type": "Number",
+                  "desc": "The year",
+                  "__exemption": [ "examples" ]
+                },
+                "month": {
+                  "type": "Number",
+                  "desc": "The month",
+                  "__exemption": [ "examples" ]
+                },
+                "day": {
+                  "type": "Number",
+                  "desc": "The day of month",
+                  "__exemption": [ "examples" ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "addedIn": "v1.14.8"
     },
 
     "range-end": {
@@ -459,6 +653,13 @@
               "__exemption": [ "examples" ]
             }
           }
+        },
+        "modelNavigation": {
+          "type": [ "String", "Boolean" ],
+          "desc": "On which end of the range to navigate the calendar; Use `false` to skip navigation",
+          "values": [ "from", "to", "(Boolean) false" ],
+          "default": "from",
+          "addedIn": "v1.14.8"
         }
       }
     }

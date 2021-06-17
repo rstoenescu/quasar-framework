@@ -47,7 +47,7 @@ Notice in the examples below that the model is an Object (single selection) or a
 ::: tip TIPS
 * Clicking on an already selected day will deselect it.
 * The user's current editing range can also be set programmatic through the `setEditingRange` method (check the API card).
-* There are two useful events in regards to the current editing range: `range-start` and `range-end` (check the API card).
+* There are three useful events in regards to the current editing range: `range-start`, `range-change` and `range-end` (check the API card).
 :::
 
 ::: warning
@@ -134,6 +134,12 @@ The first example is using an array and the second example is using a function.
 
 <doc-example title="Event color" file="QDate/EventColor" overflow />
 
+### Day scoped slot
+
+You can use the `day` scoped slot to render custom event markers or tooltips specific to each day.
+
+<doc-example title="Day slot" file="QDate/DaySlot" overflow />
+
 ### Limiting options
 
 * You can use the `options` prop to limit user selection to certain times.
@@ -156,6 +162,18 @@ In the example below the navigation is restricted between 2020/07 and 2020/09.
 You can use the default slot for adding buttons:
 
 <doc-example title="With additional buttons" file="QDate/AdditionalButtons" overflow />
+
+* Use 2 components to allow easy interval selection
+
+<doc-example title="Interval selection" file="QDate/IntervalSelection" overflow />
+
+* Adjust the selection to match a fixed interval
+
+<doc-example title="Week selection" file="QDate/WeekSelection" overflow />
+
+* Limit the minimum and maximum selection length
+
+<doc-example title="Constrained interval selection" file="QDate/IntervalSelectionConstrained" overflow />
 
 ### With QSplitter and QTabPanels
 

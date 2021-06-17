@@ -4,7 +4,7 @@ import QBtn from '../btn/QBtn.js'
 import TouchPan from '../../directives/TouchPan.js'
 
 import { slot } from '../../utils/slot.js'
-import { formatDate, __splitDate } from '../../utils/date.js'
+import { formatDate, __splitDate, __safeCreateDate } from '../../utils/date.js'
 import { position } from '../../utils/event.js'
 import { pad } from '../../utils/format.js'
 import cache from '../../utils/cache.js'
@@ -850,7 +850,7 @@ export default Vue.extend({
           pad(date.minute) +
           (this.withSeconds === true ? ':' + pad(date.second) : '')
         : formatDate(
-          new Date(
+          __safeCreateDate(
             date.year,
             date.month === null ? null : date.month - 1,
             date.day,

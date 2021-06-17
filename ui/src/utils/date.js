@@ -151,10 +151,20 @@ function getRegexData (mask, dateLocale) {
   return res
 }
 
+export function __safeCreateDate (...args) {
+  const d = new Date(...args)
+
+  if (args.length > 1 && args[0] >= 0 && args[0] <= 99) {
+    d.setFullYear(args[0])
+  }
+
+  return d
+}
+
 export function extractDate (str, mask, dateLocale) {
   const d = __splitDate(str, mask, dateLocale)
 
-  const date = new Date(
+  const date = __safeCreateDate(
     d.year,
     d.month === null ? null : d.month - 1,
     d.day,
@@ -262,7 +272,7 @@ export function __splitDate (str, mask, dateLocale, calendar, defaultModel) {
       }
 
       const maxDay = calendar !== 'persian'
-        ? (new Date(date.year, date.month, 0)).getDate()
+        ? (__safeCreateDate(date.year, date.month, 0)).getDate()
         : jalaaliMonthLength(date.year, date.month)
 
       if (date.day > maxDay) {
@@ -321,7 +331,7 @@ function formatTimezone (offset, delimeter = '') {
 
 function setMonth (date, newMonth /* 1-based */) {
   const
-    test = new Date(date.getFullYear(), newMonth, 0, 0, 0, 0, 0),
+    test = __safeCreateDate(date.getFullYear(), newMonth, 0, 0, 0, 0, 0),
     days = test.getDate()
 
   date.setMonth(newMonth - 1, Math.min(days, date.getDate()))
@@ -363,13 +373,13 @@ export function getDayOfWeek (date) {
 
 export function getWeekOfYear (date) {
   // Remove time components of date
-  const thursday = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+  const thursday = __safeCreateDate(date.getFullYear(), date.getMonth(), date.getDate())
 
   // Change date to Thursday same week
   thursday.setDate(thursday.getDate() - ((thursday.getDay() + 6) % 7) + 3)
 
   // Take January 4th as it is always in week 1 (see ISO 8601)
-  const firstThursday = new Date(thursday.getFullYear(), 0, 4)
+  const firstThursday = __safeCreateDate(thursday.getFullYear(), 0, 4)
 
   // Change date to Thursday same week
   firstThursday.setDate(firstThursday.getDate() - ((firstThursday.getDay() + 6) % 7) + 3)
@@ -490,10 +500,12 @@ export function getMinDate (date /*, ...args */) {
 }
 
 function getDiff (t, sub, interval) {
-  return (
-    (t.getTime() - t.getTimezoneOffset() * MILLISECONDS_IN_MINUTE) -
-    (sub.getTime() - sub.getTimezoneOffset() * MILLISECONDS_IN_MINUTE)
-  ) / interval
+  return Math.floor(
+    (
+      (t.getTime() - t.getTimezoneOffset() * MILLISECONDS_IN_MINUTE) -
+      (sub.getTime() - sub.getTimezoneOffset() * MILLISECONDS_IN_MINUTE)
+    ) / interval
+  )
 }
 
 export function getDateDiff (date, subtract, unit = 'days') {
@@ -595,7 +607,7 @@ export function isSameDate (date, date2, unit) {
 }
 
 export function daysInMonth (date) {
-  return (new Date(date.getFullYear(), date.getMonth() + 1, 0)).getDate()
+  return (__safeCreateDate(date.getFullYear(), date.getMonth() + 1, 0)).getDate()
 }
 
 function getOrdinal (n) {

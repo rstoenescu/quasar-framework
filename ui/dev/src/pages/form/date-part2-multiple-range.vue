@@ -18,7 +18,7 @@
 
       <div>Multiple + Range {{ daysRange || 'none ' }}:</div>
       <div class="row no-wrap">
-        <q-date ref="daysRange" v-model="daysRange" multiple today-btn range @input="onInput" @range-start="onRangeStart" @range-end="onRangeEnd" :no-unset="noUnset" />
+        <q-date ref="daysRange" v-model="daysRange" multiple today-btn range day-as-range @input="onInput" @range-start="onRangeStart" @range-end="onRangeEnd" :no-unset="noUnset" />
         <div class="q-gutter-sm q-ml-sm">
           <q-btn label="setEditingRange(from)" @click="setRangeFrom" no-caps />
           <q-btn label="setEditingRange(from, to)" @click="setRangeFromTo" no-caps />
@@ -52,9 +52,10 @@ export default {
       daysRange: [
         { from: '2020/08/12', to: '2020/08/16' },
         '2020/08/02',
+        { from: '2020/08/03', to: '2020/08/03' },
+        { from: '2020/08/07', to: '2020/08/05' },
         '2020/08/10',
-        { from: '2020/08/27', to: '2020/09/15' }
-        // '2021/09/11',
+        { from: '2020/08/27', to: '2020/10/15' }
       ]
     }
   },

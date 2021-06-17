@@ -102,6 +102,12 @@
 
     &--fill
       visibility: hidden
+      min-height: 32px
+
+      &.q-date
+        &__range, &__range-from, &__range-to
+          &:before
+            opacity: .05
 
   &__range, &__range-from, &__range-to
 
@@ -114,7 +120,9 @@
       left: 0
       right: 0
       opacity: .3
+      pointer-events: none
 
+  &__range
     &:nth-child(7n-6)
       &:before
         border-top-left-radius: 0
@@ -127,10 +135,15 @@
 
   &__range-from
     &:before
-      left: 50%
+      left: calc(50% - 15px)
+      border-top-left-radius: $button-rounded-border-radius
+      border-bottom-left-radius: $button-rounded-border-radius
+
   &__range-to
     &:before
-      right: 50%
+      right: calc(50% - 15px)
+      border-top-right-radius: $button-rounded-border-radius
+      border-bottom-right-radius: $button-rounded-border-radius
 
   &__edit-range
     &:after

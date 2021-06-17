@@ -22,8 +22,8 @@
           :style="style"
           @input="inputLog"
           flat bordered
-          navigation-min-year-month="2018/05"
-          navigation-max-year-month="2019/03"
+          :navigation-min-year-month="navigationMinYM"
+          :navigation-max-year-month="navigationMaxYM"
         >
           <div class="row items-center justify-end q-gutter-sm">
             <q-btn label="Cancel" color="primary" flat />
@@ -135,25 +135,61 @@
       </div>
 
       <div class="text-h6">
+        Day slot
+      </div>
+      <div class="q-gutter-md">
+        <q-date
+          class="day-slot--example"
+          v-model="date"
+          v-bind="props"
+          :events="eventMultiFn"
+          :event-color="eventMultiDetailsFn"
+          :style="style"
+        >
+          <template v-slot:day="day">
+            <small v-if="day.fill === true" class="text-grey-5">
+              {{ day.i }}
+            </small>
+            <div v-else-if="day.event" class="day-slot__events--example absolute-full">
+              <div
+                v-for="({ color, label }, index) in day.event"
+                :key="index"
+                :class="'bg-' + color"
+              >
+                <q-tooltip
+                  :content-class="'day-slot__tooltip--example q-px-md q-py-sm rounded-borders bg-' + color + '-1 text-subtitle2 text-' + color"
+                  anchor="bottom right"
+                  self="top left"
+                  :offset="[ 4, 4 ]"
+                >
+                  <span class="text-grey-10">{{ label }}</span>
+                </q-tooltip>
+              </div>
+            </div>
+          </template>
+        </q-date>
+      </div>
+
+      <div class="text-h6">
         Limited options
       </div>
       <div class="q-gutter-md">
         <q-date
-          v-model="date"
+          v-model="dateLimited"
           v-bind="props"
           :options="options"
           :style="style"
         />
 
         <q-date
-          v-model="date"
+          v-model="dateLimited"
           v-bind="props"
           :options="optionsFn"
           :style="style"
         />
 
         <q-date
-          v-model="date"
+          v-model="dateLimited"
           v-bind="props"
           :options="optionsFn2"
           :style="style"
@@ -214,7 +250,6 @@
           :mask="mask"
           :locale="localeComputed"
           v-bind="props"
-          calendar="gregorian"
           :style="style"
         />
 
@@ -333,6 +368,43 @@
   </div>
 </template>
 
+<style lang="sass">
+.day-slot__events--example
+  border-radius: 50%
+  mix-blend-mode: overlay
+
+  > div
+    position: absolute
+    left: 0
+    right: 0
+    height: 50%
+
+  > div:first-child
+    top: 0
+    border-top-left-radius: 15px
+    border-top-right-radius: 15px
+
+  > div:last-child
+    bottom: 0
+    border-bottom-left-radius: 15px
+    border-bottom-right-radius: 15px
+
+  > div:first-child:last-child
+    height: 100%
+
+.day-slot--example
+  .q-btn--unelevated
+    .day-slot__events--example
+      border: 2px solid transparent
+
+  .q-date__calendar-item--fill
+    visibility: visible
+    cursor: not-allowed
+
+.day-slot__tooltip--example
+  border: 2px solid currentColor
+</style>
+
 <script>
 import languages from 'quasar/lang/index.json'
 
@@ -357,12 +429,15 @@ export default {
 
       date: '2018/11/03',
       dateParse: 'Month: Aug, Day: 28th, Year: 2018',
+      dateLimited: '2018/08/23',
       dateNeg: '-13/11/03',
-      dateFrom: '2012/06/18',
-      dateTo: '2015/04/10',
       nullDate: null,
       nullDate2: null,
+
       defaultYearMonth: '1986/02',
+
+      navigationMinYM: '2018/05',
+      navigationMaxYM: '2019/03',
 
       persian: false,
 
@@ -419,13 +494,21 @@ export default {
     persian (val) {
       if (val === true) {
         this.date = '1397/08/12'
+        this.dateLimited = '1397/08/10'
+        this.dateParse = 'Month: Aug, Day: 12th, Year: 1397'
         this.nullDate = undefined
         this.defaultYearMonth = '1364/11'
+        this.navigationMinYM = '1396/05'
+        this.navigationMaxYM = '1397/10'
       }
       else {
         this.date = '2018/11/03'
+        this.dateLimited = '2018/08/23'
+        this.dateParse = 'Month: Aug, Day: 28th, Year: 2018'
         this.nullDate = null
         this.defaultYearMonth = '1986/02'
+        this.navigationMinYM = '2018/05'
+        this.navigationMaxYM = '2019/03'
       }
     }
   },
@@ -436,6 +519,32 @@ export default {
 
     eventColor (date) {
       return date[9] % 2 === 0 ? 'teal' : 'orange'
+    },
+
+    eventMultiFn (date) {
+      const parts = date.split('/')
+      return [ 1, 3 ].indexOf(parts[2] % 6) > -1
+    },
+
+    eventMultiDetailsFn (date) {
+      const parts = date.split('/')
+      return parts[2] % 6 === 1
+        ? [
+          {
+            color: 'red',
+            label: `Event on ${date}`
+          }
+        ]
+        : [
+          {
+            color: 'orange',
+            label: `Task on ${date}`
+          },
+          {
+            color: 'green',
+            label: `Recurring event on ${date}`
+          }
+        ]
     },
 
     optionsFn (date) {
