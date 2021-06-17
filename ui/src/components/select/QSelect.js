@@ -794,6 +794,9 @@ export default Vue.extend({
 
       if (this.optionIndex > -1 && this.optionIndex < optionsLength) {
         this.toggleOption(this.options[this.optionIndex])
+        if (this.useInput) {
+          this.inputValue = ''
+        }
         return
       }
 
@@ -1445,6 +1448,9 @@ export default Vue.extend({
         if (this.innerValue.length > 0) {
           const val = this.getOptionValue(this.innerValue[0])
           optionIndex = this.options.findIndex(v => isDeepEqual(this.getOptionValue(v), val))
+        }
+        if (this.inputValue.length > 0 && optionIndex === -1) {
+          optionIndex = 0
         }
 
         this.__resetVirtualScroll(optionIndex)
