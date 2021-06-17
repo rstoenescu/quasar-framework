@@ -98,6 +98,33 @@ else {
 }
 ```
 
+## Debounced Ref <q-badge align="top" label="v1.14+" />
+Creates a new reference to an existing value in the Vue instance that will be updated in real-time, while the original value will be updated after a debouncing period.
+
+The new value can be used as model for a control that updates frequently (eg. QInput, QSlider, QRange, ...), while the original value will only be updated after debouncing (eg. You have a search field but you only want to perform the remote search API call 300ms after the last change in the search field).
+
+``` js
+import { debouncedRef } from 'quasar'
+
+....
+data () {
+  return {
+    search: '',
+    debouncedSearch: debouncedRef(this, 'search', 500)
+  }
+},
+
+watch: {
+  debouncedSearch (newSearch, oldSearch) {
+    ...
+  }
+}
+```
+
+::: warning
+If the debounced value is an object only modify it as a whole, because it is passed by reference. If you change the value of keys inside the object the change will propagate immediatelly.
+:::
+
 ## Debounce Function
 If your App uses JavaScript to accomplish taxing tasks, a debounce function is essential to ensuring a given task doesn't fire so often that it bricks browser performance. Debouncing a function limits the rate at which the function can fire.
 

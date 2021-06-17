@@ -1,3 +1,5 @@
+import { LooseDictionary } from './ts-helpers'
+
 export * from './utils/date';
 export * from './utils/colors';
 export * from './utils/dom';
@@ -12,6 +14,10 @@ export function debounce<F extends (...args: any[]) => any>(
   wait?: number,
   immediate?: boolean
 ): F & { cancel(): void };
+export function debouncedRef<T extends LooseDictionary, K extends keyof T>(vm: T, prop: K, wait?: number): {
+  value: T[K],
+  destroy: () => void
+};
 export function exportFile(
   fileName: string,
   rawData: BlobPart,

@@ -3,6 +3,7 @@ import colors from './utils/colors.js'
 import copyToClipboard from './utils/copy-to-clipboard.js'
 import date from './utils/date.js'
 import debounce from './utils/debounce.js'
+import debouncedRef from './utils/debounced-ref.js'
 import dom from './utils/dom.js'
 import event, { noop } from './utils/event.js'
 import exportFile from './utils/export-file.js'
@@ -22,6 +23,7 @@ export {
   copyToClipboard,
   date,
   debounce,
+  debouncedRef,
   dom,
   event,
   exportFile,
