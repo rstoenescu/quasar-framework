@@ -171,6 +171,77 @@
           }
         }
       }
+    },
+
+    "change": {
+      "extends": "input",
+      "desc": "Fires at the end of time adjustment (click or drag end) on the minutes screen (or seconds one if withSeconds is set)",
+      "params": {
+        "value": {
+          "type": "String"
+        },
+        "details": {
+          "type": "Object",
+          "desc": "Object of properties on the new model",
+          "definition": {
+            "year": {
+              "type": "Number",
+              "desc": "The year",
+              "__exemption": [
+                "examples"
+              ]
+            },
+            "month": {
+              "type": "Number",
+              "desc": "The month",
+              "__exemption": [
+                "examples"
+              ]
+            },
+            "day": {
+              "type": "Number",
+              "desc": "The day of the month",
+              "__exemption": [
+                "examples"
+              ]
+            },
+            "hour": {
+              "type": "Number",
+              "desc": "The hour",
+              "__exemption": [
+                "examples"
+              ]
+            },
+            "minute": {
+              "type": "Number",
+              "desc": "The minute",
+              "__exemption": [
+                "examples"
+              ]
+            },
+            "second": {
+              "type": "Number",
+              "desc": "The second",
+              "__exemption": [
+                "examples"
+              ]
+            },
+            "millisecond": {
+              "type": "Number",
+              "desc": "The millisecond",
+              "__exemption": [
+                "examples"
+              ]
+            },
+            "changed": {
+              "type": "Boolean",
+              "desc": "Did the model change?",
+              "addedIn": "v1.1.1"
+            }
+          }
+        }
+      },
+      "addedIn": "v1.15.5"
     }
   },
 

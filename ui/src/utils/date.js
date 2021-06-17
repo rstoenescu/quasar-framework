@@ -16,7 +16,7 @@ const
 
 function getRegexData (mask, dateLocale) {
   const
-    days = '(' + dateLocale.days.join('|') + ')',
+    days = '(' + dateLocale.days.join('|') + '|)',
     key = mask + days
 
   if (regexStore[key] !== void 0) {
@@ -24,9 +24,9 @@ function getRegexData (mask, dateLocale) {
   }
 
   const
-    daysShort = '(' + dateLocale.daysShort.join('|') + ')',
-    months = '(' + dateLocale.months.join('|') + ')',
-    monthsShort = '(' + dateLocale.monthsShort.join('|') + ')'
+    daysShort = '(' + dateLocale.daysShort.join('|') + '|)',
+    months = '(' + dateLocale.months.join('|') + '|)',
+    monthsShort = '(' + dateLocale.monthsShort.join('|') + '|)'
 
   const map = {}
   let index = 0
@@ -36,16 +36,16 @@ function getRegexData (mask, dateLocale) {
     switch (match) {
       case 'YY':
         map.YY = index
-        return '(-?\\d{1,2})'
+        return '(-?\\d{1,2}|)'
       case 'YYYY':
         map.YYYY = index
-        return '(-?\\d{1,4})'
+        return '(-?\\d{1,4}|)'
       case 'M':
         map.M = index
-        return '(\\d{1,2})'
+        return '(\\d{1,2}|)'
       case 'MM':
         map.M = index // bumping to M
-        return '(\\d{2})'
+        return '(\\d{2}|)'
       case 'MMM':
         map.MMM = index
         return monthsShort
@@ -54,55 +54,55 @@ function getRegexData (mask, dateLocale) {
         return months
       case 'D':
         map.D = index
-        return '(\\d{1,2})'
+        return '(\\d{1,2}|)'
       case 'Do':
-        map.D = index++ // bumping to D
-        return '(\\d{1,2}(st|nd|rd|th))'
+        map.D = index // bumping to D
+        return '(\\d{1,2}(?:st|nd|rd|th)|)'
       case 'DD':
         map.D = index // bumping to D
-        return '(\\d{2})'
+        return '(\\d{2}|)'
       case 'H':
         map.H = index
-        return '(\\d{1,2})'
+        return '(\\d{1,2}|)'
       case 'HH':
         map.H = index // bumping to H
-        return '(\\d{2})'
+        return '(\\d{2}|)'
       case 'h':
         map.h = index
-        return '(\\d{1,2})'
+        return '(\\d{1,2}|)'
       case 'hh':
         map.h = index // bumping to h
-        return '(\\d{2})'
+        return '(\\d{2}|)'
       case 'm':
         map.m = index
-        return '(\\d{1,2})'
+        return '(\\d{1,2}|)'
       case 'mm':
         map.m = index // bumping to m
-        return '(\\d{2})'
+        return '(\\d{2}|)'
       case 's':
         map.s = index
-        return '(\\d{1,2})'
+        return '(\\d{1,2}|)'
       case 'ss':
         map.s = index // bumping to s
-        return '(\\d{2})'
+        return '(\\d{2}|)'
       case 'S':
         map.S = index
-        return '(\\d{1})'
+        return '(\\d{1}|)'
       case 'SS':
         map.S = index // bump to S
-        return '(\\d{2})'
+        return '(\\d{2}|)'
       case 'SSS':
         map.S = index // bump to S
-        return '(\\d{3})'
+        return '(\\d{3}|)'
       case 'A':
         map.A = index
-        return '(AM|PM)'
+        return '(AM|PM|)'
       case 'a':
         map.a = index
-        return '(am|pm)'
+        return '(am|pm|)'
       case 'aa':
         map.aa = index
-        return '(a\\.m\\.|p\\.m\\.)'
+        return '(a\\.m\\.|p\\.m\\.|)'
 
       case 'ddd':
         return daysShort
@@ -111,30 +111,30 @@ function getRegexData (mask, dateLocale) {
       case 'Q':
       case 'd':
       case 'E':
-        return '(\\d{1})'
+        return '(\\d{1}|)'
       case 'Qo':
-        return '(1st|2nd|3rd|4th)'
+        return '(1st|2nd|3rd|4th|)'
       case 'DDD':
       case 'DDDD':
-        return '(\\d{1,3})'
+        return '(\\d{1,3}|)'
       case 'w':
-        return '(\\d{1,2})'
+        return '(\\d{1,2}|)'
       case 'ww':
-        return '(\\d{2})'
+        return '(\\d{2}|)'
 
       case 'Z': // to split: (?:(Z)()()|([+-])?(\\d{2}):?(\\d{2}))
         map.Z = index
-        return '(Z|[+-]\\d{2}:\\d{2})'
+        return '(Z|[+-]\\d{2}:\\d{2}|)'
       case 'ZZ':
         map.ZZ = index
-        return '(Z|[+-]\\d{2}\\d{2})'
+        return '(Z|[+-]\\d{2}\\d{2}|)'
 
       case 'X':
         map.X = index
-        return '(-?\\d+)'
+        return '(-?\\d+|)'
       case 'x':
         map.x = index
-        return '(-?\\d{4,})'
+        return '(-?\\d{4,}|)'
 
       default:
         index--
@@ -213,16 +213,23 @@ export function __splitDate (str, mask, dateLocale, calendar, defaultModel) {
     return date
   }
 
+  const idx = { ...map }
+  Object.keys(idx).forEach(key => {
+    if (match[idx[key]] === '') {
+      idx[key] = void 0
+    }
+  })
+
   let tzString = ''
 
-  if (map.X !== void 0 || map.x !== void 0) {
-    const stamp = parseInt(match[map.X !== void 0 ? map.X : map.x], 10)
+  if (idx.X !== void 0 || idx.x !== void 0) {
+    const stamp = parseInt(match[idx.X !== void 0 ? idx.X : idx.x], 10)
 
     if (isNaN(stamp) === true || stamp < 0) {
       return date
     }
 
-    const d = new Date(stamp * (map.X !== void 0 ? 1000 : 1))
+    const d = new Date(stamp * (idx.X !== void 0 ? 1000 : 1))
 
     date.year = d.getFullYear()
     date.month = d.getMonth() + 1
@@ -233,29 +240,29 @@ export function __splitDate (str, mask, dateLocale, calendar, defaultModel) {
     date.millisecond = d.getMilliseconds()
   }
   else {
-    if (map.YYYY !== void 0) {
-      date.year = parseInt(match[map.YYYY], 10)
+    if (idx.YYYY !== void 0) {
+      date.year = parseInt(match[idx.YYYY], 10)
     }
-    else if (map.YY !== void 0) {
-      const y = parseInt(match[map.YY], 10)
+    else if (idx.YY !== void 0) {
+      const y = parseInt(match[idx.YY], 10)
       date.year = y < 0 ? y : 2000 + y
     }
 
-    if (map.M !== void 0) {
-      date.month = parseInt(match[map.M], 10)
+    if (idx.M !== void 0) {
+      date.month = parseInt(match[idx.M], 10)
       if (date.month < 1 || date.month > 12) {
         return date
       }
     }
-    else if (map.MMM !== void 0) {
-      date.month = monthsShort.indexOf(match[map.MMM]) + 1
+    else if (idx.MMM !== void 0) {
+      date.month = monthsShort.indexOf(match[idx.MMM]) + 1
     }
-    else if (map.MMMM !== void 0) {
-      date.month = months.indexOf(match[map.MMMM]) + 1
+    else if (idx.MMMM !== void 0) {
+      date.month = months.indexOf(match[idx.MMMM]) + 1
     }
 
-    if (map.D !== void 0) {
-      date.day = parseInt(match[map.D], 10)
+    if (idx.D !== void 0) {
+      date.day = parseInt(match[idx.D], 10)
 
       if (date.year === null || date.month === null || date.day < 1) {
         return date
@@ -270,35 +277,35 @@ export function __splitDate (str, mask, dateLocale, calendar, defaultModel) {
       }
     }
 
-    if (map.H !== void 0) {
-      date.hour = parseInt(match[map.H], 10) % 24
+    if (idx.H !== void 0) {
+      date.hour = parseInt(match[idx.H], 10) % 24
     }
-    else if (map.h !== void 0) {
-      date.hour = parseInt(match[map.h], 10) % 12
+    else if (idx.h !== void 0) {
+      date.hour = parseInt(match[idx.h], 10) % 12
       if (
-        (map.A && match[map.A] === 'PM') ||
-        (map.a && match[map.a] === 'pm') ||
-        (map.aa && match[map.aa] === 'p.m.')
+        (idx.A && match[idx.A] === 'PM') ||
+        (idx.a && match[idx.a] === 'pm') ||
+        (idx.aa && match[idx.aa] === 'p.m.')
       ) {
         date.hour += 12
       }
       date.hour = date.hour % 24
     }
 
-    if (map.m !== void 0) {
-      date.minute = parseInt(match[map.m], 10) % 60
+    if (idx.m !== void 0) {
+      date.minute = parseInt(match[idx.m], 10) % 60
     }
 
-    if (map.s !== void 0) {
-      date.second = parseInt(match[map.s], 10) % 60
+    if (idx.s !== void 0) {
+      date.second = parseInt(match[idx.s], 10) % 60
     }
 
-    if (map.S !== void 0) {
-      date.millisecond = parseInt(match[map.S], 10) * 10 ** (3 - match[map.S].length)
+    if (idx.S !== void 0) {
+      date.millisecond = parseInt(match[idx.S], 10) * 10 ** (3 - match[idx.S].length)
     }
 
-    if (map.Z !== void 0 || map.ZZ !== void 0) {
-      tzString = (map.Z !== void 0 ? match[map.Z].replace(':', '') : match[map.ZZ])
+    if (idx.Z !== void 0 || idx.ZZ !== void 0) {
+      tzString = (idx.Z !== void 0 ? match[idx.Z].replace(':', '') : match[idx.ZZ])
       date.timezoneOffset = (tzString[0] === '+' ? -1 : 1) * (60 * tzString.slice(1, 3) + 1 * tzString.slice(3, 5))
     }
   }

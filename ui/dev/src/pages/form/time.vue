@@ -163,6 +163,67 @@
           </q-icon>
         </q-input>
       </div>
+
+      <div class="text-h6">
+        Close on change
+      </div>
+      <q-input filled v-model="time" mask="time" :rules="['time']">
+        <template v-slot:append>
+          <q-icon name="access_time" class="cursor-pointer" tabindex="0">
+            <q-popup-proxy transition-show="scale" transition-hide="scale" ref="timeProxy">
+              <q-time v-model="time" @change="onChangeTime">
+                <div class="row items-center justify-end">
+                  <q-btn v-close-popup label="Close" color="primary" flat></q-btn>
+                </div>
+              </q-time>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+      </q-input>
+
+      <q-input filled v-model="timeWithSeconds" mask="fulltime" :rules="['fulltime']">
+        <template v-slot:append>
+          <q-icon name="access_time" class="cursor-pointer" tabindex="0">
+            <q-popup-proxy transition-show="scale" transition-hide="scale" ref="timeWithSecondsProxy">
+              <q-time
+                v-model="timeWithSeconds"
+                with-seconds
+                format24h
+                @change="onChangeTimeWithSeconds"
+              >
+                <div class="row items-center justify-end">
+                  <q-btn v-close-popup label="Close" color="primary" flat></q-btn>
+                </div>
+              </q-time>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+      </q-input>
+
+      <q-input filled v-model="timePartial" :rules="['fulltime']">
+        <template v-slot:append>
+          <q-icon name="access_time" class="cursor-pointer" tabindex="0">
+            <q-popup-proxy transition-show="scale" transition-hide="scale" ref="timePartialProxy">
+              <q-time
+                v-model="timePartial"
+                with-seconds
+                format24h
+                @change="onChangeTimePartial"
+              >
+                <div class="row items-center justify-end">
+                  <q-btn v-close-popup label="Close" color="primary" flat></q-btn>
+                </div>
+              </q-time>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+      </q-input>
+      <div class="row q-gutter-x-md">
+        <q-btn flat label="Set ::" @click="timePartial = '::'" />
+        <q-btn flat label="Set 14::" @click="timePartial = '14::'" />
+        <q-btn flat label="Set 23:40:" @click="timePartial = '23:40:'" />
+        <q-btn flat label="Set 09:10:30" @click="timePartial = '09:10:30'" />
+      </div>
     </div>
   </div>
 </template>
@@ -180,6 +241,8 @@ export default {
       nowBtn: false,
 
       time: '10:56',
+      timeWithSeconds: '10:50:30',
+      timePartial: '12:10:',
       nullTime: null,
       input: null,
       input2: '12:35 PM',
@@ -220,6 +283,21 @@ export default {
       if (min !== null && (min <= 25 || min >= 58)) { return false }
       if (sec !== null && sec % 10 !== 0) { return false }
       return true
+    },
+
+    onChangeTime (...ev) {
+      console.log('time', ...ev)
+      this.$refs.timeProxy.hide()
+    },
+
+    onChangeTimeWithSeconds (...ev) {
+      console.log('timeWithSeconds', ...ev)
+      this.$refs.timeWithSecondsProxy.hide()
+    },
+
+    onChangeTimePartial (...ev) {
+      console.log('timePartial', ...ev)
+      this.$refs.timePartialProxy.hide()
     }
   }
 }
