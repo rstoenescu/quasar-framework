@@ -1,5 +1,7 @@
 import Vue from 'vue'
 
+import TouchSwipe from '../../directives/TouchSwipe.js'
+
 import QBtn from '../btn/QBtn.js'
 import DateTimeMixin from '../../mixins/datetime.js'
 
@@ -19,6 +21,10 @@ export default Vue.extend({
   name: 'QDate',
 
   mixins: [ DateTimeMixin ],
+
+  directives: {
+    TouchSwipe
+  },
 
   props: {
     multiple: Boolean,
@@ -969,7 +975,14 @@ export default Vue.extend({
           }, this.daysOfWeek.map(day => h('div', { staticClass: 'q-date__calendar-item' }, [ h('div', [ day ]) ]))),
 
           h('div', {
-            staticClass: 'q-date__calendar-days-container relative-position overflow-hidden'
+            staticClass: 'q-date__calendar-days-container relative-position overflow-hidden',
+            directives: [{
+              name: 'touch-swipe',
+              value: this.__onDaysSwipe,
+              modifiers: {
+                horizontal: true
+              }
+            }]
           }, [
             h('transition', {
               props: {
@@ -1249,6 +1262,10 @@ export default Vue.extend({
           finalHash: this.__getDayHash(final)
         })
       }
+    },
+
+    __onDaysSwipe (evt) {
+      this.__goToMonth(evt.direction === 'left' ? 1 : -1)
     },
 
     __updateViewModel (year, month) {
