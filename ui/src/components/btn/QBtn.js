@@ -216,15 +216,11 @@ export default Vue.extend({
         if (keyboardTarget === this.$el && isKeyCode(e, [ 13, 32 ]) === true) {
           // for click trigger
           const evt = new MouseEvent('click', e)
-          evt.qKeyEvent = true
           e.defaultPrevented === true && prevent(evt)
           e.cancelBubble === true && stop(evt)
           this.$el.dispatchEvent(evt)
 
           stopAndPrevent(e)
-
-          // for ripple
-          e.qKeyEvent = true
         }
 
         this.$emit('keyup', e)

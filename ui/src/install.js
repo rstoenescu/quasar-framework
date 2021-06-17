@@ -1,5 +1,6 @@
 import { version } from '../package.json'
 import Platform, { isSSR } from './plugins/Platform.js'
+import Interaction from './plugins/Interaction.js'
 import Screen from './plugins/Screen.js'
 import Dark from './plugins/Dark.js'
 import History from './history.js'
@@ -8,7 +9,7 @@ import Body from './body.js'
 import IconSet from './icon-set.js'
 
 const autoInstalled = [
-  Platform, Screen, Dark
+  Platform, Screen, Dark, Interaction
 ]
 
 export const queues = {
@@ -31,6 +32,7 @@ export default function (Vue, opts = {}) {
   Platform.install($q, queues)
   Body.install(queues, cfg)
   Dark.install($q, queues, cfg)
+  Interaction.install($q, queues)
   Screen.install($q, queues, cfg)
   History.install(cfg)
   Lang.install($q, queues, opts.lang)

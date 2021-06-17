@@ -9,7 +9,7 @@ import AttrsMixin from '../../mixins/attrs.js'
 
 import ClickOutside from './ClickOutside.js'
 import { getScrollTarget } from '../../utils/scroll.js'
-import { create, stop, position, stopAndPreventClick } from '../../utils/event.js'
+import { create, stop, position, stopAndPrevent } from '../../utils/event.js'
 import EscapeKey from '../../utils/escape-key.js'
 
 import { slot } from '../../utils/slot.js'
@@ -305,7 +305,8 @@ export default Vue.extend({
           // prevent click if it's on a dialog backdrop
           targetClassList.contains('q-dialog__backdrop')
         ) {
-          stopAndPreventClick(e)
+          stopAndPrevent(e)
+          this.$q.interaction.preventClick(e.target, true)
         }
         return true
       }

@@ -1,14 +1,8 @@
-let lastKeyCompositionStatus = false
-
-export function onKeyDownComposition (evt) {
-  lastKeyCompositionStatus = evt.isComposing === true
-}
-
 export function shouldIgnoreKey (evt) {
-  return lastKeyCompositionStatus === true ||
-    evt !== Object(evt) ||
-    evt.isComposing === true ||
-    evt.qKeyEvent === true
+  return evt !== Object(evt) ||
+    evt.type.indexOf('key') !== 0 ||
+    evt.target !== document.activeElement ||
+    evt.target.composing === true
 }
 
 export function isKeyCode (evt, keyCodes) {

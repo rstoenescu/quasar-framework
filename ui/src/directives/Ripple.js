@@ -107,7 +107,7 @@ export default {
               : evt.type === 'click'
           )
         ) {
-          showRipple(evt, el, ctx, evt.qKeyEvent === true)
+          showRipple(evt, el, ctx, $q.interaction.isKeyboard)
         }
       },
 

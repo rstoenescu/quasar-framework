@@ -5,6 +5,7 @@ import BottomSheet from './plugins/BottomSheet.js'
 import Cookies from './plugins/Cookies.js'
 import Dark from './plugins/Dark.js'
 import Dialog from './plugins/Dialog.js'
+import Interaction from './plugins/Interaction.js'
 import LoadingBar from './plugins/LoadingBar.js'
 import Loading from './plugins/Loading.js'
 import Meta from './plugins/Meta.js'
@@ -22,6 +23,7 @@ export {
   Cookies,
   Dark,
   Dialog,
+  Interaction,
   LoadingBar,
   Loading,
   Meta,

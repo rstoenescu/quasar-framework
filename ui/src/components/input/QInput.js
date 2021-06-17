@@ -5,7 +5,6 @@ import QField from '../field/QField.js'
 import { FormFieldMixin } from '../../mixins/form.js'
 import { FileValueMixin } from '../../mixins/file.js'
 import MaskMixin from '../../mixins/mask.js'
-import CompositionMixin from '../../mixins/composition.js'
 import ListenersMixin from '../../mixins/listeners.js'
 
 import { stop } from '../../utils/event.js'
@@ -17,7 +16,6 @@ export default Vue.extend({
   mixins: [
     QField,
     MaskMixin,
-    CompositionMixin,
     FormFieldMixin,
     FileValueMixin,
     ListenersMixin
@@ -112,6 +110,7 @@ export default Vue.extend({
       const on = {
         ...this.qListeners,
         input: this.__onInput,
+        compositionend: this.__onInput,
         paste: this.__onPaste,
         // Safari < 10.2 & UIWebView doesn't fire compositionend when
         // switching focus before confirming composition choice
@@ -121,8 +120,6 @@ export default Vue.extend({
         blur: this.__onFinishEditing,
         focus: stop
       }
-
-      on.compositionstart = on.compositionupdate = on.compositionend = this.__onComposition
 
       if (this.hasMask === true) {
         on.keydown = this.__onMaskedKeydown
@@ -281,7 +278,10 @@ export default Vue.extend({
     },
 
     __onChange (e) {
-      this.__onComposition(e)
+      if (e.target.composing === true) {
+        e.target.composing = false
+        this.__onInput(e)
+      }
 
       clearTimeout(this.emitTimer)
       this.emitValueFn !== void 0 && this.emitValueFn()

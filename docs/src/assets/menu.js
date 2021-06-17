@@ -112,6 +112,11 @@ const options = [
     path: 'screen-plugin'
   },
   {
+    name: 'Interaction Plugin',
+    badge: 'new',
+    path: 'interaction-plugin'
+  },
+  {
     name: 'Animations',
     path: 'animations'
   },
