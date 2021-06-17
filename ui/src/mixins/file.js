@@ -1,4 +1,4 @@
-import { stopAndPrevent } from '../utils/event.js'
+import { stop, stopAndPrevent } from '../utils/event.js'
 import cache from '../utils/cache.js'
 
 function filterFiles (files, rejectedFiles, failedPropValidation, filterFn) {
@@ -58,10 +58,20 @@ export default {
   },
 
   methods: {
-    pickFiles (e) {
-      if (this.editable) {
-        const input = this.__getFileInput()
-        input && input.click(e)
+    pickFiles (ev) {
+      if (this.editable === true) {
+        if (ev !== Object(ev)) {
+          ev = { target: null }
+        }
+
+        if (ev.target !== null && ev.target.matches('input[type="file"]') === true) {
+          // stop propagation if it's not a real pointer event
+          ev.clientX === 0 && ev.clientY === 0 && stop(ev)
+        }
+        else {
+          const input = this.__getFileInput()
+          input && input !== ev.target && input.click(ev)
+        }
       }
     },
 

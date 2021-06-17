@@ -9,6 +9,7 @@ import FileMixin, { FileValueMixin } from '../../mixins/file.js'
 import { isSSR } from '../../plugins/Platform'
 import { humanStorageSize } from '../../utils/format.js'
 import cache from '../../utils/cache.js'
+import { prevent } from '../../utils/event.js'
 
 export default Vue.extend({
   name: 'QFile',
@@ -115,9 +116,16 @@ export default Vue.extend({
       this.$emit('input', this.multiple === true ? files : files[0])
     },
 
+    __onKeydown (e) {
+      // prevent form submit if ENTER is pressed
+      e.keyCode === 13 && prevent(e)
+    },
+
     __onKeyup (e) {
-      // only on ENTER
-      e.keyCode === 13 && this.pickFiles(e)
+      // only on ENTER and SPACE to match native input field
+      if (e.keyCode === 13 || e.keyCode === 32) {
+        this.pickFiles(e)
+      }
     },
 
     __getFileInput () {
@@ -159,6 +167,7 @@ export default Vue.extend({
       if (this.editable === true) {
         data.on = cache(this, 'native', {
           dragover: this.__onDragOver,
+          keydown: this.__onKeydown,
           keyup: this.__onKeyup
         })
       }

@@ -18,7 +18,7 @@
             <div class="q-uploader__title">Upload your files</div>
             <div class="q-uploader__subtitle">{{ scope.uploadSizeLabel }} / {{ scope.uploadProgressLabel }}</div>
           </div>
-          <q-btn v-if="scope.canAddFiles" type="a" icon="add_box" round dense flat>
+          <q-btn v-if="scope.canAddFiles" type="a" icon="add_box" @click="scope.pickFiles" round dense flat>
             <q-uploader-add-trigger />
             <q-tooltip>Pick Files</q-tooltip>
           </q-btn>
