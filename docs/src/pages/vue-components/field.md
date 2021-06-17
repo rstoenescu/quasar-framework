@@ -43,6 +43,9 @@ For your QField you can use only one of the main designs (`filled`, `outlined`, 
 ### Outlined
 <doc-example title="Outlined" file="QField/DesignOutlined" />
 
+### Outlined - Material Design
+<doc-example title="Outlined - Material Design" file="QField/DesignOutlinedMD" />
+
 ### Standout
 <doc-example title="Standout" file="QField/DesignStandout" />
 

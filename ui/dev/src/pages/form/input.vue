@@ -1,5 +1,5 @@
 <template>
-  <div class="q-layout-padding" :class="dark ? 'bg-black text-white' : ''">
+  <div class="q-layout-padding" :class="dark ? 'bg-black text-white' : 'bg-grey-3'">
     <div style="max-width: 600px" class="q-gutter-y-md">
       <div class="q-gutter-x-md">
         <q-toggle :dark="dark" v-model="dark" label="Dark" :false-value="null" />
@@ -17,6 +17,58 @@
         <q-input :dark="dark" v-model="rows" :disable="textarea !== true || autogrow === true" label="Rows (for textarea)" class="inline" />
         <q-slider class="q-mt-lg" :dark="dark" v-model="fontSize" :min="8" :max="24" label-always />
       </div>
+
+      <div class="text-h6">
+        Outlined with label on border
+      </div>
+
+      <q-input v-bind="props" outlined :outlined-bg-color="dark === true ? 'black' : 'grey-3'" v-model="text" />
+
+      <q-input v-bind="props" outlined :outlined-bg-color="dark === true ? 'black' : 'grey-3'" v-model="text" label="Label (stacked) g" stack-label />
+
+      <q-input v-bind="props" outlined :outlined-bg-color="dark === true ? 'black' : 'grey-3'" v-model="text" label="Label Label (stacked) g Label (stacked) g Label (stacked) g Label (stacked) g Label (stacked) g Label (stacked) g Label (stacked) g Label (stacked) g Label (stacked) g" label-color="green" />
+
+      <q-input v-bind="props" outlined :outlined-bg-color="dark === true ? 'black' : 'grey-3'" v-model="text" label="Label (stacked) g" stack-label>
+        <q-icon slot="prepend" name="event" />
+        <q-icon slot="append" name="close" @click="text = ''" class="cursor-pointer" />
+        <q-icon slot="append" name="delete" />
+      </q-input>
+
+      <q-input v-bind="props" outlined :outlined-bg-color="dark === true ? 'black' : 'grey-3'" v-model="text">
+        <q-icon slot="prepend" name="event" />
+        <q-icon slot="append" name="close" @click="text = ''" class="cursor-pointer" />
+        <q-icon slot="append" name="delete" />
+      </q-input>
+
+      <q-input v-bind="props" outlined :outlined-bg-color="dark === true ? 'black' : 'grey-3'" v-model="text" label="Label">
+        <q-icon slot="prepend" name="event" />
+        <q-icon slot="append" name="close" @click="text = ''" class="cursor-pointer" />
+        <q-icon slot="append" name="delete" />
+      </q-input>
+
+      <q-input v-bind="props" :bottom-slots="bottomSlots" outlined :outlined-bg-color="dark === true ? 'black' : 'grey-3'" v-model="text" label="Label" counter maxlength="12">
+        <q-icon slot="before" name="event" />
+
+        <q-icon slot="prepend" name="schedule" />
+        <q-icon slot="append" name="close" @click="text = ''" class="cursor-pointer" />
+        <q-icon slot="append" name="search" />
+
+        <div slot="hint">
+          Field hint
+        </div>
+
+        <q-icon slot="after" name="delete" />
+      </q-input>
+
+      <q-input v-bind="props" :bottom-slots="bottomSlots" outlined :outlined-bg-color="dark === true ? 'black' : 'grey-3'" v-model="text" label="Label" counter maxlength="12">
+        <q-icon slot="before" name="event" />
+
+        <div slot="hint">
+          Field hint
+        </div>
+
+        <q-icon slot="after" name="delete" />
+      </q-input>
 
       <div class="text-h6">
         Standard

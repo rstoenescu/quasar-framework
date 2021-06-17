@@ -48,6 +48,12 @@
       "addedIn": "v1.7.0"
     },
 
+    "outlined-bg-color": {
+      "extends": "color",
+      "desc": "Used together with outlined prop to switch to Meterial type outlined; Specifies the color name for the background of the label from the Quasar Color Palette",
+      "addedIn": "v1.12.8"
+    },
+
     "color": {
       "extends": "color"
     },

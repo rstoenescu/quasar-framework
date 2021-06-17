@@ -7,6 +7,8 @@
 
       <q-file outlined v-model="model" label="Outlined" />
 
+      <q-file outlined outlined-bg-color="white" v-model="model" label="Outlined - Material Design" />
+
       <q-file standout v-model="model" label="Standout" />
 
       <q-file standout="bg-teal text-white" v-model="model" label="Custom standout" />
@@ -22,6 +24,8 @@
       <q-file square filled v-model="model" label="Square filled" />
 
       <q-file square outlined v-model="model" label="Square outlined" />
+
+      <q-file square outlined outlined-bg-color="white" v-model="model" label="Square outlined - Material Design" />
 
       <q-file square standout v-model="model" label="Square standout" />
     </div>

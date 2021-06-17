@@ -180,7 +180,7 @@ $field-transition-label-right-up: .324s cubic-bezier(.4,0,.2,1)
 
   &__label
     left: 0
-    right: 0
+    max-width: 100%
     top: 18px
     color: $input-label-color
     font-size: 16px
@@ -190,12 +190,12 @@ $field-transition-label-right-up: .324s cubic-bezier(.4,0,.2,1)
     text-decoration: inherit
     text-transform: inherit
     transform-origin: left top
-    transition: transform $field-transition, right $field-transition-label-right-up
+    transition: transform $field-transition, max-width $field-transition-label-right-up
 
   &--float .q-field__label
     transform: translateY(-40%) scale(.75)
-    right: calc(-100% / 3)
-    transition: transform $field-transition, right $field-transition-label-right-down
+    max-width: 133%
+    transition: transform $field-transition, max-width $field-transition-label-right-down
 
   &--highlighted
     .q-field__label
@@ -379,10 +379,11 @@ $field-transition-label-right-up: .324s cubic-bezier(.4,0,.2,1)
           border-color: rgba(255,255,255,.24)
 
   &--labeled
-    .q-field__native, .q-field__prefix, .q-field__suffix
-      line-height: 24px
-      padding-top: 24px
-      padding-bottom: 8px
+    &:not(.q-field--outlined--md)
+      .q-field__native, .q-field__prefix, .q-field__suffix
+        line-height: 24px
+        padding-top: 24px
+        padding-bottom: 8px
 
     .q-field__shadow
       top: 0
@@ -403,7 +404,7 @@ $field-transition-label-right-up: .324s cubic-bezier(.4,0,.2,1)
         &::placeholder
           color: transparent
 
-    &.q-field--dense
+    &.q-field--dense:not(.q-field--outlined--md)
       .q-field__native, .q-field__prefix, .q-field__suffix
         padding-top: 14px
         padding-bottom: 2px
@@ -438,6 +439,35 @@ $field-transition-label-right-up: .324s cubic-bezier(.4,0,.2,1)
         transform: translateY(-30%) scale(.75)
       &[type="number"]:invalid + .q-field__label
         transform: translateY(-30%) scale(.75)
+
+  &--outlined--md
+    &.q-field--float .q-field__label
+      max-width: 133%
+      transform: translateY(-120%) scale(.75)
+      padding-left: 6px
+      padding-right: 6px
+      transition: transform $field-transition, padding-left $field-transition, max-width $field-transition-label-right-down
+
+    .q-field__label
+      z-index: 2
+      left: -4px
+      padding-left: 4px
+      transition: transform $field-transition, padding-left $field-transition, max-width $field-transition-label-right-up
+
+    &:-webkit-autofill + .q-field__label
+      transform: translateY(-120%) scale(.75)
+    &[type="number"]:invalid + .q-field__label
+      transform: translateY(-120%) scale(.75)
+
+    &.q-field--dense
+      &.q-field--outlined--md.q-field--float .q-field__label
+        transform: translateY(-85%) scale(.75)
+
+      .q-field__native, .q-field__input
+        &:-webkit-autofill + .q-field__label
+          transform: translateY(-85%) scale(.75)
+        &[type="number"]:invalid + .q-field__label
+          transform: translateY(-85%) scale(.75)
 
   &--borderless, &--standard
 
@@ -484,7 +514,7 @@ $field-transition-label-right-up: .324s cubic-bezier(.4,0,.2,1)
     .q-field__native, .q-field__prefix, .q-field__suffix
       line-height: 18px
 
-    &.q-field--labeled
+    &.q-field--labeled:not(.q-field--outlined--md)
       .q-field__control-container
         padding-top: 24px
       .q-field__shadow
@@ -498,7 +528,7 @@ $field-transition-label-right-up: .324s cubic-bezier(.4,0,.2,1)
       .q-field__control, .q-field__native
         min-height: 40px
 
-      &.q-field--labeled
+      &.q-field--labeled:not(.q-field--outlined--md)
         .q-field__control-container
           padding-top: 14px
         .q-field__shadow

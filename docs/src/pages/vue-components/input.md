@@ -29,6 +29,9 @@ For your QInput you can use only one of the main designs (`filled`, `outlined`, 
 ### Outlined
 <doc-example title="Outlined" file="QInput/DesignOutlined" />
 
+### Outlined - Material Design
+<doc-example title="Outlined - Material Design" file="QInput/DesignOutlinedMD" />
+
 ### Standout
 <doc-example title="Standout" file="QInput/DesignStandout" />
 

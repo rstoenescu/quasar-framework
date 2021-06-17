@@ -19,6 +19,12 @@
         </template>
       </q-field>
 
+      <q-field outlined outlined-bg-color="white" label="Outlined - Material Design" stack-label>
+        <template v-slot:control>
+          <div class="self-center full-width no-outline" tabindex="0">Field content</div>
+        </template>
+      </q-field>
+
       <q-field standout label="Standout" stack-label>
         <template v-slot:control>
           <div class="self-center full-width no-outline" tabindex="0">Field content</div>
@@ -62,6 +68,12 @@
       </q-field>
 
       <q-field square outlined label="Square outlined" stack-label>
+        <template v-slot:control>
+          <div class="self-center full-width no-outline" tabindex="0">Field content</div>
+        </template>
+      </q-field>
+
+      <q-field square outlined outlined-bg-color="white" label="Square outlined - Material Design" stack-label>
         <template v-slot:control>
           <div class="self-center full-width no-outline" tabindex="0">Field content</div>
         </template>
