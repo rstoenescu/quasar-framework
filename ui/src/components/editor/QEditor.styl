@@ -72,7 +72,20 @@
     border-color: $editor-border-dark-color
 
     .q-editor
+      &__content hr
+        background: $editor-hr-dark-color
 
+      &__toolbar
+        border-color: $editor-border-dark-color
+
+    .q-editor__toolbar-group + .q-editor__toolbar-group:before
+      background: $editor-border-dark-color
+
+@media (prefers-color-scheme: dark)
+  .q-editor--dark-auto
+    border-color: $editor-border-dark-color
+
+    .q-editor
       &__content hr
         background: $editor-hr-dark-color
 

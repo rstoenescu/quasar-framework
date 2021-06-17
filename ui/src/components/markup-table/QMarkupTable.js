@@ -26,7 +26,7 @@ export default Vue.extend({
   computed: {
     classes () {
       return `q-table--${this.separator}-separator` +
-        (this.isDark === true ? ` q-table--dark q-table__card--dark q-dark` : '') +
+        ` q-table--${this.darkSuffix} q-table__card--${this.darkSuffix} q-${this.darkSuffix}` +
         (this.dense === true ? ` q-table--dense` : '') +
         (this.flat === true ? ` q-table--flat` : '') +
         (this.bordered === true ? ` q-table--bordered` : '') +

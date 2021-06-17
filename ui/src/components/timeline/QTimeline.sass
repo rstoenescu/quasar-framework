@@ -6,7 +6,9 @@
     line-height: inherit
 
   &--dark
-    color: #fff
+    color: $dark-text
+    color: var(--q-color-dark-text)
+
     .q-timeline__subtitle
       opacity: .7
 
@@ -241,3 +243,10 @@
       &__subtitle, &__content
         width: 50%
 
+@media (prefers-color-scheme: dark)
+  .q-timeline--dark-auto
+    color: $dark-text
+    color: var(--q-color-dark-text)
+
+    .q-timeline__subtitle
+      opacity: .7

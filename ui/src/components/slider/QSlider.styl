@@ -210,7 +210,8 @@
     .q-slider__track-container
       background: rgba(#fff, .3)
     .q-slider__track-markers
-      color: #fff
+      color: $dark-text
+      color: var(--q-color-dark-text)
 
   &--reversed
     .q-slider__thumb-container
@@ -224,3 +225,11 @@
       height: 20px
     &--v
       width: 20px
+
+@media (prefers-color-scheme: dark)
+  .q-slider--dark-auto
+    .q-slider__track-container
+      background: rgba(#fff, .3)
+    .q-slider__track-markers
+      color: $dark-text
+      color: var(--q-color-dark-text)

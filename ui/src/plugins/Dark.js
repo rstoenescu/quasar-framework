@@ -4,23 +4,25 @@ import { isSSR, fromSSR } from './Platform.js'
 import { noop } from '../utils/event.js'
 
 const Dark = {
-  isActive: false,
+  isActive: null,
   mode: false,
 
   install ($q, queues, { dark }) {
-    this.isActive = dark === true
+    this.isActive = dark === 'auto' ? null : dark === true
 
     if (isSSR === true) {
       queues.server.push((q, ctx) => {
         q.dark = {
-          isActive: false,
+          isActive: null,
           mode: false,
           set: val => {
             ctx.ssr.Q_BODY_CLASSES = ctx.ssr.Q_BODY_CLASSES
               .replace(' body--light', '')
-              .replace(' body--dark', '') + ` body--${val === true ? 'dark' : 'light'}`
+              .replace(' body--dark-auto', '')
+              .replace(' body--dark', '') +
+              ` body--${val === true ? 'dark' : (val === 'auto' ? 'dark-auto' : 'light')}`
 
-            q.dark.isActive = val === true
+            q.dark.isActive = val === 'auto' ? null : val === true
             q.dark.mode = val
           },
           toggle: () => {
@@ -50,6 +52,7 @@ const Dark = {
       ssrSet(initialVal)
 
       queues.takeover.push(() => {
+        document.body.classList.remove('body--dark-auto')
         this.set = originalSet
         this.set(this.__fromSSR)
       })

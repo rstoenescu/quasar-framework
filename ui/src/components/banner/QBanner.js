@@ -42,7 +42,7 @@ export default Vue.extend({
       class: {
         'q-banner--top-padding': actions !== void 0 && !this.inlineActions,
         'q-banner--dense': this.dense,
-        'q-banner--dark q-dark': this.isDark,
+        [`q-banner--${this.darkSuffix} q-${this.darkSuffix}`]: true,
         'rounded-borders': this.rounded
       },
       attrs,

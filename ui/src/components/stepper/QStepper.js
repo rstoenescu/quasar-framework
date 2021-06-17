@@ -40,11 +40,13 @@ export default Vue.extend({
 
   computed: {
     classes () {
+      const isDark = this.dark === true || (this.dark === null && this.$q.dark.isActive !== false)
+
       return `q-stepper q-stepper--${this.vertical === true ? 'vertical' : 'horizontal'}` +
-        (this.flat === true || this.isDark === true ? ' q-stepper--flat no-shadow' : '') +
-        (this.bordered === true || (this.isDark === true && this.flat === false) ? ' q-stepper--bordered' : '') +
+        (this.flat === true || isDark === true ? ' q-stepper--flat no-shadow' : '') +
+        (this.bordered === true || (isDark === true && this.flat === false) ? ' q-stepper--bordered' : '') +
         (this.contracted === true ? ' q-stepper--contracted' : '') +
-        (this.isDark === true ? ' q-stepper--dark q-dark' : '')
+        ` q-stepper--${this.darkSuffix} q-${this.darkSuffix}`
     },
 
     headerClasses () {

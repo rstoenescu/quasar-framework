@@ -50,7 +50,7 @@ export default Vue.extend({
     classes () {
       return `q-separator${this.classPrefix}${this.insetClass}` +
         (this.color !== void 0 ? ` bg-${this.color}` : '') +
-        (this.isDark === true ? ' q-separator--dark' : '')
+        ` q-separator--${this.darkSuffix}`
     },
 
     style () {

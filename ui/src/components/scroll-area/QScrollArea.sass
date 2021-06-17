@@ -29,4 +29,11 @@
       opacity: .5
 
   &--dark .q-scrollarea__thumb
-    background: #fff
+    background: $dark-text
+    background: var(--q-color-dark-text)
+
+@media (prefers-color-scheme: dark)
+  .q-scrollarea--dark-auto
+    .q-scrollarea__thumb
+      background: $dark-text
+      background: var(--q-color-dark-text)

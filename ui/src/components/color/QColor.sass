@@ -180,7 +180,14 @@
     background: inherit
 
   &--dark
+    .q-color-picker__tune-tab input
+      border: 1px solid rgba(#fff, .3)
 
+    .q-slider
+      color: $grey-5
+
+@media (prefers-color-scheme: dark)
+  .q-color-picker--dark-auto
     .q-color-picker__tune-tab input
       border: 1px solid rgba(#fff, .3)
 

@@ -74,7 +74,7 @@ export default Vue.extend({
         'q-chip--selected': this.selected,
         'q-chip--clickable cursor-pointer non-selectable q-hoverable': this.isClickable,
         'q-chip--square': this.square,
-        'q-chip--dark q-dark': this.isDark
+        [`q-chip--${this.darkSuffix} q-${this.darkSuffix}`]: true
       }
     },
 

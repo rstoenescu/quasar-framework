@@ -73,7 +73,7 @@ export default {
     classes () {
       return `q-${this.type} cursor-pointer no-outline row inline no-wrap items-center` +
         (this.disable === true ? ' disabled' : '') +
-        (this.isDark === true ? ` q-${this.type}--dark` : '') +
+        ` q-${this.type}--${this.darkSuffix}` +
         (this.dense === true ? ` q-${this.type}--dense` : '') +
         (this.leftLabel === true ? ' reverse' : '')
     },

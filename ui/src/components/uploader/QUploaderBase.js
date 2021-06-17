@@ -438,7 +438,7 @@ export default Vue.extend({
     return h('div', {
       staticClass: 'q-uploader column no-wrap',
       class: {
-        'q-uploader--dark q-dark': this.isDark,
+        [`q-uploader--${this.darkSuffix} q-${this.darkSuffix}`]: true,
         'q-uploader--bordered': this.bordered,
         'q-uploader--square no-border-radius': this.square,
         'q-uploader--flat no-shadow': this.flat,

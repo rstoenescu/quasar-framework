@@ -71,9 +71,9 @@ export default Vue.extend({
 
   computed: {
     classes () {
-      return `q-tree` +
-        (this.noConnectors === true ? ` q-tree--no-connectors` : '') +
-        (this.isDark === true ? ` q-tree--dark` : '') +
+      return 'q-tree' +
+        (this.noConnectors === true ? ' q-tree--no-connectors' : '') +
+        ` q-tree--${this.darkSuffix}` +
         (this.color !== void 0 ? ` text-${this.color}` : '')
     },
 
@@ -414,7 +414,7 @@ export default Vue.extend({
     },
 
     __getSlotScope (node, meta, key) {
-      const scope = { tree: this, node, key, color: this.color, dark: this.isDark }
+      const scope = { tree: this, node, key, color: this.color, dark: this.dark }
 
       Object.defineProperty(scope, 'expanded', {
         get: () => { return meta.expanded },
@@ -538,7 +538,7 @@ export default Vue.extend({
               props: {
                 value: meta.indeterminate === true ? null : meta.ticked,
                 color: this.computedControlColor,
-                dark: this.isDark,
+                dark: this.dark,
                 dense: true,
                 keepColor: true,
                 disable: meta.tickable !== true

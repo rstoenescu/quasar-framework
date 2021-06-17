@@ -114,8 +114,10 @@
   > .q-tree__node--child > .q-tree__node-header
     padding-left: 24px
 
-  &--dark .q-tree__node-header-content
-    color: #fff
+  &--dark
+    .q-tree__node-header-content
+      color: $dark-text
+      color: var(--q-color-dark-text)
 
   &--no-connectors
     .q-tree__node:after,
@@ -130,3 +132,8 @@
     &--rotate
       transform: rotate3d(0, 0, 1, 90deg) /* rtl:ignore */
 
+@media (prefers-color-scheme: dark)
+  .q-tree--dark-auto
+    .q-tree__node-header-content
+      color: $dark-text
+      color: var(--q-color-dark-text)

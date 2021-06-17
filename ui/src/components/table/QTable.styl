@@ -267,7 +267,6 @@ body.desktop .q-table > tbody > tr:not(.q-tr--no-hover):hover > td:not(.q-td--no
   border-color: $table-dark-border-color
 
 .q-table--dark
-
   .q-table__bottom, thead, tr, th, td
     border-color: $table-dark-border-color
 
@@ -281,3 +280,22 @@ body.desktop .q-table > tbody > tr:not(.q-tr--no-hover):hover > td:not(.q-td--no
   &.q-table--vertical-separator, &.q-table--cell-separator
     .q-table__top
       border-color: $table-dark-border-color
+
+@media (prefers-color-scheme: dark)
+  .q-table__card--dark-auto, .q-table--dark-auto
+    border-color: $table-dark-border-color
+
+  .q-table--dark-auto
+    .q-table__bottom, thead, tr, th, td
+      border-color: $table-dark-border-color
+
+    tbody
+      td
+        &:before
+          background: $table-dark-hover-background
+        &:after
+          background: $table-dark-selected-background
+
+    &.q-table--vertical-separator, &.q-table--cell-separator
+      .q-table__top
+        border-color: $table-dark-border-color

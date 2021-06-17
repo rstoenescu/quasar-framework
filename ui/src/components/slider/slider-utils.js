@@ -100,7 +100,7 @@ export const SliderMixin = {
         (this.focus === 'both' ? ' q-slider--focus' : '') +
         (this.label || this.labelAlways === true ? ' q-slider--label' : '') +
         (this.labelAlways === true ? ' q-slider--label-always' : '') +
-        (this.isDark === true ? ' q-slider--dark' : '') +
+        ` q-slider--${this.darkSuffix}` +
         (this.dense === true ? ' q-slider--dense q-slider--dense' + this.axis : '')
     },
 

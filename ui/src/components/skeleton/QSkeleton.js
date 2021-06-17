@@ -52,7 +52,7 @@ export default Vue.extend({
     },
 
     classes () {
-      return `q-skeleton--${this.isDark === true ? 'dark' : 'light'} q-skeleton--type-${this.type}` +
+      return `q-skeleton--${this.darkSuffix} q-skeleton--type-${this.type}` +
         (this.animation !== 'none' ? ` q-skeleton--anim q-skeleton--anim-${this.animation}` : '') +
         (this.square === true ? ' q-skeleton--square' : '') +
         (this.bordered === true ? ' q-skeleton--bordered' : '')

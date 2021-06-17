@@ -41,7 +41,7 @@ export default Vue.extend({
     classes () {
       return 'q-radio cursor-pointer no-outline row inline no-wrap items-center' +
         (this.disable === true ? ' disabled' : '') +
-        (this.isDark === true ? ' q-radio--dark' : '') +
+        ` q-radio--${this.darkSuffix}` +
         (this.dense === true ? ' q-radio--dense' : '') +
         (this.leftLabel === true ? ' reverse' : '')
     },

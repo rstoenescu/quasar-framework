@@ -58,7 +58,7 @@ export default Vue.extend({
   computed: {
     classes () {
       return 'q-dialog-plugin' +
-        (this.isDark === true ? ' q-dialog-plugin--dark q-dark' : '') +
+        ` q-dialog-plugin--${this.darkSuffix} q-${this.darkSuffix}` +
         (this.progress !== false ? ' q-dialog-plugin--progress' : '')
     },
 
@@ -101,7 +101,7 @@ export default Vue.extend({
     },
 
     vmColor () {
-      return this.color || (this.isDark === true ? 'amber' : 'primary')
+      return this.color || `dialog-plugin-${this.darkSuffix}`
     },
 
     okDisabled () {
@@ -168,7 +168,7 @@ export default Vue.extend({
             color: this.vmColor,
             dense: true,
             autofocus: true,
-            dark: this.isDark
+            dark: this.dark
           },
           attrs: this.prompt.attrs,
           on: cache(this, 'prompt', {
@@ -197,7 +197,7 @@ export default Vue.extend({
             color: this.vmColor,
             inline: this.options.inline,
             options: this.options.items,
-            dark: this.isDark
+            dark: this.dark
           },
           on: cache(this, 'opts', {
             input: v => { this.options.model = v }
@@ -287,13 +287,13 @@ export default Vue.extend({
     }
     else if (this.options !== void 0) {
       child.push(
-        h(QSeparator, { props: { dark: this.isDark } }),
+        h(QSeparator, { props: { dark: this.dark } }),
         h(
           QCardSection,
           { staticClass: 'scroll q-dialog-plugin__form' },
           this.getOptions(h)
         ),
-        h(QSeparator, { props: { dark: this.isDark } })
+        h(QSeparator, { props: { dark: this.dark } })
       )
     }
 
@@ -319,7 +319,7 @@ export default Vue.extend({
         staticClass: this.classes,
         style: this.cardStyle,
         class: this.cardClass,
-        props: { dark: this.isDark }
+        props: { dark: this.dark }
       }, child)
     ])
   }

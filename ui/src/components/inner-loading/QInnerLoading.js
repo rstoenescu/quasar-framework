@@ -26,8 +26,8 @@ export default Vue.extend({
       ? [
         h('div',
           {
-            staticClass: 'q-inner-loading absolute-full column flex-center',
-            class: this.isDark === true ? 'q-inner-loading--dark' : null,
+            staticClass: 'q-inner-loading absolute-full column flex-center' +
+              ` q-inner-loading--${this.darkSuffix}`,
             on: { ...this.qListeners }
           },
           this.$scopedSlots.default !== void 0

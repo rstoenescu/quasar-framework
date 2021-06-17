@@ -253,7 +253,7 @@ export default Vue.extend({
         (this.square === true ? ' q-editor--square no-border-radius' : '') +
         (this.flat === true ? ' q-editor--flat' : '') +
         (this.dense === true ? ' q-editor--dense' : '') +
-        (this.isDark === true ? ' q-editor--dark q-dark' : '')
+        ` q-editor--${this.darkSuffix} q-${this.darkSuffix}`
     },
 
     innerClass () {

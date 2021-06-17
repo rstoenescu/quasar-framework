@@ -155,7 +155,7 @@ export default Vue.extend({
 
         'q-field--dense': this.dense,
         'q-field--item-aligned q-item-type': this.itemAligned,
-        'q-field--dark': this.isDark,
+        [`q-field--${this.darkSuffix}`]: true,
 
         'q-field--auto-height': this.__getControl === void 0,
 

@@ -60,7 +60,7 @@ export default Vue.extend({
   computed: {
     classes () {
       return 'q-scrollarea' +
-        (this.isDark === true ? ' q-scrollarea--dark' : '')
+        ` q-scrollarea--${this.darkSuffix}`
     },
 
     thumbHidden () {

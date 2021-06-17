@@ -39,7 +39,7 @@ export default {
                   props: {
                     value: scope.selected,
                     color: this.color,
-                    dark: this.isDark,
+                    dark: this.dark,
                     dense: this.dense
                   },
                   on: {
@@ -52,7 +52,7 @@ export default {
 
             child.unshift(
               h('div', { staticClass: 'q-table__grid-item-row' }, content),
-              h(QSeparator, { props: { dark: this.isDark } })
+              h(QSeparator, { props: { dark: this.dark } })
             )
           }
 

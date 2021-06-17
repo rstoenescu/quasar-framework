@@ -211,7 +211,7 @@ export default Vue.extend({
         style: this.headerStyle,
         class: this.headerClass,
         props: {
-          dark: this.isDark,
+          dark: this.dark,
           disable: this.disable,
           dense: this.dense,
           insetLevel: this.headerInsetLevel
@@ -259,11 +259,11 @@ export default Vue.extend({
         node.push(
           h(QSeparator, {
             staticClass: 'q-expansion-item__border q-expansion-item__border--top absolute-top',
-            props: { dark: this.isDark }
+            props: { dark: this.dark }
           }),
           h(QSeparator, {
             staticClass: 'q-expansion-item__border q-expansion-item__border--bottom absolute-bottom',
-            props: { dark: this.isDark }
+            props: { dark: this.dark }
           })
         )
       }

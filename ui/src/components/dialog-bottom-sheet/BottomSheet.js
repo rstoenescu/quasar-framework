@@ -64,7 +64,7 @@ export default Vue.extend({
         return action.label === void 0
           ? h(QSeparator, {
             staticClass: 'col-all',
-            props: { dark: this.isDark }
+            props: { dark: this.dark }
           })
           : h('div', {
             staticClass: 'q-bottom-sheet__item q-hoverable q-focusable cursor-pointer relative-position',
@@ -100,14 +100,14 @@ export default Vue.extend({
         const img = action.avatar || action.img
 
         return action.label === void 0
-          ? h(QSeparator, { props: { spaced: true, dark: this.isDark } })
+          ? h(QSeparator, { props: { spaced: true, dark: this.dark } })
           : h(QItem, {
             staticClass: 'q-bottom-sheet__item',
             class: action.classes,
             props: {
               tabindex: 0,
               clickable: true,
-              dark: this.isDark
+              dark: this.dark
             },
             on: {
               click: () => this.onOk(action),
@@ -168,7 +168,7 @@ export default Vue.extend({
     }, [
       h(QCard, {
         staticClass: `q-bottom-sheet q-bottom-sheet--${this.grid === true ? 'grid' : 'list'}` +
-          (this.isDark === true ? ' q-bottom-sheet--dark q-dark' : ''),
+          ` q-bottom-sheet--${this.darkSuffix} q-${this.darkSuffix}`,
         style: this.cardStyle,
         class: this.cardClass
       }, child)

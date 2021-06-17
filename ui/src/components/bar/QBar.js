@@ -18,8 +18,8 @@ export default Vue.extend({
 
   computed: {
     classes () {
-      return `q-bar--${this.dense === true ? 'dense' : 'standard'} ` +
-        `q-bar--${this.isDark === true ? 'dark' : 'light'}`
+      return `q-bar--${this.dense === true ? 'dense' : 'standard'}` +
+        ` q-bar--${this.darkSuffix}`
     }
   },
 

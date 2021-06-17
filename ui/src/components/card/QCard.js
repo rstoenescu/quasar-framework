@@ -20,7 +20,7 @@ export default Vue.extend({
   computed: {
     classes () {
       return 'q-card' +
-        (this.isDark === true ? ' q-card--dark q-dark' : '') +
+        ` q-card--${this.darkSuffix} q-${this.darkSuffix}` +
         (this.bordered === true ? ' q-card--bordered' : '') +
         (this.square === true ? ' q-card--square no-border-radius' : '') +
         (this.flat === true ? ' q-card--flat no-shadow' : '')

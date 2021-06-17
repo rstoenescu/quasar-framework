@@ -23,7 +23,7 @@ export default Vue.extend({
         (this.bordered === true ? ' q-list--bordered' : '') +
         (this.dense === true ? ' q-list--dense' : '') +
         (this.separator === true ? ' q-list--separator' : '') +
-        (this.isDark === true ? ' q-list--dark' : '') +
+        ` q-list--${this.darkSuffix}` +
         (this.padding === true ? ' q-list--padding' : '')
     }
   },

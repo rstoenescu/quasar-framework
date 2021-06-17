@@ -211,20 +211,20 @@ export default Vue.extend({
     },
 
     cardDefaultClass () {
-      return ` q-table__card` +
-        (this.isDark === true ? ' q-table__card--dark q-dark' : '') +
-        (this.square === true ? ` q-table--square` : '') +
-        (this.flat === true ? ` q-table--flat` : '') +
-        (this.bordered === true ? ` q-table--bordered` : '')
+      return ' q-table__card' +
+        ` q-table__card--${this.darkSuffix} q-${this.darkSuffix}` +
+        (this.square === true ? ' q-table--square' : '') +
+        (this.flat === true ? ' q-table--flat' : '') +
+        (this.bordered === true ? ' q-table--bordered' : '')
     },
 
     __containerClass () {
       return `q-table__container q-table--${this.separator}-separator column no-wrap` +
         (this.grid === true ? ' q-table--grid' : this.cardDefaultClass) +
-        (this.isDark === true ? ` q-table--dark` : '') +
-        (this.dense === true ? ` q-table--dense` : '') +
-        (this.wrapCells === false ? ` q-table--no-wrap` : '') +
-        (this.inFullscreen === true ? ` fullscreen scroll` : '')
+        ` q-table--${this.darkSuffix}` +
+        (this.dense === true ? ' q-table--dense' : '') +
+        (this.wrapCells === false ? ' q-table--no-wrap' : '') +
+        (this.inFullscreen === true ? ' fullscreen scroll' : '')
     },
 
     containerClass () {
@@ -382,7 +382,7 @@ export default Vue.extend({
           staticClass: 'q-table__linear-progress',
           props: {
             color: this.color,
-            dark: this.isDark,
+            dark: this.dark,
             indeterminate: true,
             trackColor: 'transparent'
           }

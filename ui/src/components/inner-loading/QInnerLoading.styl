@@ -1,4 +1,9 @@
 .q-inner-loading
   background: $light-dimmed-background
+
   &--dark
+    background: $dimmed-background
+
+@media (prefers-color-scheme: dark)
+  .q-inner-loading--dark-auto
     background: $dimmed-background

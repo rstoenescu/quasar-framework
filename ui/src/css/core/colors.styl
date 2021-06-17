@@ -7,6 +7,12 @@
   --q-color-info:         $info
   --q-color-warning:      $warning
   --q-color-dark:         $dark
+  --q-color-light-text:   $light-text
+  --q-color-light-page:   $light-page
+  --q-color-dark-text:    $dark-text
+  --q-color-dark-page:    $dark-page
+  --q-color-dialog-plugin-light: $dialog-plugin-light
+  --q-color-dialog-plugin-dark:  $dialog-plugin-dark
 
 .text-dark
   color: $dark !important
@@ -14,6 +20,30 @@
 .bg-dark
   background: $dark !important
   background: var(--q-color-dark) !important
+
+.text-dialog-plugin-light,
+.text-dialog-plugin-dark-auto
+  color: $dialog-plugin-light !important
+  color: var(--q-color-dialog-plugin-light) !important
+.bg-dialog-plugin-light,
+.bg-dialog-plugin-dark-auto
+  background: $dialog-plugin-light !important
+  background: var(--q-color-dialog-plugin-light) !important
+
+.text-dialog-plugin-dark
+  color: $dialog-plugin-dark !important
+  color: var(--q-color-dialog-plugin-dark) !important
+.bg-dialog-plugin-dark
+  background: $dialog-plugin-dark !important
+  background: var(--q-color-dialog-plugin-dark) !important
+
+@media (prefers-color-scheme: dark)
+  .text-dialog-plugin-dark-auto
+    color: $dialog-plugin-dark !important
+    color: var(--q-color-dialog-plugin-dark) !important
+  .bg-dialog-plugin-dark-auto
+    background: $dialog-plugin-dark !important
+    background: var(--q-color-dialog-plugin-dark) !important
 
 .text-primary
   color: $primary !important

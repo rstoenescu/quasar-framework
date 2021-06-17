@@ -67,7 +67,7 @@ export default {
               props: {
                 color: this.color,
                 value: this.headerSelectedValue,
-                dark: this.isDark,
+                dark: this.dark,
                 dense: this.dense
               },
               on: cache(this, 'inp', {
@@ -95,7 +95,7 @@ export default {
         sort: this.sort,
         colsMap: this.computedColsMap,
         color: this.color,
-        dark: this.isDark,
+        dark: this.dark,
         dense: this.dense
       })
 

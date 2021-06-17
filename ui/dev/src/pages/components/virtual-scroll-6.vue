@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh LpR fFf">
     <q-page-container>
-      <q-page padding class="bg-white q-pr-xl">
+      <q-page padding class="q-pr-xl">
         <q-virtual-scroll
           ref="virtualListRef"
           type="table"

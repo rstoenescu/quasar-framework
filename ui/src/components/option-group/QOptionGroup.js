@@ -118,7 +118,7 @@ export default Vue.extend({
           color: opt.color === void 0 ? this.color : opt.color,
           checkedIcon: opt.checkedIcon,
           uncheckedIcon: opt.uncheckedIcon,
-          dark: opt.dark || this.isDark,
+          dark: opt.dark === void 0 ? this.dark : opt.dark,
           size: opt.size === void 0 ? this.size : opt.size,
           dense: this.dense,
           keepColor: opt.keepColor === void 0 ? this.keepColor : opt.keepColor

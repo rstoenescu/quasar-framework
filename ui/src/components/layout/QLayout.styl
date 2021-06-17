@@ -174,6 +174,11 @@ body.body--dark
   .q-header, .q-footer, .q-drawer
     border-color: $separator-dark-color
 
+@media (prefers-color-scheme: dark)
+  body.body--dark-auto
+    .q-header, .q-footer, .q-drawer
+      border-color: $separator-dark-color
+
 body.platform-ios
   .q-layout--containerized
     // https://github.com/quasarframework/quasar/issues/4127

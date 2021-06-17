@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh LpR fFf">
     <q-page-container>
-      <q-page padding class="bg-white q-pr-xl">
+      <q-page padding class="q-pr-xl">
         <div class="bg-grey-2" style="height: 60vh">
           Spacer
         </div>
@@ -32,7 +32,7 @@
                 </template>
                 {{ item.label }} #{{ index }}
               </q-banner>
-              <div v-else class="bg-yellow q-py-lg text-center scroll" :key="index" style="max-height: 100px">
+              <div v-else class="bg-yellow text-black q-py-lg text-center scroll" :key="index" style="max-height: 100px">
                 {{ item.label }} #{{ index }}
               </div>
             </template>
@@ -69,7 +69,7 @@
                 :key="index"
                 dense
                 :class="{
-                  'bg-black text-white': index === virtualListIndex2,
+                  'bg-grey-8 text-white': index === virtualListIndex2,
                   'q-py-xl': index % 4 === 0
                 }"
                 :style="index === 99999 ? 'height: 800px' : void 0"

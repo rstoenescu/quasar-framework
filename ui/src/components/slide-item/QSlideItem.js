@@ -198,8 +198,8 @@ export default Vue.extend({
     )
 
     return h('div', {
-      staticClass: 'q-slide-item q-item-type overflow-hidden',
-      class: this.isDark === true ? 'q-slide-item--dark q-dark' : '',
+      staticClass: 'q-slide-item q-item-type overflow-hidden' +
+        ` q-slide-item--${this.darkSuffix} q-${this.darkSuffix}`,
       on: { ...this.qListeners }
     }, content)
   },

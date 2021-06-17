@@ -66,7 +66,7 @@ export default Vue.extend({
 
     trackClass () {
       return `q-linear-progress__track--with${this.instantFeedback === true ? 'out' : ''}-transition` +
-        ` q-linear-progress__track--${this.isDark === true ? 'dark' : 'light'}` +
+        ` q-linear-progress__track--${this.darkSuffix}` +
         (this.trackColor !== void 0 ? ` bg-${this.trackColor}` : '')
     },
 

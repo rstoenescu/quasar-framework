@@ -111,7 +111,7 @@ export default Vue.extend({
   computed: {
     classes () {
       return `q-time q-time--${this.landscape === true ? 'landscape' : 'portrait'}` +
-        (this.isDark === true ? ' q-time--dark q-dark' : '') +
+        ` q-time--${this.darkSuffix} q-${this.darkSuffix}` +
         (this.disable === true ? ' disabled' : (this.readonly === true ? ' q-time--readonly' : '')) +
         (this.bordered === true ? ` q-time--bordered` : '') +
         (this.square === true ? ` q-time--square no-border-radius` : '') +

@@ -74,7 +74,7 @@ export default Vue.extend({
       return (this.horizontal === true ? 'column' : 'row') +
         ` q-splitter--${this.horizontal === true ? 'horizontal' : 'vertical'}` +
         ` q-splitter--${this.disable === true ? 'disabled' : 'workable'}` +
-        (this.isDark === true ? ' q-splitter--dark' : '')
+        ` q-splitter--${this.darkSuffix}`
     },
 
     prop () {

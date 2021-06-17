@@ -11,7 +11,7 @@ export default Vue.extend({
   computed: {
     classes () {
       return 'q-tab-panels q-panel-parent' +
-        (this.isDark === true ? ' q-tab-panels--dark q-dark' : '')
+        ` q-tab-panels--${this.darkSuffix} q-${this.darkSuffix}`
     }
   },
 

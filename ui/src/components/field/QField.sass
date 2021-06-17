@@ -324,10 +324,12 @@ $field-transition-label-right-up: .324s cubic-bezier(.4,0,.2,1)
       border-color: rgba(255,255,255,.6)
 
     .q-field__control:hover:before
-      border-color: #fff
+      border-color: $dark-text
+      border-color: var(--q-color-dark-text)
 
     .q-field__native, .q-field__prefix, .q-field__suffix, .q-field__input
-      color: #fff
+      color: $dark-text
+      color: var(--q-color-dark-text)
 
     &:not(.q-field--highlighted) .q-field__label, .q-field__marginal, .q-field__bottom
       color: rgba(255,255,255,.7)
@@ -371,9 +373,11 @@ $field-transition-label-right-up: .324s cubic-bezier(.4,0,.2,1)
           background: rgba(255,255,255,.07)
       &.q-field--highlighted
         .q-field__control
-          background: #fff
+          background: $light-page
+          background: var(--q-color-light-page)
         .q-field__native, .q-field__prefix, .q-field__suffix, .q-field__prepend, .q-field__append, .q-field__input
-          color: #000
+          color: $light-text
+          color: var(--q-color-light-text)
       &.q-field--readonly
         .q-field__control:before
           border-color: rgba(255,255,255,.24)
@@ -520,6 +524,44 @@ $field-transition-label-right-up: .324s cubic-bezier(.4,0,.2,1)
 
   &-leave, &-leave-active
     position: absolute
+
+@media (prefers-color-scheme: dark)
+  .q-field--dark-auto
+    &.q-field--filled
+      .q-field__control, .q-field__control:before
+        background: rgba(255,255,255,.07)
+      &.q-field--highlighted .q-field__control:before
+        background: rgba(255,255,255,.1)
+
+    .q-field__control:before
+      border-color: rgba(255,255,255,.6)
+
+    .q-field__control:hover:before
+      border-color: $dark-text
+      border-color: var(--q-color-dark-text)
+
+    .q-field__native, .q-field__prefix, .q-field__suffix, .q-field__input
+      color: $dark-text
+      color: var(--q-color-dark-text)
+
+    &:not(.q-field--highlighted) .q-field__label, .q-field__marginal, .q-field__bottom
+      color: rgba(255,255,255,.7)
+
+    &.q-field--standout
+      .q-field__control
+        background: rgba(255,255,255,.07)
+        &:before
+          background: rgba(255,255,255,.07)
+      &.q-field--highlighted
+        .q-field__control
+          background: $light-page
+          background: var(--q-color-light-page)
+        .q-field__native, .q-field__prefix, .q-field__suffix, .q-field__prepend, .q-field__append, .q-field__input
+          color: $light-text
+          color: var(--q-color-light-text)
+      &.q-field--readonly
+        .q-field__control:before
+          border-color: rgba(255,255,255,.24)
 
 @keyframes q-field-label
   40%

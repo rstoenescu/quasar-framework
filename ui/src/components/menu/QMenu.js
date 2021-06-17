@@ -96,7 +96,7 @@ export default Vue.extend({
 
     menuClass () {
       return (this.square === true ? ' q-menu--square' : '') +
-        (this.isDark === true ? ' q-menu--dark q-dark' : '')
+        ` q-menu--${this.darkSuffix} q-${this.darkSuffix}`
     },
 
     hideOnRouteChange () {

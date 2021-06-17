@@ -42,7 +42,7 @@ export default {
               props: {
                 value: selected,
                 color: this.color,
-                dark: this.isDark,
+                dark: this.dark,
                 dense: this.dense
               },
               on: {
@@ -149,7 +149,7 @@ export default {
         sort: this.sort,
         rowIndex: this.firstRowIndex + data.pageIndex,
         color: this.color,
-        dark: this.isDark,
+        dark: this.dark,
         dense: this.dense
       })
 

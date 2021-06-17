@@ -127,7 +127,7 @@ export default Vue.extend({
     classes () {
       const type = this.landscape === true ? 'landscape' : 'portrait'
       return `q-date q-date--${type} q-date--${type}-${this.minimal === true ? 'minimal' : 'standard'}` +
-        (this.isDark === true ? ' q-date--dark q-dark' : '') +
+        ` q-date--${this.darkSuffix} q-${this.darkSuffix}` +
         (this.bordered === true ? ` q-date--bordered` : '') +
         (this.square === true ? ` q-date--square no-border-radius` : '') +
         (this.flat === true ? ` q-date--flat no-shadow` : '') +

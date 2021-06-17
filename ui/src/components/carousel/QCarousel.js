@@ -60,7 +60,7 @@ export default Vue.extend({
     classes () {
       return `q-carousel q-panel-parent q-carousel--with${this.padding === true ? '' : 'out'}-padding` +
         (this.inFullscreen === true ? ' fullscreen' : '') +
-        (this.isDark === true ? ' q-carousel--dark q-dark' : '') +
+        ` q-carousel--${this.darkSuffix} q-${this.darkSuffix}` +
         (this.arrows === true ? ` q-carousel--arrows-${this.direction}` : '') +
         (this.navigation === true ? ` q-carousel--navigation-${this.navigationPositionComputed}` : '')
     },

@@ -280,7 +280,7 @@ export default Vue.extend({
     classes () {
       return `q-drawer--${this.side}` +
         (this.bordered === true ? ' q-drawer--bordered' : '') +
-        (this.isDark === true ? ' q-drawer--dark q-dark' : '') +
+        ` q-drawer--${this.darkSuffix} q-${this.darkSuffix}` +
         (this.showing !== true ? ' q-layout--prevent-focus' : '') +
         (
           this.belowBreakpoint === true

@@ -94,3 +94,13 @@ body.desktop
     &:hover
       .q-radio__inner:before
         transform: scale3d(1.5, 1.5, 1)
+
+@media (prefers-color-scheme: dark)
+  .q-radio--dark-auto
+    .q-radio__inner
+      color: rgba(255,255,255,.7)
+      &:before
+        opacity: .32 !important
+      &--truthy
+        color: $primary
+        color: var(--q-color-primary)

@@ -45,7 +45,8 @@
 
   &__track
     opacity: .4
-    &--light
+    &--light,
+    &--dark-auto
       background: rgba(0,0,0,.26)
     &--dark
       background: rgba(255,255,255,.6)
@@ -54,6 +55,10 @@
     transition: width .3s
     background-image: linear-gradient(45deg, rgba(255,255,255,.15) 25%, rgba(255,255,255,0) 25%, rgba(255,255,255,0) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.15) 75%, rgba(255,255,255,0) 75%, rgba(255,255,255,0)) !important
     background-size: 40px 40px !important
+
+@media (prefers-color-scheme: dark)
+  .q-linear-progress__track--dark-auto
+    background: rgba(255,255,255,.6)
 
 @keyframes q-linear-progress--indeterminate
   0%

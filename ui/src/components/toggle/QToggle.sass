@@ -71,7 +71,9 @@ $toggle-transition: .22s cubic-bezier(.4,0,.2,1)
 
   &--dark
     .q-toggle__inner
-      color: #fff
+      color: $dark-text
+      color: var(--q-color-dark-text)
+
       &--truthy
         color: $primary
         color: var(--q-color-primary)
@@ -131,3 +133,14 @@ body.desktop
       .q-toggle__thumb:before
         transform: scale3d(1.5, 1.5, 1)
 
+@media (prefers-color-scheme: dark)
+  .q-toggle--dark-auto
+    .q-toggle__inner
+      color: $dark-text
+      color: var(--q-color-dark-text)
+
+      &--truthy
+        color: $primary
+        color: var(--q-color-primary)
+    .q-toggle__thumb:before
+      opacity: .32 !important

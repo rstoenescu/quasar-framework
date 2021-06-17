@@ -48,7 +48,7 @@ export default Vue.extend({
         'q-manual-focusable--focused': this.isClickable === true && this.focused === true,
 
         'q-item--dense': this.dense,
-        'q-item--dark': this.isDark,
+        [`q-item--${this.darkSuffix}`]: true,
         'q-item--active': this.active,
         [this.activeClass]: this.active === true && this.hasRouterLink !== true && this.activeClass !== void 0,
 

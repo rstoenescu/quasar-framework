@@ -101,6 +101,19 @@
     &.q-skeleton--anim-blink:after
       background: rgba(255,255,255,.2)
 
+@media (prefers-color-scheme: dark)
+  .q-skeleton--dark-auto
+    background: rgba(255, 255, 255, 0.05)
+
+    &.q-skeleton--bordered
+      border: 1px solid rgba(255,255,255,.25)
+
+    &.q-skeleton--anim-wave:after
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.1), transparent)
+
+    &.q-skeleton--anim-blink:after
+      background: rgba(255,255,255,.2)
+
 @keyframes q-skeleton--fade
   0%
     opacity: 1

@@ -167,8 +167,14 @@ export default Vue.extend({
   computed: {
     isOptionsDark () {
       return this.optionsDark === null
-        ? this.isDark
+        ? (this.dark === null ? this.$q.dark.isActive : this.dark)
         : this.optionsDark
+    },
+
+    optionsDarkSuffix () {
+      return this.isOptionsDark === null
+        ? 'dark-auto'
+        : (this.isOptionsDark === true ? 'dark' : 'light')
     },
 
     virtualScrollLength () {
@@ -1328,7 +1334,6 @@ export default Vue.extend({
         ref: 'dialog',
         props: {
           value: this.dialog,
-          dark: this.isOptionsDark,
           position: this.useInput === true ? 'top' : void 0,
           transitionShow: this.transitionShowComputed,
           transitionHide: this.transitionHide
@@ -1341,7 +1346,7 @@ export default Vue.extend({
       }, [
         h('div', {
           staticClass: 'q-select__dialog' +
-            (this.isOptionsDark === true ? ' q-select__dialog--dark q-dark' : '') +
+            ` q-select__dialog--${this.optionsDarkSuffix} q-${this.optionsDarkSuffix}` +
             (this.dialogFieldFocused === true ? ' q-select__dialog--focused' : '')
         }, content)
       ])

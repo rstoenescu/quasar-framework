@@ -132,4 +132,17 @@
     .q-uploader__dnd, .q-uploader__overlay
       background: rgba(255,255,255,.3)
     .q-uploader__overlay
-      color: #fff
+      color: $dark-text
+      color: var(--q-color-dark-text)
+
+@media (prefers-color-scheme: dark)
+  .q-uploader--dark-auto
+    border-color: $separator-dark-color
+
+    .q-uploader__file
+      border-color: $separator-dark-color
+    .q-uploader__dnd, .q-uploader__overlay
+      background: rgba(255,255,255,.3)
+    .q-uploader__overlay
+      color: $dark-text
+      color: var(--q-color-dark-text)

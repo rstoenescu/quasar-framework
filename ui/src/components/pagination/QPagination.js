@@ -284,7 +284,7 @@ export default Vue.extend({
           dense: true,
           value: this.newPage,
           disable: this.disable,
-          dark: this.isDark,
+          dark: this.dark,
           borderless: true,
           inputClass: this.inputClass,
           inputStyle: this.inputStyle

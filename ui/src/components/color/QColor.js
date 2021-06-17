@@ -187,7 +187,7 @@ export default Vue.extend({
         (this.square === true ? ' q-color-picker--square no-border-radius' : '') +
         (this.flat === true ? ' q-color-picker--flat no-shadow' : '') +
         (this.disable === true ? ' disabled' : '') +
-        (this.isDark === true ? ' q-color-picker--dark q-dark' : '')
+        ` q-color-picker--${this.darkSuffix} q-${this.darkSuffix}`
     },
 
     attrs () {
@@ -457,7 +457,7 @@ export default Vue.extend({
               min: 0,
               max: 255,
               color: 'red',
-              dark: this.isDark,
+              dark: this.dark,
               readonly: this.editable !== true
             },
             on: cache(this, 'rSlide', {
@@ -484,7 +484,7 @@ export default Vue.extend({
               min: 0,
               max: 255,
               color: 'green',
-              dark: this.isDark,
+              dark: this.dark,
               readonly: this.editable !== true
             },
             on: cache(this, 'gSlide', {
@@ -512,7 +512,7 @@ export default Vue.extend({
               max: 255,
               color: 'blue',
               readonly: this.editable !== true,
-              dark: this.isDark
+              dark: this.dark
             },
             on: cache(this, 'bSlide', {
               input: value => this.__onNumericChange(value, 'b', 255),
@@ -537,7 +537,7 @@ export default Vue.extend({
               value: this.model.a,
               color: 'grey',
               readonly: this.editable !== true,
-              dark: this.isDark
+              dark: this.dark
             },
             on: cache(this, 'aSlide', {
               input: value => this.__onNumericChange(value, 'a', 100),

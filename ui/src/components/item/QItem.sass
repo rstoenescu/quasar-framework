@@ -100,7 +100,8 @@
     border-top-color: $separator-dark-color
 
 .q-list--dark, .q-item--dark
-  color: #fff
+  color: $dark-text
+  color: var(--q-color-dark-text)
   border-color: $separator-dark-color
 
   .q-item__section--side:not(.q-item__section--avatar)
@@ -118,3 +119,23 @@
   &.q-router-link--active, &--active
     color: $primary
     color: var(--q-color-primary)
+
+@media (prefers-color-scheme: dark)
+  .q-list--dark-auto.q-list--separator
+    > .q-item-type + .q-item-type,
+    > .q-virtual-scroll__content > .q-item-type + .q-item-type
+      border-top-color: $separator-dark-color
+
+  .q-list--dark-auto, .q-item--dark-auto
+    color: $dark-text
+    color: var(--q-color-dark-text)
+    border-color: $separator-dark-color
+
+    .q-item__section--side:not(.q-item__section--avatar)
+      color: rgba(255,255,255,.7)
+
+    .q-item__label
+      &--header
+        color: rgba(255,255,255,.64)
+      &--overline, &--caption
+        color: rgba(255,255,255,.8)

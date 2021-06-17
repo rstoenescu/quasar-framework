@@ -10,7 +10,7 @@
   "props": {
     "isActive": {
       "type": "Boolean",
-      "desc": "Is Dark mode active?",
+      "desc": "Is Dark mode active? Has value `null` when on SSR and dark set to `auto`",
       "reactive": true
     },
 

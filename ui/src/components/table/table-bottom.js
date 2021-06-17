@@ -111,7 +111,7 @@ export default {
                 displayValue: rowsPerPage === 0
                   ? this.$q.lang.table.allRows
                   : rowsPerPage,
-                dark: this.isDark,
+                dark: this.dark,
                 borderless: true,
                 dense: true,
                 optionsDense: true,

@@ -36,7 +36,7 @@ export default Vue.extend({
   computed: {
     classes () {
       return `q-timeline--${this.layout} q-timeline--${this.layout}--${this.side}` +
-        (this.isDark === true ? ' q-timeline--dark' : '')
+        ` q-timeline--${this.darkSuffix}`
     }
   },
 

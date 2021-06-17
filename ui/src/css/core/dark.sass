@@ -1,8 +1,33 @@
+body.body--light,
+body.body--dark-auto,
+.q-light,
+.q-dark-auto
+  color: $light-text
+  color: var(--q-color-light-text)
+  background: $light-page
+  background: var(--q-color-light-page)
+
 body.body--dark
-  color: #fff
+  color: $dark-text
+  color: var(--q-color-dark-text)
   background: $dark-page
+  background: var(--q-color-dark-page)
 
 .q-dark
-  color: #fff
-  background: $grey-9
+  color: $dark-text
+  color: var(--q-color-dark-text)
+  background: $dark
   background: var(--q-color-dark)
+
+@media (prefers-color-scheme: dark)
+  body.body--dark-auto
+    color: $dark-text
+    color: var(--q-color-dark-text)
+    background: $dark-page
+    background: var(--q-color-dark-page)
+
+  .q-dark-auto
+    color: $dark-text
+    color: var(--q-color-dark-text)
+    background: $dark
+    background: var(--q-color-dark)
