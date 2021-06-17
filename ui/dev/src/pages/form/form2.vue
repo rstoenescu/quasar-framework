@@ -10,7 +10,7 @@
         @validation-success="onVal(true)"
         @validation-error="onVal(false)"
         class="q-gutter-md"
-        ref="form"
+        ref="form1"
         greedy
       >
         <q-input
@@ -51,7 +51,7 @@
 
       <q-toggle v-model="autofocus" label="Autofocus form" />
 
-      <q-form @submit="onSubmitClear" ref="form" :autofocus="autofocus">
+      <q-form @submit="onSubmitClear" ref="form2" :autofocus="autofocus">
         <q-input dense filled v-model="form.text1" label="Not lazy" :rules="[isReq]" />
         <q-input dense filled v-model="form.text2" label="Lazy" lazy-rules :rules="[isReq]" />
 
@@ -97,7 +97,7 @@ export default {
     },
 
     programaticSubmit () {
-       const form = this.$refs.form;
+       const form = this.$refs.form
        setTimeout(function() {
          form.submit();
        }, 100);
@@ -127,7 +127,7 @@ export default {
 
     onSubmitClear () {
       this.form = {}
-      this.$refs.form.reset()
+      this.$refs.form2.reset()
     }
   }
 }

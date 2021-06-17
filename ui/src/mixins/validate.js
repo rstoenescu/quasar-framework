@@ -1,4 +1,5 @@
 import { testPattern } from '../utils/patterns.js'
+import debounce from '../utils/debounce.js'
 
 const lazyRulesValues = [ true, false, 'ondemand' ]
 
@@ -35,7 +36,12 @@ export default {
     },
 
     disable (val) {
-      val === true && this.resetValidation()
+      if (val === true) {
+        this.__resetValidation()
+      }
+      else {
+        this.__validateIfNeeded(true)
+      }
     },
 
     reactiveRules: {
@@ -56,15 +62,16 @@ export default {
     },
 
     focused (focused) {
-      if (this.lazyRules !== 'ondemand') {
-        if (focused === true) {
-          if (this.isDirty === null) {
-            this.isDirty = false
-          }
+      if (focused === true) {
+        if (this.isDirty === null) {
+          this.isDirty = false
         }
-        else if (this.isDirty === false && this.hasRules === true) {
-          this.isDirty = true
-          this.validate()
+      }
+      else if (this.isDirty === false) {
+        this.isDirty = true
+
+        if (this.hasRules === true && this.lazyRules !== 'ondemand') {
+          this.debouncedValidate()
         }
       }
     }
@@ -72,7 +79,8 @@ export default {
 
   computed: {
     hasRules () {
-      return this.rules !== void 0 &&
+      return this.disable !== true &&
+        this.rules !== void 0 &&
         this.rules !== null &&
         this.rules.length > 0
     },
@@ -88,21 +96,23 @@ export default {
     }
   },
 
+  created () {
+    this.debouncedValidate = debounce(this.validate, 0)
+  },
+
   mounted () {
     this.validateIndex = 0
   },
 
   beforeDestroy () {
     this.unwatchRules !== void 0 && this.unwatchRules()
+    this.debouncedValidate.cancel()
   },
 
   methods: {
     resetValidation () {
-      this.validateIndex++
-      this.innerLoading = false
       this.isDirty = null
-      this.innerError = false
-      this.innerErrorMessage = void 0
+      this.__resetValidation()
     },
 
     /*
@@ -198,13 +208,21 @@ export default {
       )
     },
 
+    __resetValidation () {
+      this.debouncedValidate.cancel()
+      this.validateIndex++
+      this.innerLoading = false
+      this.innerError = false
+      this.innerErrorMessage = void 0
+    },
+
     __validateIfNeeded (changedRules) {
       if (
         this.hasRules === true &&
         this.lazyRules !== 'ondemand' &&
         (this.isDirty === true || (this.lazyRules !== true && changedRules !== true))
       ) {
-        this.validate()
+        this.debouncedValidate()
       }
     }
   }
