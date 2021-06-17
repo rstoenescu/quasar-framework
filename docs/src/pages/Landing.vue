@@ -8,8 +8,8 @@ q-page.landing
       .landing__hero-text.col-12.column.items-center
         //- .text-h4.landing__hero-text-main.text-bold.text-brand-primary.q-pb-xs QUASAR FRAMEWORK
         .q-pb-lg.text-grey-6.landing__hero-quote.text-center
-          | Effortlessly build high-performance & high-quality
-          | <span class="text-bold text-no-wrap">Vue.js 2</span> user interfaces in record time
+          | {{ $t('landing.mainMessage.start') }}
+          | <span class="text-bold text-no-wrap">Vue.js 2</span> {{ $t('landing.mainMessage.end') }}
         q-btn.q-mb-md(color="accent" outline no-caps type="a" href="https://v2.quasar.dev" target="_blank" label="Looking for Quasar v2 with Vue 3?")
         .landing__hero-row.q-gutter-sm.row.items-center
           q-btn(color="brand-primary" unelevated no-caps to="/introduction-to-quasar" label="Why Quasar?")

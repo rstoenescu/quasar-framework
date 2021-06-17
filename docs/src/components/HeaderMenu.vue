@@ -47,7 +47,7 @@ div
       )
         q-item-section {{ `v0.${version}` }} docs
 
-  q-btn-dropdown.text-bold(:align="align", flat, no-caps, stretch, label="Tools", auto-close)
+  q-btn-dropdown.text-bold(:align="align", flat, no-caps, stretch, :label="$t('header.tools')", auto-close)
     q-list(dense padding)
       q-item(clickable, tag="a", href="https://awesome.quasar.dev", rel="noopener", target="_blank")
         q-item-section.text-yellow-9(avatar)
@@ -113,35 +113,35 @@ div
           q-icon(:name="fasCubes")
         q-item-section Codesandbox
 
-  q-btn-dropdown.text-bold(:align="align", flat, no-caps, stretch, label="Support", auto-close)
+  q-btn-dropdown.text-bold(:align="align", flat, no-caps, stretch, :label="$t('header.support')", auto-close)
     q-list(dense padding)
 
       q-item(clickable, tag="a", href="https://chat.quasar.dev", rel="noopener", target="_blank")
         q-item-section.text-brand-primary(avatar)
           q-icon(:name="mdiChat")
-        q-item-section Discord Chat
+        q-item-section {{ $t('header.discordChat') }}
 
       q-item(clickable, tag="a", href="https://forum.quasar.dev/", rel="noopener", target="_blank")
         q-item-section.text-secondary(avatar)
           q-icon(:name="mdiForum")
-        q-item-section Forum
+        q-item-section {{ $t('header.forum') }}
 
       q-item(clickable, tag="a", href="https://github.com/quasarframework", rel="noopener", target="_blank")
         q-item-section(avatar)
           q-icon(:name="fabGithub")
         q-item-section GitHub Repositories
 
-      q-item-label.q-mt-md(header) Social
+      q-item-label.q-mt-md(header) {{ $t('header.social') }}
 
       q-item(clickable, tag="a", href="https://blog.quasar.dev", rel="noopener", target="_blank")
         q-item-section.text-brand-primary(avatar)
           q-icon(:name="mdiBlogger")
-        q-item-section Blog
+        q-item-section {{ $t('header.blog') }}
 
       q-item(clickable, tag="a", href="https://forum.quasar.dev/category/1/announcements", target="_blank", rel="noopener")
         q-item-section.text-purple(avatar)
           q-icon(:name="mdiBullhorn")
-        q-item-section Announcements
+        q-item-section {{ $t('header.announcements') }}
 
       q-item(clickable, tag="a", href="https://twitter.quasar.dev", target="_blank", rel="noopener")
         q-item-section.text-blue(avatar)
@@ -155,12 +155,15 @@ div
           .row.no-wrap.items-center
             span Facebook
 
-      q-item-label.q-mt-md(header) Donate
+      q-item-label.q-mt-md(header) {{ $t('header.donate') }}
 
       q-item(clickable, tag="a", href="https://donate.quasar.dev", target="_blank", rel="noopener")
         q-item-section(avatar)
           q-icon(:name="mdiCharity")
-        q-item-section GitHub Sponsorship
+        q-item-section GitHub {{ $t('header.sponsorship') }}
+
+  locale-dropdown(:align="align")
+
 </template>
 
 <script>
@@ -176,11 +179,17 @@ import {
   mdiInvertColors, mdiCharity, mdiStarCircle, mdiFire
 } from '@quasar/extras/mdi-v5'
 
+import LocaleDropdown from './LocaleDropdown'
+
 export default {
   name: 'HeaderMenu',
 
   props: {
     align: String
+  },
+
+  components: {
+    LocaleDropdown
   },
 
   created () {
