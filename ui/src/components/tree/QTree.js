@@ -37,6 +37,7 @@ export default Vue.extend({
     controlColor: String,
     textColor: String,
     selectedColor: String,
+    selectedClass: String,
 
     icon: String,
 
@@ -95,11 +96,16 @@ export default Vue.extend({
       }
     },
 
-    selectedColorClass () {
+    computedClasses () {
+      // eslint-disable-next-line prefer-const
+      let classes = []
+
       const color = this.selectedColor || this.color
-      if (color) {
-        return `text-${color}`
-      }
+      if (color) classes.push(`text-${color}`)
+
+      if (this.selectedClass !== void 0) classes.push(this.selectedClass)
+
+      return classes.join(' ')
     },
 
     meta () {
@@ -554,7 +560,7 @@ export default Vue.extend({
 
           h('div', {
             'staticClass': 'q-tree__node-header-content col row no-wrap items-center',
-            class: meta.selected ? this.selectedColorClass : this.textColorClass
+            class: meta.selected ? this.computedClasses : this.textColorClass
           }, [
             header
               ? header(slotScope)

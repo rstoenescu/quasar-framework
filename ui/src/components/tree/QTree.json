@@ -63,6 +63,13 @@
       "desc": "Color name for selected nodes (from the Quasar Color Palette)"
     },
 
+    "selected-class": {
+      "type": "String",
+      "desc": "CSS class name for selected nodes",
+      "examples": [ "bg-green", "custom-class" ],
+      "category": "style"
+    },
+
     "dark": {
       "extends": "dark"
     },
