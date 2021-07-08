@@ -13,18 +13,6 @@
   &--form-square
     border-radius: $generic-border-radius
 
-  &--opened
-    .q-fab__actions
-      opacity: 1
-      transform: scale(1) translate(0, 0)
-      pointer-events: all
-    .q-fab__icon
-      transform: rotate(180deg)
-      opacity: 0
-    .q-fab__active-icon
-      transform: rotate(0deg)
-      opacity: 1
-
   &__icon, &__active-icon
     transition: opacity .4s, transform .4s
   &__icon
@@ -91,6 +79,14 @@
     min-height: 24px
     position: relative
 
+    &--opened
+      .q-fab__icon
+        transform: rotate(180deg)
+        opacity: 0
+      .q-fab__active-icon
+        transform: rotate(0deg)
+        opacity: 1
+
   &__actions
     position: absolute
     opacity: 0
@@ -138,6 +134,11 @@
     &--up, &--down
       left: 50%
       margin-left: -28px
+
+    &--opened
+      opacity: 1
+      transform: scale(1) translate(0, 0)
+      pointer-events: all
 
   &--align-left
     > .q-fab__actions

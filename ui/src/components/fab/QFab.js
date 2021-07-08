@@ -66,6 +66,14 @@ export default Vue.extend({
         (this.showing === true ? ' q-fab--opened' : '')
     },
 
+    actionsClasses () {
+      return `q-fab__actions--${this.direction}` + (this.showing === true ? ' q-fab__actions--opened' : '')
+    },
+
+    iconHolderClasses () {
+      return this.showing === true ? 'q-fab__icon-holder--opened' : ''
+    },
+
     attrs () {
       return {
         'aria-expanded': this.showing === true ? 'true' : 'false',
@@ -89,7 +97,7 @@ export default Vue.extend({
     const child = []
 
     this.hideIcon !== true && child.push(
-      h('div', { staticClass: 'q-fab__icon-holder' }, [
+      h('div', { staticClass: 'q-fab__icon-holder', class: this.iconHolderClasses }, [
         h(QIcon, {
           staticClass: 'q-fab__icon absolute-full',
           props: { name: this.icon || this.$q.iconSet.fab.icon }
@@ -131,7 +139,7 @@ export default Vue.extend({
 
       h('div', {
         staticClass: 'q-fab__actions flex no-wrap inline',
-        class: `q-fab__actions--${this.direction}`
+        class: this.actionsClasses
       }, slot(this, 'default'))
     ])
   }
