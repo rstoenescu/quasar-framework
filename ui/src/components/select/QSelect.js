@@ -869,7 +869,7 @@ export default Vue.extend({
       }
 
       if (this.$scopedSlots.selected !== void 0) {
-        return this.$scopedSlots.selected().slice()
+        return [].concat(this.$scopedSlots.selected())
       }
 
       if (this.useChips === true) {
