@@ -77,6 +77,13 @@
       "category": "options"
     },
 
+    "no-option-label": {
+      "type": "String",
+      "desc": "Property which tells the user if there are no options available (overridden by no-options slot)",
+      "examples": "There are no options to show...",
+      "category": "options"
+    },
+
     "hide-selected": {
       "type": "Boolean",
       "desc": "Hides selection; Use the underlying input tag to hold the label (instead of showing it to the right of the input) of the selected option; Only works for non 'multiple' Selects",
@@ -317,7 +324,7 @@
 
   "scopedSlots": {
     "no-option": {
-      "desc": "What should the menu display after filtering options and none are left to be displayed; Suggestion: <div>",
+      "desc": "What should the menu display after filtering options and none are left to be displayed; Overrides no-option-label prop, if existing; Suggestion: <div>",
       "scope": {
         "inputValue": {
           "type": "String",

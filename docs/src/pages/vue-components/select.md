@@ -118,6 +118,8 @@ Here is another example where we add a QToggle to each option. The possibilities
 
 By default, when there are no options, the menu won't appear. But you can customize this scenario and specify what the menu should display.
 
+<doc-example title="No options label" file="QSelect/OptionNoneLabel" />
+
 <doc-example title="No options slot" file="QSelect/OptionNoneSlot" />
 
 ### Lazy loading

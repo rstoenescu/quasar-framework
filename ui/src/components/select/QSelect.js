@@ -56,6 +56,7 @@ export default Vue.extend({
     optionValue: [Function, String],
     optionLabel: [Function, String],
     optionDisable: [Function, String],
+    noOptionLabel: String,
 
     hideSelected: Boolean,
     hideDropdownIcon: Boolean,
@@ -1213,7 +1214,8 @@ export default Vue.extend({
         this.editable !== false && (
           this.dialog === true || // dialog always has menu displayed, so need to render it
           this.noOptions !== true ||
-          this.$scopedSlots['no-option'] !== void 0
+          this.$scopedSlots['no-option'] !== void 0 ||
+          this.noOptionLabel !== void 0
         )
       ) {
         return this[`__get${this.hasDialog === true ? 'Dialog' : 'Menu'}`](h)
@@ -1225,7 +1227,14 @@ export default Vue.extend({
         ? (
           this.$scopedSlots['no-option'] !== void 0
             ? this.$scopedSlots['no-option']({ inputValue: this.inputValue })
-            : null
+            : (this.noOptionLabel !== void 0 ? [h(QItem, {}, [
+              h(QItemSection, [
+                h(QItemLabel, {
+                  staticClass: 'text-grey',
+                  domProps: { textContent: this.noOptionLabel }
+                })
+              ])
+            ])] : null)
         )
         : this.__getOptions(h)
 
@@ -1318,7 +1327,14 @@ export default Vue.extend({
             ? (
               this.$scopedSlots['no-option'] !== void 0
                 ? this.$scopedSlots['no-option']({ inputValue: this.inputValue })
-                : null
+                : (this.noOptionLabel !== void 0 ? [h(QItem, {}, [
+                  h(QItemSection, [
+                    h(QItemLabel, {
+                      staticClass: 'text-grey',
+                      domProps: { textContent: this.noOptionLabel }
+                    })
+                  ])
+                ])] : null)
             )
             : this.__getOptions(h)
         ))
@@ -1418,7 +1434,7 @@ export default Vue.extend({
       if (this.qListeners.filter !== void 0) {
         this.filter(this.inputValue)
       }
-      else if (this.noOptions !== true || this.$scopedSlots['no-option'] !== void 0) {
+      else if (this.noOptions !== true || this.$scopedSlots['no-option'] !== void 0 || this.noOptionLabel !== void 0) {
         this.menu = true
       }
     },
@@ -1458,7 +1474,7 @@ export default Vue.extend({
         ? false
         : this.behavior !== 'menu' && (
           this.useInput === true
-            ? this.$scopedSlots['no-option'] !== void 0 || this.qListeners.filter !== void 0 || this.noOptions === false
+            ? this.$scopedSlots['no-option'] !== void 0 || this.noOptionLabel !== void 0 || this.qListeners.filter !== void 0 || this.noOptions === false
             : true
         )
 
