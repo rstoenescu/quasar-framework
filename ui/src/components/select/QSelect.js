@@ -284,8 +284,15 @@ export default Vue.extend({
           dark: this.isOptionsDark
         }
 
+        const itemAttrs = {
+          role: 'option',
+          id: `${this.targetUid}_${index}`
+        }
+
         if (disable !== true) {
           this.isOptionSelected(opt) === true && (itemProps.active = true)
+          itemAttrs['aria-selected'] = itemProps.active === true ? 'true' : 'false'
+
           this.optionIndex === index && (itemProps.focused = true)
         }
 
@@ -305,7 +312,8 @@ export default Vue.extend({
           focused: itemProps.focused,
           toggleOption: this.toggleOption,
           setOptionIndex: this.setOptionIndex,
-          itemProps
+          itemProps,
+          itemAttrs
         }
 
         if (options[i] === void 0 || isDeepEqual(option, options[i]) !== true) {
@@ -388,6 +396,23 @@ export default Vue.extend({
       return this.virtualScrollItemSize === void 0
         ? (this.dense === true ? 24 : 48)
         : this.virtualScrollItemSize
+    },
+
+    comboboxAttrs () {
+      return {
+        role: 'combobox',
+        'aria-multiselectable': this.multiple === true ? 'true' : 'false',
+        'aria-expanded': this.menu === true ? 'true' : 'false',
+        'aria-owns': `${this.targetUid}_lb`,
+        'aria-activedescendant': `${this.targetUid}_${this.optionIndex}`
+      }
+    },
+
+    listboxAttrs () {
+      return {
+        role: 'listbox',
+        id: `${this.targetUid}_lb`
+      }
     }
   },
 
@@ -921,7 +946,8 @@ export default Vue.extend({
             staticClass: 'no-outline',
             attrs: {
               id: this.targetUid,
-              tabindex: this.tabindex
+              tabindex: this.tabindex,
+              ...this.comboboxAttrs
             },
             on: cache(this, 'f-tget', {
               keydown: this.__onTargetKeydown,
@@ -981,6 +1007,7 @@ export default Vue.extend({
         : scope => h(QItem, {
           key: scope.index,
           props: scope.itemProps,
+          attrs: scope.itemAttrs,
           on: scope.itemEvents
         }, [
           h(QItemSection, [
@@ -1038,7 +1065,8 @@ export default Vue.extend({
           autocomplete: this.autocomplete,
           'data-autofocus': fromDialog === true ? false : this.autofocus,
           disabled: this.disable === true,
-          readonly: this.readonly === true
+          readonly: this.readonly === true,
+          ...this.comboboxAttrs
         },
         on: this.inputControlEvents
       }
@@ -1249,6 +1277,7 @@ export default Vue.extend({
           transitionHide: this.transitionHide,
           separateClosePopup: true
         },
+        attrs: this.listboxAttrs,
         on: cache(this, 'menu', {
           '&scroll': this.__onVirtualScrollEvt,
           'before-hide': this.__closeMenu,
@@ -1309,6 +1338,7 @@ export default Vue.extend({
           staticClass: 'scroll',
           class: this.menuContentClass,
           style: this.popupContentStyle,
+          attrs: this.listboxAttrs,
           on: cache(this, 'virtMenu', {
             click: prevent,
             '&scroll': this.__onVirtualScrollEvt
