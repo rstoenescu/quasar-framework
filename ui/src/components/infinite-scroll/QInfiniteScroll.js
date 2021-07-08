@@ -8,6 +8,13 @@ import { getScrollTarget, getScrollHeight, getScrollPosition, setScrollPosition 
 import { listenOpts } from '../../utils/event.js'
 import { slot, uniqueSlot } from '../../utils/slot.js'
 
+const DIRECTIONS = {
+  none: 'none',
+  bottom: 'bottom',
+  top: 'top',
+  both: 'both'
+}
+
 export default Vue.extend({
   name: 'QInfiniteScroll',
 
@@ -31,13 +38,18 @@ export default Vue.extend({
     initialIndex: Number,
 
     disable: Boolean,
-    reverse: Boolean
+    reverse: Boolean,
+    direction: {
+      type: String,
+      default: null
+    }
   },
 
   data () {
     return {
       index: this.initialIndex || 0,
-      fetching: false,
+      fetchingTop: false,
+      fetchingBottom: false,
       working: true
     }
   },
@@ -58,12 +70,21 @@ export default Vue.extend({
 
     debounce (val) {
       this.__setDebounce(val)
+    },
+
+    direction (val) {
+      if (val === DIRECTIONS.none) {
+        this.stop()
+      }
+      else if (val && this.disable !== true) {
+        this.$nextTick(() => this.resume())
+      }
     }
   },
 
   methods: {
     poll () {
-      if (this.disable === true || this.fetching === true || this.working === false) {
+      if (this.disable === true || this.working === false || this.direction === DIRECTIONS.none) {
         return
       }
 
@@ -72,33 +93,48 @@ export default Vue.extend({
         scrollPosition = getScrollPosition(this.__scrollTarget),
         containerHeight = height(this.__scrollTarget)
 
-      if (this.reverse === false) {
-        if (scrollPosition + containerHeight + this.offset >= scrollHeight) {
-          this.trigger()
+      if (this.direction) {
+        if (this.direction === DIRECTIONS.bottom || this.direction === DIRECTIONS.both) {
+          if (scrollPosition + containerHeight + this.offset >= scrollHeight) {
+            this.trigger(DIRECTIONS.bottom)
+          }
+        }
+        if (this.direction === DIRECTIONS.top || this.direction === DIRECTIONS.both) {
+          if (scrollPosition < this.offset) {
+            this.trigger(DIRECTIONS.top)
+          }
         }
       }
       else {
-        if (scrollPosition < this.offset) {
-          this.trigger()
+        if (this.reverse === false) {
+          if (scrollPosition + containerHeight + this.offset >= scrollHeight) {
+            this.trigger(DIRECTIONS.bottom)
+          }
+        }
+        else {
+          if (scrollPosition < this.offset) {
+            this.trigger(DIRECTIONS.top)
+          }
         }
       }
     },
 
-    trigger () {
-      if (this.disable === true || this.fetching === true || this.working === false) {
+    trigger (direction) {
+      const isTop = direction === DIRECTIONS.top
+      if (this.disable === true || (isTop && this.fetchingTop === true) || (!isTop && this.fetchingBottom === true) || this.working === false || this.direction === DIRECTIONS.none) {
         return
       }
 
-      this.index++
-      this.fetching = true
+      this.index++ // in case direction === both, should index be index-range [number, number]?
+      this[isTop ? 'fetchingTop' : 'fetchingBottom'] = true
 
       const heightBefore = getScrollHeight(this.__scrollTarget)
 
       this.$emit('load', this.index, stop => {
-        if (this.working === true) {
-          this.fetching = false
+        if (this.working === true && (this.direction !== DIRECTIONS.none || !this.direction)) {
+          this[isTop ? 'fetchingTop' : 'fetchingBottom'] = false
           this.$nextTick(() => {
-            if (this.reverse === true) {
+            if ((this.reverse === true && !this.direction) || direction === DIRECTIONS.top) {
               const
                 heightAfter = getScrollHeight(this.__scrollTarget),
                 scrollPosition = getScrollPosition(this.__scrollTarget),
@@ -115,7 +151,7 @@ export default Vue.extend({
             }
           })
         }
-      })
+      }, direction)
     },
 
     reset () {
@@ -133,19 +169,20 @@ export default Vue.extend({
     stop () {
       if (this.working === true) {
         this.working = false
-        this.fetching = false
+        this.fetchingBottom = false
+        this.fetchingTop = false
         this.__scrollTarget.removeEventListener('scroll', this.poll, listenOpts.passive)
       }
     },
 
     updateScrollTarget () {
-      if (this.__scrollTarget && this.working === true) {
+      if (this.__scrollTarget && this.working === true && this.direction !== DIRECTIONS.none) {
         this.__scrollTarget.removeEventListener('scroll', this.poll, listenOpts.passive)
       }
 
       this.__scrollTarget = getScrollTarget(this.$el, this.scrollTarget)
 
-      if (this.working === true) {
+      if (this.working === true && this.direction !== DIRECTIONS.none) {
         this.__scrollTarget.addEventListener('scroll', this.poll, listenOpts.passive)
       }
     },
@@ -163,7 +200,7 @@ export default Vue.extend({
         ? this.immediatePoll
         : debounce(this.immediatePoll, isNaN(val) === true ? 100 : val)
 
-      if (this.__scrollTarget && this.working === true) {
+      if (this.__scrollTarget && this.working === true && this.direction !== DIRECTIONS.none) {
         if (oldPoll !== void 0) {
           this.__scrollTarget.removeEventListener('scroll', oldPoll, listenOpts.passive)
         }
@@ -179,12 +216,16 @@ export default Vue.extend({
 
     this.updateScrollTarget()
 
-    if (this.reverse === true) {
+    if (this.reverse === true || this.direction === DIRECTIONS.top || this.direction === DIRECTIONS.both) {
       const
         scrollHeight = getScrollHeight(this.__scrollTarget),
         containerHeight = height(this.__scrollTarget)
 
-      setScrollPosition(this.__scrollTarget, scrollHeight - containerHeight)
+      let scrollPos = scrollHeight - containerHeight
+      if (this.direction === DIRECTIONS.both) {
+        scrollPos = scrollPos / 2
+      }
+      setScrollPosition(this.__scrollTarget, scrollPos)
     }
 
     this.immediatePoll()
@@ -199,13 +240,23 @@ export default Vue.extend({
   render (h) {
     const child = uniqueSlot(this, 'default', [])
 
-    if (this.disable !== true && this.working === true) {
-      child[this.reverse === false ? 'push' : 'unshift'](
-        h('div', {
-          staticClass: 'q-infinite-scroll__loading',
-          class: this.fetching === true ? '' : 'invisible'
-        }, slot(this, 'loading'))
-      )
+    if (this.disable !== true && this.working === true && this.direction !== DIRECTIONS.none) {
+      const bottomLoading = h('div', {
+        staticClass: 'q-infinite-scroll__loading',
+        class: this.fetchingBottom === true ? '' : 'invisible'
+      }, slot(this, 'loading'))
+
+      const topLoading = h('div', {
+        staticClass: 'q-infinite-scroll__loading',
+        class: this.fetchingTop === true ? '' : 'invisible'
+      }, slot(this, 'loading'))
+
+      if (this.direction === DIRECTIONS.bottom || this.direction === DIRECTIONS.both || (!this.direction && this.reverse === false)) {
+        child.push(bottomLoading)
+      }
+      if (this.direction === DIRECTIONS.top || this.direction === DIRECTIONS.both || (!this.direction && this.reverse === true)) {
+        child.unshift(topLoading)
+      }
     }
 
     return h('div', {

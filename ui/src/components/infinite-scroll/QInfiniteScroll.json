@@ -46,6 +46,14 @@
       "type": "Boolean",
       "desc": "Scroll area should behave like a messenger - starting scrolled to bottom and loading when reaching the top",
       "category": "behavior"
+    },
+
+    "direction": {
+      "type": "String",
+      "desc": "Direction in which to trigger loading. Overrides reverse",
+      "category": "behavior",
+      "examples": [ "bottom", "top", "both", "none" ],
+      "addedIn": "v1.15.22"
     }
   },
 
@@ -74,10 +82,15 @@
           "params": {
             "stop": {
               "type": "Boolean",
-              "desc": "Stops QInfiniteScroll if it's Boolean 'true'; Specify it in case there's nothing more to load"
+              "desc": "Stops QInfiniteScroll if it's Boolean 'true'; Specify it in case there's nothing more to load. Overrides direction"
             }
           },
           "returns": null
+        },
+        "direction": {
+          "type": "String",
+          "desc": "Direction that triggered load event",
+          "examples": [ "bottom", "top" ]
         }
       }
     }
