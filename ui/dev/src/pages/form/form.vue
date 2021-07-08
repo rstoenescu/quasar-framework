@@ -185,6 +185,7 @@
 export default {
   components: {
     customInput: {
+      inheritAttrs: false,
       props: [ 'value' ],
       render (h) {
         return h('q-field', {
@@ -201,6 +202,7 @@ export default {
     },
 
     myComp: {
+      inheritAttrs: false,
       render (h) {
         return h('div', {
           staticClass: 'q-validation-component'

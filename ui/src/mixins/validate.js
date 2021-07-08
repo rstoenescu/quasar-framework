@@ -67,6 +67,11 @@ export default {
           this.validate()
         }
       }
+    },
+
+    hasError (invalid) {
+      const targetEl = document.getElementById(this.targetUid)
+      targetEl !== null && targetEl.setAttribute('aria-invalid', invalid === true)
     }
   },
 

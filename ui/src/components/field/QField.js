@@ -394,7 +394,7 @@ export default Vue.extend({
 
       if (this.hasError === true) {
         if (this.computedErrorMessage !== void 0) {
-          msg = [ h('div', [ this.computedErrorMessage ]) ]
+          msg = [ h('div', { attrs: { role: 'alert' } }, [ this.computedErrorMessage ]) ]
           key = this.computedErrorMessage
         }
         else {
