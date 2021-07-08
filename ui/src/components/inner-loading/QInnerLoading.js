@@ -9,10 +9,14 @@ import ListenersMixin from '../../mixins/listeners.js'
 export default Vue.extend({
   name: 'QInnerLoading',
 
-  mixins: [ ListenersMixin, DarkMixin, TransitionMixin ],
+  mixins: [ListenersMixin, DarkMixin, TransitionMixin],
 
   props: {
     showing: Boolean,
+
+    label: String,
+    labelColor: String,
+
     color: String,
 
     size: {
@@ -21,7 +25,30 @@ export default Vue.extend({
     }
   },
 
+  computed: {
+    hasLabel () {
+      return this.label !== void 0 && this.label !== null && this.label !== ''
+    },
+    hasLabelColor () {
+      return this.labelColor !== void 0 && this.labelColor !== null && this.labelColor !== ''
+    }
+  },
+
   render (h) {
+    const inner = [h(QSpinner, {
+      props: {
+        size: this.size,
+        color: this.color
+      }
+    })]
+
+    this.hasLabel === true && inner.push(
+      h('span', {
+        staticClass: 'q-pt-sm block',
+        class: this.hasLabelColor ? `text-${this.labelColor}` : ''
+      }, [this.label])
+    )
+
     const child = this.showing === true
       ? [
         h('div',
@@ -32,14 +59,7 @@ export default Vue.extend({
           },
           this.$scopedSlots.default !== void 0
             ? this.$scopedSlots.default()
-            : [
-              h(QSpinner, {
-                props: {
-                  size: this.size,
-                  color: this.color
-                }
-              })
-            ]
+            : inner
         )
       ]
       : void 0

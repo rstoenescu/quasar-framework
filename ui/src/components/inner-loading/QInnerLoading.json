@@ -16,6 +16,19 @@
       "category": "state"
     },
 
+    "label": {
+      "type": "String",
+      "desc": "Text showed below the Spinner (unless using the default slot)",
+      "category": "content"
+    },
+
+    "label-color": {
+      "type": "String",
+      "desc": "Color name from the Quasar Color Palette for the label text (unless using the default slot)",
+      "default": "#000000",
+      "category": "style"
+    },
+
     "color": {
       "extends": "color",
       "desc": "Color name for component from the Quasar Color Palette for the inner Spinner (unless using the default slot)"
