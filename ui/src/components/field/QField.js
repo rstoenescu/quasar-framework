@@ -220,6 +220,17 @@ export default Vue.extend({
       }
     },
 
+    bottomSlotScope () {
+      return {
+        id: this.targetUid,
+        field: this.$el,
+        editable: this.editable,
+        focused: this.focused,
+        value: this.value,
+        errorMessage: this.computedErrorMessage
+      }
+    },
+
     attrs () {
       const attrs = {
         for: this.targetUid
@@ -393,23 +404,25 @@ export default Vue.extend({
       let msg, key
 
       if (this.hasError === true) {
-        if (this.computedErrorMessage !== void 0) {
+        key = 'q--slot-error'
+
+        if (this.$scopedSlots.error !== void 0) {
+          msg = this.$scopedSlots.error(this.bottomSlotScope)
+        }
+        else if (this.computedErrorMessage !== void 0) {
           msg = [ h('div', [ this.computedErrorMessage ]) ]
           key = this.computedErrorMessage
         }
-        else {
-          msg = slot(this, 'error')
-          key = 'q--slot-error'
-        }
       }
       else if (this.hideHint !== true || this.focused === true) {
-        if (this.hint !== void 0) {
+        key = 'q--slot-hint'
+
+        if (this.$scopedSlots.hint !== void 0) {
+          msg = this.$scopedSlots.hint(this.bottomSlotScope)
+        }
+        else if (this.hint !== void 0) {
           msg = [ h('div', [ this.hint ]) ]
           key = this.hint
-        }
-        else {
-          msg = slot(this, 'hint')
-          key = 'q--slot-hint'
         }
       }
 
