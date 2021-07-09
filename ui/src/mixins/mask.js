@@ -47,6 +47,10 @@ export default {
       this.__updateMaskInternals()
     },
 
+    autogrow () {
+      this.__updateMaskInternals()
+    },
+
     mask (v) {
       if (v !== void 0) {
         this.__updateMaskValue(this.innerValue, true)
@@ -111,7 +115,7 @@ export default {
     __updateMaskInternals () {
       this.hasMask = this.mask !== void 0 &&
         this.mask.length > 0 &&
-        this.isTypeText === true
+        (this.autogrow === true || ['textarea', 'text', 'search', 'url', 'tel', 'password'].includes(this.type))
 
       if (this.hasMask === false) {
         this.computedUnmask = void 0
