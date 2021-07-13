@@ -257,6 +257,42 @@ moneyFormatForComponent: {
 }
 ```
 
+Alternatively, you can use the vue-autonumeric component for a variety of decimal numbers and currencies. See https://www.npmjs.com/package/vue-autonumeric for details. Check http://autonumeric.org/#/guide for options.
+
+```
+```html
+<q-field
+  filled
+  v-model="decimalNumber"
+  label="Decimal number, European format, vue-autonumeric component"
+  hint="Mask: ###.###,##"
+>
+  <template v-slot:control="{ id, floatingLabel, value, emitValue }">
+    <vue-autonumeric
+      ref="myDecimalNumber"
+      :id="id"
+      class="q-field__native text-right"
+      :options="autoNumericOptions"
+      :value="value"
+      @input="emitValue"
+      :placeholder="'####.###,##'"
+      v-show="floatingLabel"
+    />
+    </vue-autonumeric>
+  </template>
+</q-field>
+```
+
+```javascript
+autoNumericOptions: {
+  decimalCharacter: ",", // European decimal separator
+  decimalPlaces: 2, // 2 decimals places after separator
+  digitGroupSeparator: ".", // European thousands separator
+  // Many more options available - see docs for vue-autonumeric
+ },
+ ```
+
+
 ## Validation
 
 ### Internal validation
