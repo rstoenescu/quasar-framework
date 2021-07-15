@@ -29,7 +29,7 @@ export default Vue.extend({
     routerTabLinkProps () {
       return {
         ...this.routerLinkProps,
-        event: []
+        custom: true
       }
     }
   },
@@ -139,6 +139,18 @@ export default Vue.extend({
   },
 
   render (h) {
-    return this.__renderTab(h, 'router-link', this.routerTabLinkProps)
+    return h('router-link', {
+      staticClass: 'q-tab relative-position self-stretch flex flex-center text-center no-outline',
+      class: this.classes,
+      attrs: this.attrs,
+      props: this.routerTabLinkProps,
+      directives: this.ripple === false || this.disable === true ? null : [
+        { name: 'ripple', value: this.computedRipple }
+      ],
+      nativeOn: this.onEvents,
+      scopedSlots: {
+        default: () => h('a', this.__getContent(h))
+      }
+    })
   }
 })
