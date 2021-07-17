@@ -262,7 +262,7 @@ export default defineComponent({
 
     function changeSpectrum (left, top, change) {
       const panel = spectrumRef.value
-      if (panel === void 0) { return }
+      if (panel === null) { return }
 
       const
         width = panel.clientWidth,
