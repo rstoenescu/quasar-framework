@@ -353,20 +353,20 @@ export default Vue.extend({
       const
         content = this.$refs.content,
         rect = content.getBoundingClientRect(),
-        pos = this.vertical === true ? content.scrollTop : content.scrollLeft
+        pos = this.vertical === true ? content.scrollTop : this.$q.lang.rtl ? -content.scrollLeft : content.scrollLeft
 
       this.leftArrow = pos > 0
       this.rightArrow = this.vertical === true
         ? Math.ceil(pos + rect.height) < content.scrollHeight
-        : Math.ceil(pos + rect.width) < content.scrollWidth
+        : Math.ceil(pos + rect.width) <= content.scrollWidth
     },
 
     __animScrollTo (value) {
       this.__stopAnimScroll()
-      this.__scrollTowards(value)
+      this.__scrollTowards(this.$q.lang.rtl ? -value : value)
 
       this.scrollTimer = setInterval(() => {
-        if (this.__scrollTowards(value)) {
+        if (this.__scrollTowards(this.$q.lang.rtl ? -value : value)) {
           this.__stopAnimScroll()
         }
       }, 5)
@@ -392,7 +392,7 @@ export default Vue.extend({
       const direction = value < pos ? -1 : 1
 
       pos += direction * 5
-      if (pos < 0) {
+      if (this.$q.lang.rtl ? (pos > 0) : (pos < 0)) {
         done = true
         pos = 0
       }
@@ -442,9 +442,9 @@ export default Vue.extend({
 
     this.arrowsEnabled === true && child.push(
       h(QIcon, {
-        staticClass: 'q-tabs__arrow q-tabs__arrow--left absolute q-tab__icon',
+        staticClass: `q-tabs__arrow ${this.$q.lang.rtl ? 'q-tabs__arrow--right' : 'q-tabs__arrow--left'} absolute q-tab__icon`,
         class: this.leftArrow === true ? '' : 'q-tabs__arrow--faded',
-        props: { name: this.leftIcon || (this.vertical === true ? this.$q.iconSet.tabs.up : this.$q.iconSet.tabs.left) },
+        props: { name: this.leftIcon || (this.vertical === true ? this.$q.iconSet.tabs.up : (this.$q.lang.rtl ? this.$q.iconSet.tabs.right : this.$q.iconSet.tabs.left)) },
         on: cache(this, 'onL', {
           mousedown: this.__scrollToStart,
           touchstart: this.__scrollToStart,
@@ -455,9 +455,9 @@ export default Vue.extend({
       }),
 
       h(QIcon, {
-        staticClass: 'q-tabs__arrow q-tabs__arrow--right absolute q-tab__icon',
+        staticClass: `q-tabs__arrow ${this.$q.lang.rtl ? 'q-tabs__arrow--left' : 'q-tabs__arrow--right'} absolute q-tab__icon`,
         class: this.rightArrow === true ? '' : 'q-tabs__arrow--faded',
-        props: { name: this.rightIcon || (this.vertical === true ? this.$q.iconSet.tabs.down : this.$q.iconSet.tabs.right) },
+        props: { name: this.rightIcon || (this.vertical === true ? this.$q.iconSet.tabs.down : (this.$q.lang.rtl ? this.$q.iconSet.tabs.left : this.$q.iconSet.tabs.right)) },
         on: cache(this, 'onR', {
           mousedown: this.__scrollToEnd,
           touchstart: this.__scrollToEnd,
